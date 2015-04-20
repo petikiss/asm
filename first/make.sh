@@ -1,5 +1,5 @@
 #!/bin/bash
 
 nasm -f elf32 hello.asm
-ld hello.o
+gcc hello.o
 ./a.out
