@@ -19,6 +19,7 @@ section .text:
     push dword [msg] ; dword -> double word (4 byte)
     push dword [msg]
     push dword [msg]
+    push dword [msg]
     push dword fmt
     call printf
 
