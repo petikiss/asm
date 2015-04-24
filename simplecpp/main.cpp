@@ -2,7 +2,8 @@
 
 int main()
 {
-    int alma;
+    static int alma = 10;
+//    int* pointer = new int(5);
 
-    return 10;
+    return *pointer;
 }
