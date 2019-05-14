@@ -1,0 +1,2 @@
+nasm -f elf32 assign.asm
+gcc -m32 assign.o
