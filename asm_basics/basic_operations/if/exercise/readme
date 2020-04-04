@@ -1,0 +1,7 @@
+This code doesnt work well.
+What is the problem? Why?
+
+Expected behaviour:
+if the input number is greater than 10 the output message must appear.
+
+Use gdb for help!
