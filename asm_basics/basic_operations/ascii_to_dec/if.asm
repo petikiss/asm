@@ -31,8 +31,8 @@ main:
     syscall
     
     xor rbx, rbx
-    mov rbx, [number]
-    cmp rbx, 10
+    mov bl, [number]
+    cmp bl, 10
     jnl L1
     mov rax, 0
     mov rdi, 0
