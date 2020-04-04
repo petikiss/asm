@@ -1,0 +1,14 @@
+nasm -f elf32 assign.asm
+gcc -m32 assign.o
+
+or
+nams -f elf64 xyz.asm
+ld xzy.o
+
+
+For gcc usage:
+1) global main is necessary
+
+For ld usage:
+1) global _start is necessary
+2) correct sys_exit call necessary otherwise coredump
