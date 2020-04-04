@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en-US"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="profile" href="http://gmpg.org/xfn/11">
+
+	<title>From .rodata to .rwdata – introduction to memory mapping and LD scripts – Guy on BITS</title>
+<link rel="dns-prefetch" href="https://s.w.org/">
+<link rel="alternate" type="application/rss+xml" title="Guy on BITS » Feed" href="https://guyonbits.com/feed/">
+<link rel="alternate" type="application/rss+xml" title="Guy on BITS » Comments Feed" href="https://guyonbits.com/comments/feed/">
+<!-- This site uses the Google Analytics by MonsterInsights plugin v7.10.4 - Using Analytics tracking - https://www.monsterinsights.com/ -->
+<!-- Note: MonsterInsights is not currently configured on this site. The site owner needs to authenticate with Google Analytics in the MonsterInsights settings panel. -->
+<!-- No UA code set -->
+<!-- / Google Analytics by MonsterInsights -->
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/guyonbits.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.4"}};
+			/*! This file is auto-generated */
+			!function(e,a,t){var r,n,o,i,p=a.createElement("canvas"),s=p.getContext&&p.getContext("2d");function c(e,t){var a=String.fromCharCode;s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,e),0,0);var r=p.toDataURL();return s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,t),0,0),r===p.toDataURL()}function l(e){if(!s||!s.fillText)return!1;switch(s.textBaseline="top",s.font="600 32px Arial",e){case"flag":return!c([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])&&(!c([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!c([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]));case"emoji":return!c([55357,56424,55356,57342,8205,55358,56605,8205,55357,56424,55356,57340],[55357,56424,55356,57342,8203,55358,56605,8203,55357,56424,55356,57340])}return!1}function d(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(i=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},o=0;o<i.length;o++)t.supports[i[o]]=l(i[o]),t.supports.everything=t.supports.everything&&t.supports[i[o]],"flag"!==i[o]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[i[o]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(r=t.source||{}).concatemoji?d(r.concatemoji):r.wpemoji&&r.twemoji&&(d(r.twemoji),d(r.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="From%20.rodata%20to%20.rwdata%20%E2%80%93%20introduction%20to%20memory%20mapping%20and%20LD%20scripts%20%E2%80%93%20Guy%20on%20BITS_files/wp-emoji-release.js" type="text/javascript" defer="defer"></script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel="stylesheet" id="wp-block-library-css" href="From%20.rodata%20to%20.rwdata%20%E2%80%93%20introduction%20to%20memory%20mapping%20and%20LD%20scripts%20%E2%80%93%20Guy%20on%20BITS_files/style_003.css" type="text/css" media="all">
+<link rel="stylesheet" id="material-scrolltop-css" href="From%20.rodata%20to%20.rwdata%20%E2%80%93%20introduction%20to%20memory%20mapping%20and%20LD%20scripts%20%E2%80%93%20Guy%20on%20BITS_files/material-scrolltop.css" type="text/css" media="all">
+<link rel="stylesheet" id="font-awesome-css" href="From%20.rodata%20to%20.rwdata%20%E2%80%93%20introduction%20to%20memory%20mapping%20and%20LD%20scripts%20%E2%80%93%20Guy%20on%20BITS_files/font-awesome.css" type="text/css" media="all">
+<link rel="stylesheet" id="bootstrap-css" href="From%20.rodata%20to%20.rwdata%20%E2%80%93%20introduction%20to%20memory%20mapping%20and%20LD%20scripts%20%E2%80%93%20Guy%20on%20BITS_files/bootstrap.css" type="text/css" media="all">
+<link rel="stylesheet" id="tr-iblogger-lite-template-css" href="From%20.rodata%20to%20.rwdata%20%E2%80%93%20introduction%20to%20memory%20mapping%20and%20LD%20scripts%20%E2%80%93%20Guy%20on%20BITS_files/style_002.css" type="text/css" media="all">
+<style id="tr-iblogger-lite-template-inline-css" type="text/css">
+#head{ 
+			    				background-image: url(https://guyonbits.com/wp-content/uploads/2019/05/cropped-logo-14.png);
+			    				background-position: center center;
+			    				background-size: cover;
+			    				background-repeat: no-repeat;
+			    				margin-bottom:0;
+			    	 		}
+</style>
+<link rel="stylesheet" id="tr-iblogger-lite-style-css" href="From%20.rodata%20to%20.rwdata%20%E2%80%93%20introduction%20to%20memory%20mapping%20and%20LD%20scripts%20%E2%80%93%20Guy%20on%20BITS_files/style.css" type="text/css" media="all">
+<link rel="stylesheet" id="tr-iblogger-lite-responsive-css" href="From%20.rodata%20to%20.rwdata%20%E2%80%93%20introduction%20to%20memory%20mapping%20and%20LD%20scripts%20%E2%80%93%20Guy%20on%20BITS_files/responsive.css" type="text/css" media="all">
+<link rel="stylesheet" id="tr-iblogger-lite-google-fonts-Open-sans-css" href="From%20.rodata%20to%20.rwdata%20%E2%80%93%20introduction%20to%20memory%20mapping%20and%20LD%20scripts%20%E2%80%93%20Guy%20on%20BITS_files/css.css" type="text/css" media="all">
+<script type="text/javascript" src="From%20.rodata%20to%20.rwdata%20%E2%80%93%20introduction%20to%20memory%20mapping%20and%20LD%20scripts%20%E2%80%93%20Guy%20on%20BITS_files/jquery_002.js"></script>
+<script type="text/javascript" src="From%20.rodata%20to%20.rwdata%20%E2%80%93%20introduction%20to%20memory%20mapping%20and%20LD%20scripts%20%E2%80%93%20Guy%20on%20BITS_files/jquery-migrate.js"></script>
+<script type="text/javascript" src="From%20.rodata%20to%20.rwdata%20%E2%80%93%20introduction%20to%20memory%20mapping%20and%20LD%20scripts%20%E2%80%93%20Guy%20on%20BITS_files/material-scrolltop.js"></script>
+<script type="text/javascript" src="From%20.rodata%20to%20.rwdata%20%E2%80%93%20introduction%20to%20memory%20mapping%20and%20LD%20scripts%20%E2%80%93%20Guy%20on%20BITS_files/custom.js"></script>
+<link rel="https://api.w.org/" href="https://guyonbits.com/wp-json/">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://guyonbits.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://guyonbits.com/wp-includes/wlwmanifest.xml"> 
+<meta name="generator" content="WordPress 5.4">
+<link rel="canonical" href="https://guyonbits.com/from-rodata-to-rwdata-introduction-to-memory-mapping-and-ld-scripts/">
+<link rel="shortlink" href="https://guyonbits.com/?p=43">
+<link rel="alternate" type="application/json+oembed" href="https://guyonbits.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fguyonbits.com%2Ffrom-rodata-to-rwdata-introduction-to-memory-mapping-and-ld-scripts%2F">
+<link rel="alternate" type="text/xml+oembed" href="https://guyonbits.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fguyonbits.com%2Ffrom-rodata-to-rwdata-introduction-to-memory-mapping-and-ld-scripts%2F&amp;format=xml">
+<link rel="icon" href="https://guyonbits.com/wp-content/uploads/2019/05/cropped-logo_small-1-32x32.png" sizes="32x32">
+<link rel="icon" href="https://guyonbits.com/wp-content/uploads/2019/05/cropped-logo_small-1-192x192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="https://guyonbits.com/wp-content/uploads/2019/05/cropped-logo_small-1-180x180.png">
+<meta name="msapplication-TileImage" content="https://guyonbits.com/wp-content/uploads/2019/05/cropped-logo_small-1-270x270.png">
+		<style type="text/css" id="wp-custom-css">
+			.title-bits {
+	color: #cc7a00;
+}
+
+.site-description {
+	color: #990000;
+	font-weight: bold;
+}
+
+.wp-block-code {
+	text-align: left;
+}
+
+.site-title {
+	color: #b36b00;
+}
+
+a {
+	color: #b36b00;
+}
+
+/*.caption {
+	width: max-content;
+}*/		</style>
+		</head>
+
+<body class="post-template-default single single-post postid-43 single-format-standard">
+
+
+
+	<!-- ========== start of head section ========== -->
+	<header id="head">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-3 col-md-3 col-sm-4">
+					<div class="logo">
+												<h2 class="site-title"><a href="https://guyonbits.com/" rel="home">Guy on BITS</a></h2>
+													<p class="site-description">Just another tech blog</p>
+											</div><!-- /.end of logo -->
+				</div><!-- /.end of col-md-3 -->
+				<div class="col-lg-8 col-lg-offset-1 col-md-8 col-md-offset-1 col-sm-8">
+	
+				</div><!-- /.end of col-md-8 -->
+			</div><!-- /.end of row -->
+		</div><!-- /.end of container -->
+	</header><!-- /#end of head section -->
+
+	<!-- ========== start of menu section ========== -->
+	<div class="wrapper-sticky" style="display: block; height: 60px; width: auto; margin: auto; position: relative; float: none; inset: auto; vertical-align: top;"><div id="menu" style="width: 1908px; inset: 0px auto auto 0px; position: absolute;" class="">
+		<div class="menu-area">
+			<nav class="navbar navbar-default">
+			  	<div class="container">
+				    <div class="navbar-header">
+				      	<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+				        	<span class="sr-only"></span>
+				        	<span class="icon-bar"></span>
+				        	<span class="icon-bar"></span>
+				        	<span class="icon-bar"></span>
+				      	</button>
+				    </div><!-- /.end of navbar-header -->
+			        	<div id="bs-example-navbar-collapse-1" class="collapse navbar-collapse"><ul id="menu-top-menu" class="nav navbar-nav"><li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-23" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-23"><a title="Home" href="https://guyonbits.com//">Home</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-24" class="menu-item menu-item-type-post_type menu-item-object-page current_page_parent menu-item-24"><a title="About" href="https://guyonbits.com/about/">About</a></li>
+</ul></div>			    	</div><!-- /.end of row -->
+			  	</nav></div><!-- /.end container -->
+			<!-- /.end of navbar navbar-default -->
+		</div></div><!-- /.end of menu-area -->
+	<!-- /#end of menu section -->
+<div id="breadcrumb"><div class="container"><div class="breadcrumb-area"><ul><li><a href="https://guyonbits.com/">Home</a></li><li class="separator"> / </li><li><a href="https://guyonbits.com/category/uncategorized/" rel="category tag">Uncategorized</a></li><li class="separator"> / </li><li>From .rodata to .rwdata – introduction to memory mapping and LD scripts</li></ul></div></div></div>
+<section id="blog">
+	<div class="container">
+		<div class="blog-area">
+			<div class="row">
+				<div class="col-md-8 col-sm-7 col-lg-8 col-xs-12">
+					<div class="blog-content">
+					
+<article id="post-43" class="post-43 post type-post status-publish format-standard hentry category-uncategorized">
+	<div class="thumbnail text-center">
+		<a href="https://guyonbits.com/from-rodata-to-rwdata-introduction-to-memory-mapping-and-ld-scripts/" class="new-dishes-img">
+					</a>
+		<div class="caption">
+			<div class="blog-text">
+				<a href="https://guyonbits.com/from-rodata-to-rwdata-introduction-to-memory-mapping-and-ld-scripts/"><h2>From .rodata to .rwdata – introduction to memory mapping and LD scripts</h2></a>
+				
+				<div class="horizontal-line"></div><!-- /.end of first-horizontal-line -->
+
+		        <div class="blog-list">
+					<ul class="list-inline">
+						<li><i class="fa fa-calendar"></i>  June 1, 2019</li>
+					</ul><!-- /.end of list-inline -->
+				</div><!-- /.end of blog-list -->
+
+				<div class="horizontal-line"></div><!-- /.end of first-horizontal-line -->
+				
+<p>A few days ago a colleague of mine, which had just started to learn C, was wondering about the following piece of code:</p>
+
+
+
+<pre class="wp-block-code"><code>char *foo = "AAAAAA";
+foo[0] = 'B';</code></pre>
+
+
+
+<p style="text-align:left">This is described as a valid code, according to the tutorial he followed, yet when running it a segmentation fault occurs:</p>
+
+
+
+<pre class="wp-block-code"><code>guy@localhost ~/b/string_elf&gt; gcc sample_1.c
+guy@localhost ~/b/string_elf&gt; ./a.out 
+fish: “./a.out” terminated by signal SIGSEGV (Address boundary error)</code></pre>
+
+
+
+<h3>Why there is a segmentation fault?</h3>
+
+
+
+<p>We can easily find the instruction that caused the segmentation fault by debugging the process under <strong>GDB</strong>:</p>
+
+
+
+<pre class="wp-block-code"><code>guy@localhost ~/b/string_elf&gt; gdb a.out 
+...
+
+(gdb) set disassemble-next-line on
+(gdb) r
+Starting program: /home/guy/blog/string_elf/a.out 
+
+Program received signal SIGSEGV, Segmentation fault.
+0x00000000004004dd in main ()
+=&gt; 0x00000000004004dd &lt;main+16&gt;:	c6 00 42	movb   $0x42,(%rax)</code></pre>
+
+
+
+<p>It is easy to see that writing to address of $rax caused the crash – the instruction</p>
+
+
+
+<pre class="wp-block-code"><code>movb   $0x42,(%rax)</code></pre>
+
+
+
+<p>was the last instruction that was run before the segmentation fault.</p>
+
+
+
+<p>We can see that $rax contains the initial value of the string by using the e<strong>x</strong>amine command:</p>
+
+
+
+<pre class="wp-block-code"><code>(gdb) x/6c $rax
+0x400580:	65 'A'	65 'A'	65 'A'	65 'A'	65 'A'	65 'A'</code></pre>
+
+
+
+<p>In order to display the memory mapping of the process, we can use the file /proc/PID/maps. The <em>info proc</em> gdb command returns the PID:</p>
+
+
+
+<pre class="wp-block-code"><code>(gdb) info proc
+process 8596
+cmdline = '/home/guy/blog/string_elf/a.out'
+cwd = '/home/guy/blog/string_elf'
+exe = '/home/guy/blog/string_elf/a.out'
+
+(gdb) shell cat /proc/8596/maps
+00400000-00401000 r-xp 00000000 fd:02 134817229 ...
+00600000-00601000 r--p 00000000 fd:02 134817229 ...
+00601000-00602000 rw-p 00001000 fd:02 134817229 ...
+....</code></pre>
+
+
+
+<p>As seen from the memory mapping, the address that is stored in $rax, 
+0x400580, which resides in range 0x00400000-0x00401000, is marked as <strong>non-writable</strong>.</p>
+
+
+
+<pre class="wp-block-code"><code>00400000-00401000 r-xp</code></pre>
+
+
+
+<p>Writing to it would obviously cause a segmentation fault, as the page is marked as non-writable.</p>
+
+
+
+<p class="has-text-color has-very-dark-gray-color">An interesting question popped up:<em><strong> </strong></em></p>
+
+
+
+<p class="has-text-color has-medium-font-size has-vivid-red-color"><em><strong>how can we cause the string to be writable?</strong></em></p>
+
+
+
+<p>Before we continue any further, we need to make a quick detour and introduce the ELF file format.</p>
+
+
+
+<h3>A brief introduction to the ELF file format</h3>
+
+
+
+<p>The <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format">ELF file format</a>, among other things, consists of sections that describe the logical memory layout of the binary.</p>
+
+
+
+<p>Some typical sections one may find in an ELF file are:</p>
+
+
+
+<ol><li><em><span style="text-decoration: underline;"><a href="https://en.wikipedia.org/wiki/Code_segment">.text</a></span></em><a href="https://en.wikipedia.org/wiki/Code_segment"> </a>– which stores the instructions that consist of the program itself. It is marked as executable and read-only (r-x).</li><li><em><span style="text-decoration: underline;"><a href="https://en.wikipedia.org/wiki/Data_segment">.data</a></span></em>
+ – which is used to store static and global variables (non-static 
+variables are stored on the stack). It is marked as read-write and 
+non-executable (rw-).</li><li><em><span style="text-decoration: underline;"><a href="https://en.wikipedia.org/wiki/.bss">.bss</a></span></em> – which stores non-initialized variables. It is marked as read-write and non-executable (rw-).</li><li><em><span style="text-decoration: underline;">.rodata</span> </em>– which stores constant data. One should expect <strong>string literals</strong>,
+ and other constant values to reside there. It is marked as read-only 
+(although usually resides in a read and executable segment).</li></ol>
+
+
+
+<figure class="wp-block-image is-resized"><img src="From%20.rodata%20to%20.rwdata%20%E2%80%93%20introduction%20to%20memory%20mapping%20and%20LD%20scripts%20%E2%80%93%20Guy%20on%20BITS_files/520px-Elf-layout--en.png" alt="" width="378" height="419"><figcaption>Source: Wikipedia</figcaption></figure>
+
+
+
+<p>The <strong>section header table</strong> stores information on the various sections – including their permissions, virtual address memory range, etc.</p>
+
+
+
+<p>One can view the different sections using the <strong>readelf</strong> tool:</p>
+
+
+
+<pre class="wp-block-code"><code>guy@localhost ~/b/string_elf&gt; readelf -S a.out 
+There are 31 section headers, starting at offset 0x1908:
+
+Section Headers:
+  [Nr] Name              Type             Address           Offset
+       Size              EntSize          Flags  Link  Info  Align
+...
+  [14] .text             PROGBITS         00000000004003e0  000003e0
+...
+  [16] .rodata           PROGBITS         0000000000400570  00000570
+       000000000000003b  0000000000000000   A       0     0     8
+...
+  [25] .data             PROGBITS         0000000000601020  00001020
+       0000000000000004  0000000000000000  WA       0     0     1
+  [26] .bss              NOBITS           0000000000601024  00001024
+       0000000000000004  0000000000000000  WA       0     0     1
+...</code></pre>
+
+
+
+<p><strong>objdump</strong> is another great tool. The VMA column stands for <em><strong>V</strong>irtual <strong>M</strong>emory <strong>A</strong>ddress<strong> </strong></em>and describes the base virtual address of the section.</p>
+
+
+
+<pre class="wp-block-code"><code>guy@localhost ~/b/string_elf&gt; objdump -h a.out 
+
+a.out:     file format elf64-x86-64
+
+Sections:
+Idx Name          Size      VMA               LMA               File off  Algn
+ 13 .text         00000182  00000000004003e0  00000000004003e0  000003e0  2**4
+...
+ 15 .rodata       0000003b  0000000000400570  0000000000400570  00000570  2**3
+...
+ 24 .data         00000004  0000000000601020  0000000000601020  00001020  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+ 25 .bss          00000004  0000000000601024  0000000000601024  00001024  2**0
+...</code></pre>
+
+
+
+<p>In addition to sections, the elf file format consists of a <strong><a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format#Program_header">Program Header table</a></strong> which describes how different sections are grouped into <strong>segments</strong> in memory. The elf loader creates the memory mapping of the process according to those segments:</p>
+
+
+
+<p>When an ELF file format is being loaded into memory, via a call to <em><a href="https://linux.die.net/man/2/execve">execve</a>()</em>, the <a href="https://elixir.bootlin.com/linux/v3.18/source/fs/binfmt_elf.c#L746">kernel only examines the segments</a> in order to set the memory mapping of the process. <em>The kernel does not care about individual sections</em>.</p>
+
+
+
+<p>Here is a snippet of the <em><a href="https://elixir.bootlin.com/linux/v3.18/source/fs/binfmt_elf.c#L571">load_elf_binary</a></em> function (kernel 3.18) – it can be seen that the kernel only considers the <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format#Program_header">program headers</a> (segments) and calls <em>elf_map</em> (which in turn calls <em>vm_mmap</em>)  which mmaps each segment to its VMA with its given flags:</p>
+
+
+
+<pre class="wp-block-code"><code>static int load_elf_binary(struct linux_binprm *bprm) {
+    ...
+    /* iterate over the program headers */
+    for(i = 0, elf_ppnt = elf_phdata;
+        i &lt; loc-&gt;elf_ex.e_phnum; i++, elf_ppnt++) {
+            int elf_prot = 0, elf_flags;
+	    unsigned long k, vaddr;
+
+    ...
+    /* store the virtual address of the segment */
+        vaddr = elf_ppnt-&gt;p_vaddr;
+    ...
+    /* mmap the segment to its virtual address with the permissions that are specified in the program header table */
+        error = elf_map(bprm-&gt;file, load_bias + vaddr, elf_ppnt,		 
+            elf_prot, elf_flags, 0);
+    ...	
+}	</code></pre>
+
+
+
+<p>Let’s find the section in which $rax resides in via GDB (since we already covered <em>readelf</em> and <em>objdump</em>):</p>
+
+
+
+<pre class="wp-block-code"><code>(gdb) maintenance info sections
+Exec file:
+    `/home/guy/blog/string_elf/a.out', file type elf64-x86-64.
+    ...
+   
+    0x00400570-&gt;0x004005ab at 0x00000570: .rodata ALLOC LOAD READONLY DATA HAS_CONTENTS
+    ...</code></pre>
+
+
+
+<p>We can then see, that the string was put at the “<strong>.rodata”</strong> section which is marked as <strong>READONLY</strong>. Writing to it would obviously cause a segmentation fault. </p>
+
+
+
+<h2 style="text-align:left">A run-time patch: mprotect</h2>
+
+
+
+<p><strong><a href="https://linux.die.net/man/2/mprotect">mprotect</a></strong> is a syscall that sets protection on a region of memory:</p>
+
+
+
+<pre class="wp-block-code"><code>#include &lt;sys/mman.h&gt;
+
+int mprotect(void *addr, size_t len, int prot);</code></pre>
+
+
+
+<p>It sets permissions of the memory region starting at <strong>addr</strong> and ending in <strong>addr+len</strong> with the following permissions (which are passed via <strong>prot</strong>):</p>
+
+
+
+<pre class="wp-block-code"><code>PROT_NONE  The memory cannot be accessed at all.
+
+PROT_READ  The memory can be read.
+
+PROT_WRITE The memory can be modified.
+
+PROT_EXEC  The memory can be executed.</code></pre>
+
+
+
+<p>This means that we can call <strong>mprotect</strong> with the address of the page containing the string and set it to:</p>
+
+
+
+<pre class="wp-block-code"><code>PROT_WRITE | PROT_READ | PROT_EXEC</code></pre>
+
+
+
+<p>(which is equal to 7).</p>
+
+
+
+<p>Why would we mark it as executable? Because “.text” maps to this page
+ as well! We can see that by examining the section-to-segment mapping 
+using <strong><em>readelf</em></strong><em><strong>:</strong></em></p>
+
+
+
+<pre class="wp-block-code"><code>guy@localhost ~/b/string_elf&gt; readelf -l a.out
+
+Elf file type is EXEC (Executable file)
+Entry point 0x4003e0
+There are 9 program headers, starting at offset 64
+
+Program Headers:
+  Type           Offset             VirtAddr           PhysAddr
+                 FileSiz            MemSiz              Flags  Align
+  PHDR           0x0000000000000040 0x0000000000400040 0x0000000000400040
+                 0x00000000000001f8 0x00000000000001f8  R E    8
+  INTERP         0x0000000000000238 0x0000000000400238 0x0000000000400238
+                 0x000000000000001c 0x000000000000001c  R      1
+      [Requesting program interpreter: /lib64/ld-linux-x86-64.so.2]
+  LOAD           0x0000000000000000 0x0000000000400000 0x0000000000400000
+                 0x00000000000006b4 0x00000000000006b4  R E    200000
+...
+
+ Section to Segment mapping:
+  Segment Sections...
+   00     
+   01     .interp 
+   02     .interp .note.ABI-tag ... .plt.got .text .fini .rodata ... 
+   03     .init_array .fini_array ...
+   04     .dynamic 
+   05     .note.ABI-tag .note.gnu.build-id 
+   06     .eh_frame_hdr 
+   07     
+   08     .init_array .fini_array .jcr .dynamic .got </code></pre>
+
+
+
+<p>We can find the page address by aligning $rax to a page size:</p>
+
+
+
+<pre class="wp-block-code"><code>(gdb) $rax - $rax%4096</code></pre>
+
+
+
+<p>Here is the continuation of the GDB session, in which a breakpoint was set before the write;</p>
+
+
+
+<p>A call to mprotect was then performed, changing the page which $rax resides in to be writable:</p>
+
+
+
+<pre class="wp-block-code"><code>(gdb) p mprotect($rax - $rax%4096, 4096, 7)</code></pre>
+
+
+
+<p>And success! The binary exited successfully!</p>
+
+
+
+<pre class="wp-block-code"><code>(gdb) b
+Breakpoint 1 at 0x4004dd
+(gdb) r
+The program being debugged has been started already.
+Start it from the beginning? (y or n) y
+
+Starting program: /home/guy/blog/string_elf/a.out 
+
+Breakpoint 1, 0x00000000004004dd in main ()
+=&gt; 0x00000000004004dd &lt;main+16&gt;:	c6 00 42	movb   $0x42,(%rax)
+(gdb) p mprotect($rax - $rax%4096, 4096, 7)
+$1 = 0
+(gdb) si
+0x00000000004004e0 in main ()
+=&gt; 0x00000000004004e0 &lt;main+19&gt;:	5d	pop    %rbp
+(gdb) x/6c $rax
+0x400580:	66 'B'	65 'A'	65 'A'	65 'A'	65 'A'	65 'A'</code></pre>
+
+
+
+<p>While this method works, it is not ideal and suffers from a lot of problems:</p>
+
+
+
+<ol><li>This is a <strong>run-time</strong> solution, meaning that additional instructions are required to be run.</li><li>We
+ have to know the size of the buffer we want to change in advance –  
+this method will fail when the size of .rodata is over one page.</li><li>Since multiple sections can reside in a single page, a call to <em>mprotect</em> would possibly change permissions of other sections. </li></ol>
+
+
+
+<h2 style="text-align:left">We can do better: LD scripts</h2>
+
+
+
+<p>If we could change the segment in which “.rodata” resides in to a 
+writable segment it would have been perfect! That is where LD scripts 
+come into play.</p>
+
+
+
+<p>The segment to section mapping, among other things, is determined during the <strong>linkage</strong> of the program.</p>
+
+
+
+<p><strong>GCC</strong>, the compiler, creates an <strong>object file</strong>, which already contains some sections inside – such as the <em>“.text”, “.data”, and “.bss”<strong>. </strong></em>According to the GCC documentation, <a href="https://gnu.huihoo.org/gcc/gcc-4.6.0/gccint/Sections.html#Sections">every output must contain, at least, a text section</a>.</p>
+
+
+
+<p>The linker, <strong>LD</strong>, takes a bunch of object files and combines them into an ELF file. Commands are passed to LD using an <strong>ld script</strong>.</p>
+
+
+
+<figure class="wp-block-image is-resized"><img src="From%20.rodata%20to%20.rwdata%20%E2%80%93%20introduction%20to%20memory%20mapping%20and%20LD%20scripts%20%E2%80%93%20Guy%20on%20BITS_files/440px-Linker.png" alt="" width="323" height="394"><figcaption>source: wikipedia</figcaption></figure>
+
+
+
+<p>The main purpose of the linker script is to describe how the sections
+ in the input files should be mapped into the output file and to control
+ the memory layout of the output file. The linker always uses a linker 
+script. </p>
+
+
+
+<h3 style="text-align:left">Using the default linker script </h3>
+
+
+
+<p>The default linker script can be obtained by running</p>
+
+
+
+<pre class="wp-block-code"><code>ld --verbose</code></pre>
+
+
+
+<p>The output is quite long so I put it into the <a href="https://gist.github.com/guye1296/934fd3d9fc8b97a6f44be48d8ccdf916">following gist</a>.</p>
+
+
+
+<p>I’ve removed some parts in order to create a simplified view of the default linker script:</p>
+
+
+
+<pre class="wp-block-code"><code>SECTIONS {
+   /* Read-only sections, merged into text segment: */
+   . = SEGMENT_START("text-segment", 0x400000) + SIZEOF_HEADERS;
+   .text : {*(.text) }
+   .rodata : {*(.rodata .rodata.*) }
+
+   /* Read-write sections */
+   . = DATA_SEGMENT_ALIGN (...);
+   .data : {*(.data .data.*) }
+}</code></pre>
+
+
+
+<p>The <strong>SECTION</strong> block describes how section from the 
+object files, that are given as input to the linker, will map to section
+ in the output ELF file.</p>
+
+
+
+<p>For example, the line:</p>
+
+
+
+<pre class="wp-block-code"><code>.text : {*(.text) }</code></pre>
+
+
+
+<p>Defines an output section named “.text” (left-hand side), which 
+contains the “.text” section from all the input files – using a 
+wildcard:</p>
+
+
+
+<pre class="wp-block-code"><code>{*(.text) }</code></pre>
+
+
+
+<p>The “.” symbol is used to describe the current memory location and is called the <em>location counter</em>. Output sections are mapped to the location counter and the location counter is incremented by the size of the output section.</p>
+
+
+
+<p>The line</p>
+
+
+
+<pre class="wp-block-code"><code>. = SEGMENT_START("text-segment", 0x400000) + SIZEOF_HEADERS;</code></pre>
+
+
+
+<p>Sets the location counter to the <a href="https://sourceware.org/binutils/docs/ld/Builtin-Functions.html#index-SEGMENT_005fSTART_0028segment_002c-default_0029">start</a> of the <a href="https://sourceware.org/binutils/docs/ld/Options.html#index-_002dTtext_002dsegment_003dorg">text segment</a>,
+ at VMA 0x400000. Since the text segment is marked as readable and 
+executable, sections that are put there will be non-writable – which in 
+this case are “.text” and “.rodata”.</p>
+
+
+
+<p>It can later be seen that the location counter is set to the data segment, and the data section is put there.</p>
+
+
+
+<p>An easy hack would be to put the .rodata section after updating the 
+location to the data segment. Let’s create a segment called “.<strong>rwdata</strong>” which would replace “.rodata”:</p>
+
+
+
+<pre class="wp-block-code"><code>.rwdata : {*(.rodata .rodata.*) }</code></pre>
+
+
+
+<p>And we will change the linker script as follows – we will remove that
+ “.rodata” section, and insert our “.rwdata” inside the data section:</p>
+
+
+
+<pre class="wp-block-code"><code>SECTIONS {
+   /* Read-only sections, merged into text segment: */
+   . = SEGMENT_START("text-segment", 0x400000) + SIZEOF_HEADERS;
+   .text : {*(.text) }
+
+   /* Read-write sections */
+   . = DATA_SEGMENT_ALIGN (...);
+   .data : {*(.data .data.*) }
+
+   /* ---- our evil hack ---- /*
+   .rwdata : {*(.rodata .rodata.*) }
+}</code></pre>
+
+
+
+<p>The full linker script can be found <a href="https://github.com/guye1296/ld_script_elf_blog_post/blob/master/rwdata.ld">here</a>.</p>
+
+
+
+<p>GCC can take a non-default linker script using the -T option. </p>
+
+
+
+<p>Let’s try and compile the following code using our modified linker script:</p>
+
+
+
+<pre class="wp-block-code"><code>#include &lt;stdio.h&gt;
+
+int main(void) {
+    char *foo = "AAAAAA";
+
+    printf("printing string foo %s\n", foo);
+    foo[0] = 'B';
+    printf("printing string foo %s\n", foo);
+    
+    return 0;
+}</code></pre>
+
+
+
+<p>I’ve written a <a href="https://github.com/guye1296/ld_script_elf_blog_post/blob/master/Makefile">Makefile</a> that invokes GCC using the modified linker script:</p>
+
+
+
+<pre class="wp-block-code"><code>guy@localhost ~/b/ld_script_elf_blog_post&gt; make
+mkdir -p build
+gcc -T rwdata.ld sample.c -o build/sample  	</code></pre>
+
+
+
+<p>And when running:</p>
+
+
+
+<pre class="wp-block-code"><code>guy@localhost ~/b/ld_script_elf_blog_post&gt; ./build/sample 
+printing string foo AAAAAA
+printing string foo BAAAAA</code></pre>
+
+
+
+<p>It works!</p>
+
+
+
+<figure class="wp-block-image is-resized"><img src="From%20.rodata%20to%20.rwdata%20%E2%80%93%20introduction%20to%20memory%20mapping%20and%20LD%20scripts%20%E2%80%93%20Guy%20on%20BITS_files/Screenshot-from-2019-06-04-02-08-43.png" alt="" class="wp-image-87" srcset="https://guyonbits.com/wp-content/uploads/2019/06/Screenshot-from-2019-06-04-02-08-43.png 499w, https://guyonbits.com/wp-content/uploads/2019/06/Screenshot-from-2019-06-04-02-08-43-150x150.png 150w, https://guyonbits.com/wp-content/uploads/2019/06/Screenshot-from-2019-06-04-02-08-43-300x300.png 300w" sizes="(max-width: 292px) 100vw, 292px" width="292" height="293"></figure>
+
+
+
+<p>Listing the section-to-segment mapping of the ELF, we see a new “.rwdata” section and no “.rodata” section:</p>
+
+
+
+<pre class="wp-block-code"><code>guy@localhost ~/b/ld_script_elf_blog_post&gt; readelf -l build/sample 
+
+...
+             
+ Section to Segment mapping:
+  Segment Sections...
+   ...
+   02     .interp .note.ABI-tag .note.gnu.build-id .gnu.hash .dynsym .dynstr .gnu.version .gnu.version_r .rela.dyn .rela.plt .init .plt .plt.got .text .fini .eh_frame_hdr .eh_frame 
+   03     .init_array .fini_array .jcr .dynamic .got .got.plt .data .rwdata .bss 
+   ...</code></pre>
+
+
+
+<h2 style="text-align:left">Conclusion</h2>
+
+
+
+<p>LD scripts can be very useful when a tight control over the memory 
+mapping is needed, which is something that is sometimes needed when 
+programming for an embedded target (see the <a href="https://sourceware.org/binutils/docs/ld/REGION_005fALIAS.html#REGION_005fALIAS">following example</a>), or for other esoteric needs – for example, making the “.text” section writable for a self-modifying binary. </p>
+
+
+
+<p>I hope you found this post interesting. This is my first-ever post, so any comments would be much appreciated 🙂 </p>
+			</div><!-- /.end of blog-text -->
+		</div><!-- /.end of caption -->
+	</div><!-- /.end of thumbnail -->
+</article><!-- #post-43 -->
+<div class="author-information">
+	<div class="row">
+		<div class="col-lg-3 col-md-3 col-sm-4">
+			<div class="author-content text-center">
+				<img alt="" src="From%20.rodata%20to%20.rwdata%20%E2%80%93%20introduction%20to%20memory%20mapping%20and%20LD%20scripts%20%E2%80%93%20Guy%20on%20BITS_files/7a4166bb0fe6d143783c0ff7a1ed58d3.png" srcset="https://secure.gravatar.com/avatar/7a4166bb0fe6d143783c0ff7a1ed58d3?s=192&amp;d=mm&amp;r=g 2x" class="avatar avatar-96 photo" width="96" height="96">				<h4>Guy</h4>
+								<p class="text-center">E-mail : <a href="mailto:%65zer.g%75y@g%6da%69l%2e%63%6fm">ezer.guy@gmail.com</a></p>
+
+
+				<div class="author-list">
+					<ul class="list-inline">
+																
+																				</ul><!-- /.end of list-inline -->
+				</div><!-- /.end of author-list -->
+			</div><!-- /.end of author-content -->
+		</div><!-- end of col-md-3 -->
+		<div class="col-lg-9 col-md-9 col-sm-8">
+			<div class="author-text">
+				<p></p>
+			</div><!-- /.end of author-text -->
+		</div><!-- /.end of col-md-9 -->
+	</div><!-- /.end of row -->
+</div><!-- /.end of author -->						
+											</div><!-- /.end of blog-content -->
+				</div><!-- /.end of col-md-8 -->
+							</div><!-- /.end of row -->
+		</div><!-- /.end of blog-area -->
+	</div><!-- /.end of container -->
+</section><!-- /#end of blog section -->
+
+	<!-- ========== start of footer section ========== -->
+
+	<footer id="footer">
+		<!-- footer-top -->
+		<div class="footer-top">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-4 col-md-4 col-sm-4">
+											</div><!-- /.end of col-md-4 -->
+
+					<div class="col-lg-4 col-md-4 col-sm-4">
+											</div><!-- /.end of col-md-4 -->
+
+					<div class="col-lg-4 col-md-4 col-sm-4">
+											</div><!-- /.end of col-md-4 -->
+				</div><!-- /.end of row -->
+								</div><!-- /.end of footer-menu -->
+			</div><!-- /.end of container -->
+		<!-- /.end of footer-top -->
+
+		<!-- footer-end -->
+		<div class="footer-end text-center">
+			<div class="container">
+				<div class="footer-end-text">
+					<p>
+						© <span>2020</span> All Rights Reserved by <a href="https://guyonbits.com/">Guy on BITS</a>. Theme Developed by Theme Rally. Powered by <a href="https://wordpress.org/" target="blank">WordPress</a>.					</p>
+				</div><!-- /.end of footer-end-text -->
+			</div><!-- /.end of container -->
+		</div><!-- /.end of footer-end -->
+	</footer><!-- /#end of footer section -->
+
+	<!-- ========== start of scrolltop section ========== -->
+
+			<button class="material-scrolltop" type="button"></button>
+	
+<script type="text/javascript" src="From%20.rodata%20to%20.rwdata%20%E2%80%93%20introduction%20to%20memory%20mapping%20and%20LD%20scripts%20%E2%80%93%20Guy%20on%20BITS_files/bootstrap.js"></script>
+<script type="text/javascript" src="From%20.rodata%20to%20.rwdata%20%E2%80%93%20introduction%20to%20memory%20mapping%20and%20LD%20scripts%20%E2%80%93%20Guy%20on%20BITS_files/jquery.js"></script>
+<script type="text/javascript" src="From%20.rodata%20to%20.rwdata%20%E2%80%93%20introduction%20to%20memory%20mapping%20and%20LD%20scripts%20%E2%80%93%20Guy%20on%20BITS_files/navigation.js"></script>
+<script type="text/javascript" src="From%20.rodata%20to%20.rwdata%20%E2%80%93%20introduction%20to%20memory%20mapping%20and%20LD%20scripts%20%E2%80%93%20Guy%20on%20BITS_files/skip-link-focus-fix.js"></script>
+<script type="text/javascript" src="From%20.rodata%20to%20.rwdata%20%E2%80%93%20introduction%20to%20memory%20mapping%20and%20LD%20scripts%20%E2%80%93%20Guy%20on%20BITS_files/wp-embed.js"></script>
+
+
+
+
+</body></html>
+<!--Generated by Endurance Page Cache-->

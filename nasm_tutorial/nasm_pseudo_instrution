@@ -1,0 +1,73 @@
+3.2. Pseudo-Instructions
+
+Pseudo-instructions are things which, though not real x86 machine instructions, are used in the instruction field anyway because that’s the most convenient place to put them. The current pseudo-instructions are DB, DW, DD, DQ, DT, DDQ, DO, their uninitialized counterparts RESB, RESW, RESD, RESQ, REST, RESDDQ, and RESO, the INCBIN command, the EQU command, and the TIMES prefix.
+3.2.1. DB and Friends: Declaring Initialized Data
+
+DB, DW, DD, DQ, DT, DDQ, and DO are used to declare initialized data in the output file. They can be invoked in a wide range of ways:
+
+        db      0x55                ; just the byte 0x55
+        db      0x55,0x56,0x57      ; three bytes in succession
+        db      'a',0x55            ; character constants are OK
+        db      'hello',13,10,'$'   ; so are string constants
+        dw      0x1234              ; 0x34 0x12
+        dw      'a'                 ; 0x41 0x00 (it's just a number)
+        dw      'ab'                ; 0x41 0x42 (character constant)
+        dw      'abc'               ; 0x41 0x42 0x43 0x00 (string)
+        dd      0x12345678          ; 0x78 0x56 0x34 0x12
+        dq      0x1122334455667788  ; 0x88 0x77 0x66 0x55 0x44 0x33 0x22 0x11
+        ddq     0x112233445566778899aabbccddeeff00
+        ; 0x00 0xff 0xee 0xdd 0xcc 0xbb 0xaa 0x99
+        ; 0x88 0x77 0x66 0x55 0x44 0x33 0x22 0x11
+        do     0x112233445566778899aabbccddeeff00 ; same as previous
+        dd      1.234567e20         ; floating-point constant
+        dq      1.234567e20         ; double-precision float
+        dt      1.234567e20         ; extended-precision float
+
+DT does not accept numeric constants as operands, and DDQ does not accept float constants as operands. Any size larger than DD does not accept strings as operands.
+3.2.2. RESB and Friends: Declaring Uninitialized Data
+
+RESB, RESW, RESD, RESQ, REST, RESDQ, and RESO are designed to be used in the BSS section of a module: they declare uninitialised storage space. Each takes a single operand, which is the number of bytes, words, doublewords or whatever to reserve. NASM does not support the MASM/TASM syntax of reserving uninitialised space by writing DW ? or similar things: this is what it does instead. The operand to a RESB-type pseudo-instruction is a critical expression: see Section 3.8.
+
+For example:
+
+buffer:         resb    64      ; reserve 64 bytes
+wordvar:        resw    1       ; reserve a word
+realarray       resq    10      ; array of ten reals
+
+3.2.3. INCBIN: Including External Binary Files
+
+INCBIN includes a binary file verbatim into the output file. This can be handy for (for example) including graphics and sound data directly into a game executable file. However, it is recommended to use this for only small pieces of data. It can be called in one of these three ways:
+
+        incbin "file.dat"        ; include the whole file
+        incbin "file.dat",1024   ; skip the first 1024 bytes
+        incbin "file.dat",1024,512 ; skip the first 1024, and
+                                 ; actually include at most 512
+
+3.2.4. EQU: Defining Constants
+
+EQU defines a symbol to a given constant value: when EQU is used, the source line must contain a label. The action of EQU is to define the given label name to the value of its (only) operand. This definition is absolute, and cannot change later. So, for example,
+
+message db 'hello, world'
+msglen  equ $-message
+
+defines msglen to be the constant 12. msglen may not then be redefined later. This is not a preprocessor definition either: the value of msglen is evaluated once, using the value of $ (see Section 3.6 for an explanation of $) at the point of definition, rather than being evaluated wherever it is referenced and using the value of $ at the point of reference. Note that the operand to an EQU is also a critical expression (Section 3.8).
+3.2.5. TIMES: Repeating Instructions or Data
+
+The TIMES prefix causes the instruction to be assembled multiple times. This is partly present as NASM’s equivalent of the DUP syntax supported by MASM-compatible assemblers, in that you can code
+
+zerobuf:        times 64 db 0
+
+or similar things; but TIMES is more versatile than that. The argument to TIMES is not just a numeric constant, but a numeric expression, so you can do things like
+
+buffer: db 'hello, world'
+        times 64-$+buffer db ' '
+
+which will store exactly enough spaces to make the total length of buffer up to 64. Finally, TIMES can be applied to ordinary instructions, so you can code trivial unrolled loops in it:
+
+        times 100 movsb
+
+Note that there is no effective difference between times 100 resb 1 and resb 100, except that the latter will be assembled about 100 times faster due to the internal structure of the assembler.
+
+The operand to TIMES, like that of EQU and those of RESB and friends, is a critical expression (Section 3.8).
+
+Note also that TIMES can’t be applied to macros: the reason for this is that TIMES is processed after the macro phase, which allows the argument to TIMES to contain expressions such as 64-$+buffer as above. To repeat more than one line of code, or a complex macro, use the preprocessor %rep directive.

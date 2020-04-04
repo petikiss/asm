@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="LEAvsMOP_files/styles.css">
+<title>Math Instructions</title>
+</head>
+
+<body>
+<div class="center">
+<span class="lesson_title">Math</span><br>
+<span class="subtitle"><sup>dy</sup>/<sub>dx</sub> ? Not really.</span>
+</div>
+<br>
+<table class="main"><tbody><tr><td>
+Are you getting bored of using ADD and SUB instructions? Let's learn about some new math commands.
+<br><br>
+<span class="section_title">Multiplication and Division Instructions</span><br>
+<b>IMUL</b> A,B = Multiply A by B. Store the result to A. A must be a register, but B can be a register or memory location.<br>
+<b>IMUL</b> A,B,C = Multiply B by C. Stores the result to register A. B can be a memory location or register. C must be a hex number.<br>
+<b>IMUL</b> A = Multiply EAX by A. Stores the result to the register-pair EDX:EAX. A can be a memory location or register.<br>
+<b>IDIV</b> A = Divides the register-pair EDX:EAX by register or memory location A. Quotient is stored to EAX, remainder is stored to EDX.<br>
+<br>
+IMUL stands for Integer Multiplication and IDIV stands for Integer Division.
+<br><br>
+Notice that there are three kinds of IMUL. For the second kind, notice 
+that IMUL can take 3 operands. This is a rare feature among ASM 
+instructions, because most instructions can only take 0, 1, or 2 
+operands.<br>
+Unlike IMUL, there is only one kind of IDIV.
+<br><br>
+So, what is with this "register-pair" stuff?
+<br><br>
+<span class="section_title">Register Pairs</span><br>
+I have the numbers 4 and 31. I pair 4 with 31.<br>
+4 paired with 31 = 431
+<br><br>
+I have the numbers 99 and 27. I pair 99 with 27.<br>
+99 paired with 27 = 9927
+<br><br>
+Get it? All you have to do is shove the digits together.
+<br><br>
+<b>Assembly Example 1</b><br>
+Register pairs allow you to hold super-big numbers.<br>
+Let's say:<br>
+EDX = 40000700<br>
+EAX = 90035FF1
+<br><br>
+That means register-pair EDX:EAX holds the number: 4000070090035FF1.<br>
+You can think of EDX:EAX as some sort of "super-register" (that's not really an official term, though).
+<br><br>
+<b>Example 2</b><br>
+Assume:<br>
+EDX = 16<br>
+EAX = 00000525
+<br><br>
+So that means EDX:EAX holds 1600000525.
+<br><br>
+<b>Example 3</b><br>
+Assume:<br>
+EDX = 0<br>
+EAX = 0
+<br><br>
+EDX:EAX is just 0. Starting to get the big picture here? This is how IDIV and IMUL work with register pairs.
+<br><br>
+Oh yeah. Don't use IDIV to divide by 0. That would be a <a href="http://en.wikipedia.org/wiki/Division_by_zero" target="_blank">bad idea</a>.
+<br><br>
+<span class="section_title">Cheating with LEA</span><br>
+LEA stands for Load Effective Address. It's supposed to "evaluate addresses", but we don't really care.<br>
+Instead, we're going to use LEA to do math calculations.
+<br><br>
+<b>LEA</b> A,[B] = Evaluates the simple mathematical expression B and 
+stores the answer to register A. You must include the square brackets.
+<br><br>
+Although I said "simple expression", you can do something as complicated as this:<br>
+<pre>LEA EAX,[ECX*4+EDX+1234]</pre>
+The above instruction will multiply ECX by 4, add it to EDX, add that to 1234, and then store the entire thing to EAX.
+<br><br>
+There are some restrictions with LEA though. For example, you can use 
+LEA to multiply a register by a small constant number but not another 
+register. Multiplying a register by another register is more complicated
+ for your computer to do, and you'll need to make use of IMUL.
+<br><br>
+<span class="section_title">Understanding LEA</span><br>
+LEA's square brackets work in a different way than for all other 
+instructions. Normally, square brackets mean, "use this number as an 
+address, and look for the number stored inside this address". LEA's 
+square brackets mean, "calculate this number, which could potentially be
+ used as an address, and store that number to a register".<br>
+<br>
+Here's some code that will show the difference between MOV and LEA:
+
+<pre>MOV EAX,DWORD [ECX*8+2000]
+LEA EAX,[ECX*8+2000]</pre>
+
+Notice that LEA does not need the DWORD prefix before the brackets. 
+Also, the above MOV and LEA instructions do completely different things,
+ even though they look quite similar.<br><br>
+
+Let's assume that ECX holds 938DA, and that the memory location DWORD [ECX*8+2000] holds the number EEC5.<br><br>
+
+<img class="simple_img" src="LEAvsMOP_files/indirect_storage4.png" alt="The difference between MOV and LEA"><br><br>
+
+For <code>MOV EAX,DWORD [ECX*8+2000]</code>, the computer will look 
+inside the address ECX*8+2000 to find a DWORD-sized number, which will 
+be EEC5 in this particular case, and then store it to EAX. For <code>LEA EAX,[ECX*8+2000]</code>,
+ the computer will instead calculate the value of ECX*8+2000 and store 
+the value to EAX. Because we said that ECX = 938DA, that means (938DA * 8
+ + 2000) = 49E6D0. (Just use the Windows calculator to do this hex math)<br><br>
+
+So the code actually does this:<br>
+
+<pre>;Assuming that ECX = 938DA and that DWORD [49E6D0] = EEC5 ...
+
+MOV EAX,DWORD [ECX*8+2000]   ;stores EEC5 to EAX.
+LEA EAX,[ECX*8+2000]         ;stores 49E6D0 to EAX.</pre>
+
+<span class="section_title">Negatives and Powers of 2</span>
+<br>
+<b>NEG</b> A = Multiplies register A by -1, stores result back to A.<br>
+<b>SHL</b> A,B = Multiplies register A by 2<sup>B</sup>, stores back to A. B is a positive number. A is a register or memory location that contains a positive or negative number.<br>
+<b>SHR</b> A,B = Divides register A by 2<sup>B</sup>, stores back to A. B is a positive number. A is a register or memory location that should hold a positive number.<br>
+<b>SAR</b> A,B = Divides register A by 2<sup>B</sup>, stores back to A. B is a positive number. A is a register or memory location that contains a positive or negative number.
+<br><br>
+SHL, SHR, and SAR work faster than IMUL and IDIV, so consider using them in place of IMUL and IDIV.
+<br><br>
+<span class="section_title">Other Info</span><br>
+SHL actually stands for "Shift Left" and SHR stands for "Shift Right". 
+This is because shifting around the binary digits of a hex number will 
+have the same effect as multiplying or dividing by a power of 2. If you 
+don't want to worry about this now, you don't have to.
+<br><br>
+SAR stands for "Shift Arithmetic Right". Its purpose is to extend the 
+capability of SHR to the negative numbers. Notice that SHL will work 
+with both positives and negatives already. Therefore, you shouldn't need
+ to use SAL.<br>
+(SAL does exist. It does exactly the same thing as SHL.)
+<br><br>
+<span class="nav">Navigation</span><br>
+Previous Lesson: <a href="https://www.cavestory.org/guides/csasm/guide/translate.html">Translating Ideas to ASM</a><br>
+Next Lesson: <a href="https://www.cavestory.org/guides/csasm/guide/call_func.html">Calling Functions</a><br>
+<a href="https://www.cavestory.org/guides/csasm/guide/toc.html">Table of Contents</a>
+<br><br>
+</td></tr></tbody></table>
+<br><br><br></body></html>

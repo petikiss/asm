@@ -1,0 +1,316 @@
+
+/*==================== css for mobile device section ====================*/
+
+@media (max-width: 767px){
+#head .ads h2 {
+    padding-top: 30px;
+    font-size: 24px;
+}
+
+.navbar-default .navbar-toggle:focus, 
+.navbar-default .navbar-toggle:hover{
+    background-color: transparent;
+}
+
+.dropdown-menu > li > a{
+  border-top: none;
+}
+
+ul.sm li{
+    float: none;
+}
+
+.navbar-default .navbar-nav .open .dropdown-menu > .active > a, 
+.navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus, 
+.navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover {
+    color: #fff;
+    background-color: #D93341;
+    padding: 10px 0px;
+}
+
+.navbar-default .navbar-nav .open .dropdown-menu > li > a{
+    border: none;
+    color: #fff;
+}
+
+.navbar-default .navbar-nav .open .dropdown-menu > li > a:hover{
+    color: #fff;
+    background-color: #D93341;
+}
+
+.subscribe-form .custom-btn .btn{
+    margin-bottom: 30px;
+}
+
+.footer-content{
+    margin-top: 30px;
+}
+
+.footer-head h3{
+    margin-bottom: 10px;
+}
+
+.list-group-item{
+    font-size: 16px;
+}
+
+.footer-menu .list-inline h4, 
+.footer-menu .list-inline h4 a{
+    margin: 25px 0px 0px;
+    font-size: 15px;
+}
+
+.blog-list li {
+    padding: 10px 5px 0px;
+    font-size: 10px;
+}
+
+.sidebar-post .social-icon .list-inline .social i{
+    width: 25px;
+    height: 25px;
+    font-size: 15px;
+}
+
+.sidebar-post .social-icon .list-inline .social{
+    margin: 0px 2px;
+    padding: 5px;
+}
+
+.no-padding-left{
+    padding-left: 15px;
+}
+
+.blog-comment .media-body h4{
+    margin-top: 30px;
+    margin-left: 10%;
+}
+
+.comment-list .btn, 
+.comment-list .btn:focus{
+    margin-top: 30px;
+    margin-right: 10%;
+}
+
+.post-content h2,
+.blog-text h2 {
+    font-size: 25px;
+}
+
+.recent-post ul li a {
+    font-size: 16px;
+}
+
+} /*end of max-width 767*/
+
+
+/*==================== css for small device section ====================*/
+@media (min-width: 768px) and (max-width: 991px){
+
+.logo .site-title {
+    font-size: 29px;
+}
+.nav > li > a{
+    padding: 20px 18px;
+    font-size: 15px;
+}
+
+.social-icon .list-inline .social{
+    margin: 0px 5px;
+    padding: 5px;
+}
+
+.social-icon .list-inline .social i{
+    font-size: 20px;
+    padding-top: 8px;
+}
+
+.social-text h3{
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.latest-post .custom-btn .btn{
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 15px;
+}
+
+.subscribe-form{
+    padding-top: 12px;
+}
+
+.subscribe-form .form-control, 
+.subscribe .form-control{
+    height: 38px;
+}
+
+.subscribe-form .custom-btn .btn{
+    margin-top: 20px;
+    margin-bottom: 30px
+    padding: 12px 28px;
+    font-size: 14px;
+}
+
+.list-group-item{
+    font-size: 15px;
+}
+
+.footer-menu .list-inline h4, 
+.footer-menu .list-inline h4 a{
+    font-size: 15px;
+    margin: 40px 5px 0px;
+}
+
+.user-text{
+    margin-top: 55px;
+}
+
+.user-text h2{
+    margin-bottom: 0px;
+}
+
+.user-text h3{
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.user-text .thumbnail .caption h4,
+.user-text .thumbnail .caption h4 a{
+    font-size: 13px;
+    margin-top: 0px;
+}
+
+.user-text .thumbnail{
+    margin-bottom: 0px;
+}
+
+.sidebar-post .features-item{
+    width: 150px;
+    height: 155px;
+}
+
+.sidebar-post3 .features-item{
+    width: 120px;
+    height: 130px;
+}
+
+.sidebar-post3 .features-item i{
+    font-size: 45px;
+}
+
+.sidebar-post3 .features-item h3{
+    font-size: 14px;
+}
+
+.sidebar-post3 .social-icon .list-inline .social i{
+    width: 25px;
+    height: 25px;
+    font-size: 16px;
+}
+
+.sidebar-post3 .social-icon .list-inline .social{
+    margin: 0px 2px;
+    padding: 5px;
+}
+
+.no-padding-left{
+    padding-left: 15px;
+}
+
+.blog-text-highlights p::before{
+    top: 5px;
+    font-size: 16px;
+    left: -6%;
+}
+
+.blog-text-highlights p::after{
+    bottom: 5px;
+    right: -6%;
+    font-size: 16px;
+}
+
+.blog-text-highlights p{
+    font-size: 18px;
+    padding: 8px 0px;
+}
+
+.blog-text h2 {
+    font-size: 25px;
+}
+
+.sidebar-article .thumbnail .caption h3, 
+.sidebar-article .thumbnail .caption h3 a {
+    font-size: 18px;
+}
+
+.sidebar-article-caption h4 {
+    font-size: 16px;
+}
+
+.recent-post ul li a {
+    font-size: 15px;
+}
+
+} /*end of max-width 991*/
+
+
+/*==================== css for desktop device section ====================*/
+@media (min-width: 992px) and (max-width: 1199px){
+
+.social-icon .list-inline .social{
+    margin: 0px 5px;
+    padding: 10px;
+}
+
+.social-text h3{
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.list-group-item{
+    font-size: 16px;
+}
+
+.user-text .thumbnail .caption h4 a{
+    font-size: 18px;
+}
+
+.user-text h3{
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+.user-text .custom-btn .btn{
+    font-size: 15px;
+    padding: 12px 20px;
+}
+
+.sidebar-post .features-item{
+    width: 127px;
+    height: 150px;
+}
+
+.sidebar-post .social-icon .list-inline .social i{
+    width: 28px;
+    height: 28px;
+}
+
+.sidebar-post .social-icon .list-inline .social{
+    padding: 5px;
+}
+
+.sidebar-post2 .features-item{
+    width: 209px;
+    height: 150px; 
+}
+
+.sidebar-article .thumbnail .caption h3, 
+.sidebar-article .thumbnail .caption h3 a {
+    font-size: 18px;
+}
+
+.recent-post ul li a {
+    font-size: 16px;
+}
+
+} /*end of max-width 1199*/

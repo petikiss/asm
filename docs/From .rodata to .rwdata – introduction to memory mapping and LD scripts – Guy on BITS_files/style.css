@@ -1,0 +1,635 @@
+/*
+Theme Name: TR iBlogger Lite
+Theme URI: https://www.themerally.com/product/tr-iblogger-lite-wordpress-blog-theme-for-blogger-and-marketers/
+Author: themerally
+Author URI: https://www.themerally.com/
+Description: TR iBlogger Lite is a clean, super flexible and fully responsive Bootstrap based WordPress Theme (try resizing your browser), suited for any blog site espcially for blogger, passive income coach and make money online niches. 
+Version: 1.0.8
+License: GNU General Public License v2 or later
+License URI: LICENSE
+Text Domain: tr-iblogger-lite
+Tags: custom-background, custom-logo, custom-menu, featured-images, threaded-comments, translation-ready
+
+This theme, like WordPress, is licensed under the GPL.
+Use it to make something cool, have fun, and share what you've learned with others.
+
+iblogger is based on Underscores http://underscores.me/, (C) 2012-2016 Automattic, Inc.
+Underscores is distributed under the terms of the GNU GPL v2 or later.
+
+Normalizing styles have been helped along thanks to the fine work of
+Nicolas Gallagher and Jonathan Neal http://necolas.github.io/normalize.css/
+
+*/
+
+/*==================== For wordpress logo widget  ====================*/
+   
+.logo .site-title{
+    font-size: 35px;
+}
+.logo .site-title a:hover{
+    color: #333333;
+}
+
+/*==================== For post content  ====================*/
+.page-content-section{
+    margin: 60px 0;
+}
+.post-content ul li:before{
+	font-family: FontAwesome;
+	content: '\f192';
+	padding-right: 10px;
+}
+.post-content ul li{
+	list-style-type: none;
+	margin-left: 30px;
+	padding: 5px 0;
+	font-size: 18px;
+	color: #D93341;
+}
+.post-content ul li a{
+	color: #D93341;
+}
+.post-content ul li a:hover{
+	color: #354459;
+}
+.entry-header .entry-title{
+    margin-top: 0;
+}
+/*==================== For Widget  ====================*/
+
+.sidebar-post .social-icon .list-inline .social {
+    margin: 0px 4px;
+}
+
+/*==================== For pagination  ====================*/
+
+.pagination .current{
+    color: #fff;
+    border: 1px solid #D93341;
+    padding: 6px 14px;
+    font-size: 15px;
+    background-color: #D93341;
+}
+
+.nav-links .nav-previous{
+    float: left;
+}
+.nav-links .nav-next{
+    float: right;
+}
+/*==================== For author  ====================*/
+
+.author-content img {
+    border-radius: 50%;
+}
+.author-content h4 a:hover{
+	color: #D83645;
+}
+
+/*==================== For comment  ====================*/
+
+.comment h3{
+	font-size: 22px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+.avatar{
+	border-radius: 50%;
+}
+.children {
+    margin-left: 40px;
+}
+.media:first-child {
+    margin-top: 20px;
+}
+.media .list-inline{
+	float: right;
+}
+.comment-reply-link{
+    padding: 3px 10px;
+    font-size: 10px;
+    background-color: #D83645;
+    color: #fff;
+}
+.comment-reply-link:before{
+	content:'\f112';
+	font-family: FontAwesome;
+	padding-right: 5px;
+}
+.comment-reply-link:hover{
+	background-color: #D83645;
+    color: #fff;
+}
+.comment-edit-link:hover{
+    color: #D83645;
+}
+.comment-metadata a:hover{
+    color: #333333;
+}
+.media-heading .url:hover{
+    color: #D83645;
+}
+.comment-form p{
+	text-align: center;
+}
+
+.comment-required-field{
+	display: none;
+}
+.blog-submit label, 
+.blog-submit .required, 
+#respond label, 
+#respond .required{
+	display: none;
+}
+.blog-submit .submit, 
+#respond .submit{
+    background: #D93341;
+    color: #fff;
+    border: 1px solid #D93341;
+    -webkit-transition: all.3s ease-in;
+    -moz-transition: all.3s ease-in;
+    -ms-transition: all.3s ease-in;
+    -o-transition: all.3s ease-in;
+    transition: all.3s ease-in;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 16px;
+    margin-top: 15px;
+}
+.blog-submit .submit:hover, 
+#respond .submit:hover{
+	background: #3C4959;
+	border-color:#3C4959; 
+}
+#cancel-comment-reply-link:hover{
+	color: #D83645;
+}
+#respond .form-control {
+    margin-bottom: 15px;
+    border: 1px solid #333;
+    border-radius: 0px;
+    box-shadow: none;
+    background: transparent;
+}
+#respond .form-control:focus{
+    border: 1px solid #D83645;
+    border-radius: 0px;
+    box-shadow: none;
+}
+.comment-content{
+	margin-top: 10px;
+}
+.logged-in-as a:hover{
+	color: #D83645;
+}
+
+/*==================== For Category Page  ====================*/
+
+#category-section{
+  padding-top: 50px;  
+}
+.category-section-heading h4{
+    padding-bottom: 30px;
+    font-size: 50px;
+    font-weight: 700;
+}
+.feature-icon i{
+    font-size: 100px;
+    padding: 20px 0;
+}
+
+/*==================== For Breadcrumbs  ====================*/
+
+#breadcrumb ul li{
+    display: inline-block;
+    padding: 0 5px;
+    font-size: 20px;
+}
+#breadcrumb ul li a:hover{
+    color: #D93240;
+}
+#breadcrumb ul li:last-child{
+    color: #D93240;
+}
+#breadcrumb ul li:last-child strong{
+    font-weight: 400;
+}
+
+/*==================== For All Default Widget  ====================*/
+
+.sidebar-post ul li,
+.widget_yarpp_widget ol li{
+    list-style-type: none;
+}
+.sidebar-post .cat-item, 
+.sidebar-post .menu-header-menu-container, 
+.sidebar-post .page_item, 
+.sidebar-post #recentcomments, 
+.sidebar-post .tagcloud,
+.widget_recent_entries ul li,
+.widget_archive ul li,
+.widget_meta ul li,
+.widget_rss ul li,
+.widget_yarpp_widget ol li{
+    text-align: left;
+    font-size: 18px;
+    padding-left: 10px;
+    line-height: 36px;
+}
+.sidebar-post .cat-item a:hover,
+.sidebar-post .menu-header-menu-container a:hover,
+.sidebar-post .page_item a:hover,
+.sidebar-post #recentcomments a:hover,
+.sidebar-post .tagcloud a:hover,
+.widget_recent_entries a:hover,
+.widget_archive a:hover,
+.widget_meta a:hover,
+.widget_rss a:hover,
+.widget_yarpp_widget a:hover{
+    color: #D93341;
+    border-bottom: 1px solid #D93341;
+    padding-bottom: 2px;
+}
+.sidebar-post select{
+    width: 100%;
+    margin: 20px auto 0;
+    padding: 15px 5px;
+    line-height: 36px;
+    font-size: 18px;
+}
+.sidebar-post .postform:focus{
+    border-color: #D93341;
+    outline: 0;
+}
+#wp-calendar{
+    width: 100%;
+    padding-top: 10px;
+    font-size: 16px;
+}
+#wp-calendar caption{
+    padding-bottom: 10px;
+    color: #333333;
+    font-size: 18px;
+    text-align: center;
+}
+#wp-calendar thead th{
+    text-align: center;
+}
+#wp-calendar td{
+    padding: 5px;
+}
+#wp-calendar #prev a:hover, 
+#wp-calendar #next a:hover{
+    color: #D93341;
+}
+#wp-calendar #prev{
+    text-align: left;
+}
+#wp-calendar #next{
+    text-align: right;
+}
+.sidebar-post .sub-menu{
+    padding-left: 20px;
+}
+.sidebar-post .sub-menu .page_item{
+    padding: 0;
+}
+.sidebar-post .search-form .search-field{
+    width: 240px;
+    height: 50px;
+    border: 1px solid #333333;
+    padding-left: 5px;
+}
+.sidebar-post .search-form .search-field:focus,
+.sidebar-post .search-form .search-submit:focus{
+    border-color: #333333;
+    outline: 0; 
+}
+.sidebar-post .search-form{
+    text-align:left;
+    margin-top: 20px; 
+}
+.sidebar-post .search-form .search-submit{
+    background: #D93341;
+    height: 50px;
+    width: 100px;
+    color: #fff;
+    border: 1px solid #D93341;
+    margin-left: 5px;
+    font-size: 18px;
+}
+.sidebar-post .search-form .search-submit:hover{
+    background: #333333;
+    border-color: #333333;
+}
+
+.sidebar-post .tag-cloud-link{
+    font-size: 18px !important;
+}
+
+/*==================== For Search Page  ====================*/
+
+.content-area{
+    padding-bottom: 50px;
+}
+
+.content-area a:hover{
+    color: #D93341;
+}
+.page-header .page-title{
+    text-align: center;
+    margin-top: 0;
+}
+.page-header{
+    margin: 0 0 50px;
+}
+#primary .post,
+#primary .page,
+#primary .feature,
+#primary .podcast{
+    padding-bottom: 50px;
+}
+.entry-footer span{
+    padding: 0 5px;
+}
+
+/*==================== For 404 page  ====================*/
+
+#error{
+    padding:100px 0 50px;
+}
+.error-content h3{
+    font-size: 50px;
+    font-weight: 700;
+}
+.error-content p{
+    text-align: center;
+    padding: 30px 0;
+    font-size: 20px;
+}
+.error-content a{
+    background: #D93341;
+    color: #ffffff;
+    padding: 15px 20px;
+}
+.error-content a:hover{
+    background: #333333;
+}
+.error-content .search-form .search-submit:hover,
+.no-results .search-form .search-submit:hover{
+    background: #333333;
+    border-color: #333333;
+}
+.error-content .search-form .search-submit,
+.no-results .search-form .search-submit{
+    background: #D93341;
+    height: 50px;
+    width: 100px;
+    color: #fff;
+    border: 1px solid #D93341;
+    margin-left: 5px;
+    font-size: 18px;
+}
+.error-content .search-form .search-field:focus,
+.error-content .search-form .search-submit:focus,
+.no-results .search-form .search-field:focus,
+.no-results .search-form .search-submit:focus{
+    border-color: #333333;
+    outline: 0; 
+}
+.error-content .search-form .search-field,
+.no-results .search-form .search-field{
+    width: 300px;
+    height: 50px;
+    border: 1px solid #333333;
+    padding-left: 5px;
+}
+.no-results,
+.no-results p{
+    text-align: center;
+}
+
+/*==================== For wordpress image alignment  ====================*/
+
+.alignright{
+    float: right;
+}
+
+/*==================== For archive page  ====================*/
+
+#primary{
+    padding-top: 100px;
+}
+.posted-on .updated:before{ 
+    content: 'Last Update: ';
+    padding-left: 5px;
+}
+/*==================== For Single page  ====================*/
+
+.filed-under a:hover,
+.post-edit-link:hover{
+    color: #D93240;
+}
+
+/*==================== For page.php  ====================*/
+
+.page-sidebar{
+    margin-top: 50px;
+}
+
+/*==================== For custom feature slider  ====================*/
+
+.widget_feature_slider{
+    padding-bottom: 90px;
+}
+
+/* Text meant only for screen readers. */
+
+.screen-reader-text {
+    border: 0;
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute !important;
+    width: 1px;
+    word-wrap: normal !important; /* Many screen reader and browser combinations announce broken words as they would appear visually. */
+}
+
+.screen-reader-text:focus {
+    background-color: #f1f1f1;
+    border-radius: 3px;
+    box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.6);
+    clip: auto !important;
+    clip-path: none;
+    color: #21759b;
+    display: block;
+    font-size: 14px;
+    font-size: 0.875rem;
+    font-weight: bold;
+    height: auto;
+    left: 5px;
+    line-height: normal;
+    padding: 15px 23px 14px;
+    text-decoration: none;
+    top: 5px;
+    width: auto;
+    z-index: 100000;
+    /* Above WP toolbar. */
+}
+
+/* alignment */
+
+img.alignleft, 
+img.alignright, 
+img.aligncenter, 
+img.alignnone{
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+.alignleft {
+    display: inline;
+    float: left;
+    margin-right: 10px;
+}
+
+.alignright {
+    display: inline;
+    float: right;
+    margin-left: 10px;
+}
+
+.aligncenter {
+    clear: both;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/*---------------------------   
+ sticky post
+---------------------------  */
+.sticky {
+    display: block;
+}
+/*---------------------------   
+ Comments
+---------------------------  */
+.bypostauthor {
+    display: block;
+}
+
+/*--------------------------------------------------------------
+## Captions
+--------------------------------------------------------------*/
+.wp-caption {
+    margin-bottom: 1.5em;
+    max-width: 100%;
+}
+
+.wp-caption img[class*="wp-image-"] {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.wp-caption .wp-caption-text {
+    margin: 0.8075em 0;
+}
+
+.wp-caption-text {
+    text-align: center;
+}
+
+.gallery-caption {
+    display: block;
+}
+
+/*==================== For wordpress footer widget  ====================*/
+
+.footer-content ul li a:before{
+    content: "\f138"; 
+    font-family: FontAwesome;
+    margin-right: 10px;
+   
+}
+.footer-content ul li a{
+    color: #fff;
+    font-size: 20px;
+}
+.footer-content ul li a:hover{
+    color: #D93341;
+}
+.footer-content ul li{
+    list-style-type: none;
+    padding-bottom: 10px;
+}
+.footer-content ul li:last-child{
+    padding-bottom: 0;
+}
+
+.footer-content .tag-cloud-link{
+    font-size: 20px !important;
+    line-height: 36px;
+    color: #fff;
+    padding-right: 8px;
+}
+/*==================== For footer menu  ====================*/
+
+ 
+.footer-menu .list-inline li a{
+    font-size: 16px;
+    color: #fff;
+    font-weight: 600;
+    margin: 0 10px;
+    -webkit-transition: all .3s ease-in;
+    -moz-transition: all .3s ease-in;
+    -ms-transition: all .3s ease-in;
+    -o-transition: all .3s ease-in;
+    transition: all .3s ease-in;    
+}
+
+.footer-menu .list-inline li a:hover,
+.footer-content .tag-cloud-link:hover{
+    color: #D93240;
+}
+.footer-menu {
+    margin-top: 40px;
+}
+/*Dropdown*/
+
+ul.dropdown-menu li > ul.dropdown-menu{
+right: 100%;
+top: 40px;
+/*left:30px;*/
+}
+
+ul.dropdown-menu li:hover > ul.dropdown-menu, ul.dropdown-menu li:focus > ul.dropdown-menu{
+display: block;
+
+}
+
+/*Widget Nav Menu*/
+
+.widget_nav_menu{
+    font-size: 18px;
+    text-align: left;
+    padding-left: 15px;
+    line-height: 36px;
+}
+
+img {
+    height: auto;
+    /* Make sure images are scaled correctly. */
+    max-width: 100%;
+    /* Adhere to container width. */
+}
+
+.recentcomments{
+   overflow-wrap: break-word;
+}
