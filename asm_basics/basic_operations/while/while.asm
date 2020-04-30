@@ -1,40 +1,44 @@
-; Writing 10 times "Hello" to the std output
-; nasm -g -f elf64 while.asm
-; gcc -g -m64 -fno-pie -no-pie while.o
+; Write an assembly program that defines your full name 
+; as a string in the data segment and counts the number of letter "a" in it
 
-
-global main
+; nasm -felf64 -g while.asm
+; ld -g while.o
 
 section .data
-    numlens equ 10
+    name db "Andrew Tannenbaum"
+    namelen equ $-name
 
-    message db "Hello", 10
-    msglen equ $-message
 
 section .text
-main:
+global _start
+_start:
     push rbp
     mov rbp, rsp
 
-    mov dword [rbp-4], 0 ; this local variable used for loop counter initialized with 0
-    xor rbx, rbx
-    xor rdx, rdx
+    mov DWORD [rbp-4], 0      ; local variable for counting the number of "a" characters
+    mov rbx, 0                ; loop counter, initialized with 0
 
-L1:
-    cmp byte [rbp-4], numlens   ; checking stack variable with num
-    jnl L2
+    loop:
+    cmp BYTE [name+rbx], "a"      ; comparing name characters with "a"
+    ; cmp DWORD [name+rbx], "a"      ; NOTE: we are comparing a byte with a byte! (char with char!)
+    jne next            ; if it is not equal, jump, else increasing local variable
+    add DWORD [rbp-4], 1
+    next:
 
-    mov rax, 1  ; writing out the "Hello" message
+    add rbx, 1          ; increasing loop counter
+    cmp rbx, namelen    ; check end of the string
+    jl loop             ; go to beginning of the loop if we are not end of the string
+
+
+    add DWORD [rbp-4], 48     ; dec to ascii
+
+    mov rax, 1
     mov rdi, 1
-    ;mov rsi, "OK" ; this is not good, because we should provide a memory address -> it will compile!
-    mov rsi, message
-    mov rdx, msglen
+    lea rsi, [rbp-4]
+    mov rdx, 4
     syscall
 
-    add dword [rbp-4], 1 ; increasing local variable with 1
-    jmp L1
-
-L2:
-    mov rax, 60
+    pop rbp
+    mov rax, 60 ; exit
     mov rdi, 0
     syscall
