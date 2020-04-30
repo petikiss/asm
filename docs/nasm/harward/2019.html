@@ -1,0 +1,1929 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="2019_files/bootstrap.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="2019_files/katex.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+    <link rel="stylesheet" href="2019_files/cs161.css">
+    <title>Assembly – CS 61</title>
+  <script async="" src="2019_files/async-ads.js"></script><script src="2019_files/cse_element__en.js" type="text/javascript"></script><link type="text/css" rel="stylesheet" href="2019_files/defaulten.css"><link type="text/css" rel="stylesheet" href="2019_files/default.css"><style type="text/css">.gsc-control-cse{font-family:arial, sans-serif}.gsc-control-cse .gsc-table-result{font-family:arial, sans-serif}.gsc-refinementsGradient{background:linear-gradient(to left,rgba(255,255,255,1),rgba(255,255,255,0))}</style><style type="text/css">.gscb_a{display:inline-block;font:27px/13px arial,sans-serif}.gsst_a .gscb_a{color:#a1b9ed;cursor:pointer}.gsst_a:hover .gscb_a,.gsst_a:focus .gscb_a{color:#36c}.gsst_a{display:inline-block}.gsst_a{cursor:pointer;padding:0 4px}.gsst_a:hover{text-decoration:none!important}.gsst_b{font-size:16px;padding:0 2px;position:relative;user-select:none;-moz-user-select:none;white-space:nowrap}.gsst_e{vertical-align:middle;opacity:0.55;}.gsst_a:hover .gsst_e,.gsst_a:focus .gsst_e{opacity:0.72;}.gsst_a:active .gsst_e{opacity:1;}.gsst_f{background:white;text-align:left}.gsst_g{background-color:white;border:1px solid #ccc;border-top-color:#d9d9d9;box-shadow:0 2px 4px rgba(0,0,0,0.2);-moz-box-shadow:0 2px 4px rgba(0,0,0,0.2);margin:-1px -3px;padding:0 6px}.gsst_h{background-color:white;height:1px;margin-bottom:-1px;position:relative;top:-1px}.gsib_a{width:100%;padding:4px 6px 0}.gsib_a,.gsib_b{vertical-align:top}.gssb_c{border:0;position:absolute;z-index:989}.gssb_e{border:1px solid #ccc;border-top-color:#d9d9d9;box-shadow:0 2px 4px rgba(0,0,0,0.2);-moz-box-shadow:0 2px 4px rgba(0,0,0,0.2);cursor:default}.gssb_f{visibility:hidden;white-space:nowrap}.gssb_k{border:0;display:block;position:absolute;top:0;z-index:988}.gsdd_a{border:none!important}.gsq_a{padding:0}.gssb_a{padding:0 7px}.gssb_a,.gssb_a td{white-space:nowrap;overflow:hidden;line-height:22px}#gssb_b{font-size:11px;color:#36c;text-decoration:none}#gssb_b:hover{font-size:11px;color:#36c;text-decoration:underline}.gssb_g{text-align:center;padding:8px 0 7px;position:relative}.gssb_h{font-size:15px;height:28px;margin:0.2em}.gssb_i{background:#eee}.gss_ifl{visibility:hidden;padding-left:5px}.gssb_i .gss_ifl{visibility:visible}a.gssb_j{font-size:13px;color:#36c;text-decoration:none;line-height:100%}a.gssb_j:hover{text-decoration:underline}.gssb_l{height:1px;background-color:#e5e5e5}.gssb_m{color:#000;background:#fff}.gssb_a{padding:0 9px}.gsib_a{padding:5px 9px 4px 9px}.gscb_a{line-height:27px}.gssb_e{border:0}.gssb_l{margin:5px 0}input.gsc-input::-webkit-input-placeholder{font-size:14px}input.gsc-input:-moz-placeholder{font-size:14px}input.gsc-input::-moz-placeholder{font-size:14px}input.gsc-input:-ms-input-placeholder{font-size:14px}input.gsc-input:focus::-webkit-input-placeholder{color:transparent}input.gsc-input:focus:-moz-placeholder{color:transparent}input.gsc-input:focus::-moz-placeholder{color:transparent}input.gsc-input:focus:-ms-input-placeholder{color:transparent}.gssb_c .gsc-completion-container{position:static}.gssb_c{z-index:5000}.gsc-completion-container table{background:transparent;font-size:inherit;font-family:inherit}.gssb_c > tbody > tr,.gssb_c > tbody > tr > td,.gssb_d,.gssb_d > tbody > tr,.gssb_d > tbody > tr > td,.gssb_e,.gssb_e > tbody > tr,.gssb_e > tbody > tr > td{padding:0;margin:0;border:0}.gssb_a table,.gssb_a table tr,.gssb_a table tr td{padding:0;margin:0;border:0}</style></head>
+  <body>
+
+<nav class="navbar navbar-expand-lg navbar-light">
+  <a class="navbar-brand" href="https://cs61.seas.harvard.edu/site/2019/">CS 61</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-dropdown-info" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Info
+    </a>
+    <div class="dropdown-menu" aria-labelledby="nav-dropdown-info">
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/CourseDescription/">Course Description</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/Staff/">Course Staff</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/Extension/">Extension</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/ZoomOH/">Extension Office Hours</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/Resources/">Resources</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/Schedule/">Schedule</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/Style/">Style</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/Textbook/">Textbook</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/Infrastructure/">Infrastructure</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/DatarepEx/">Exercises: Data representation</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/AsmEx/">Exercises: Assembly</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/KernelEx/">Exercises: Kernel</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/StorageEx/">Exercises: Storage</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/ProcessControlEx/">Exercises: Process Control</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/SynchEx/">Exercises: Synchronization</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/MiscEx/">Exercises: Miscellaneous</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/NetworkingEx/">Exercises: Networking</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/Patterns/">C and C++ Patterns</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/ref/diff/">Diff</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/ref/file-descriptors/">File Descriptors</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/ref/gdb-commands/">GDB Commands</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/ref/gdb/">GDB Introduction</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/ref/git/">Git</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/ref/http/">HTTP</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/Midterm/">Midterm</a>
+    
+    </div>
+  </li>
+      <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-dropdown-psets" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Problem sets
+    </a>
+    <div class="dropdown-menu" aria-labelledby="nav-dropdown-psets">
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/Pset0/">Problem set 0</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/Dmalloc/">Problem set 1</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/BinaryBomb/">Problem set 2</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/WeensyOS/">Problem set 3</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/Stdio/">Problem set 4</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/Shell/">Problem set 5</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/Pong/">Problem set 6</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/NetworkPong/">Problem set 6X</a>
+    
+    </div>
+  </li>
+      <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-dropdown-lectures" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Lectures
+    </a>
+    <div class="dropdown-menu" aria-labelledby="nav-dropdown-lectures">
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/Datarep/">Data representation</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/Datarep2/">Data representation—Hardware and abstract machines</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/Asm/">Assembly</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/Storage/">Storage, Caches, and I/O</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/Unicode/">Unicode</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/Kernel/">Kernel</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/ProcessControl/">Process control</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/Synch/">Synchronization</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/Networking/">Networking</a>
+    
+    </div>
+  </li>
+      <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-dropdown-sections" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Sections
+    </a>
+    <div class="dropdown-menu" aria-labelledby="nav-dropdown-sections">
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/Section1/">Section 1: Objects and C++</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/Section2/">Section 2: Fun</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/Section3/">Section 3: System calls</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/Section4/">Section 4: Memory iterators</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/Section5/">Section 5: Access patterns</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/Section6/">Section 6: Matrix multiplication</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/Section7/">Section 7: Shell</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/Section8/">Section 8: Pipes</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2019/Section9/">Section 9: Threads and atomics</a>
+    
+    </div>
+  </li>
+      
+  <li class="nav-item">
+    
+      <a class="nav-link" href="https://cs61.seas.harvard.edu/site/2019/Schedule/">Schedule</a>
+    
+  </li>
+      <li class="nav-item"><script type="text/javascript" async="" src="2019_files/cse.js"></script><script>
+  (function() {
+    var cx ='001870065194094800801:glww17dvifm';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script><div id="___gcse_0"><div class="gsc-control-cse gsc-control-cse-en"><div class="gsc-control-wrapper-cse" dir="ltr"><form class="gsc-search-box gsc-search-box-tools" accept-charset="utf-8"><table class="gsc-search-box" cellspacing="0" cellpadding="0"><tbody><tr><td class="gsc-input"><div class="gsc-input-box" id="gsc-iw-id1"><table style="width: 100%; padding: 0px;" id="gs_id50" class="gstl_50 gsc-input" cellspacing="0" cellpadding="0"><tbody><tr><td id="gs_tti50" class="gsib_a"><input autocomplete="off" type="text" size="10" class="gsc-input" name="search" title="search" style="width: 100%; padding: 0px; border: medium none; margin: 0px; height: auto; background: rgb(255, 255, 255) url(&quot;https://www.google.com/cse/static/images/1x/googlelogo_lightgrey_46x16dp.png&quot;) no-repeat scroll left center; text-indent: 48px; outline: currentcolor none medium;" id="gsc-i-id1" placeholder="Custom Search" dir="ltr" spellcheck="false"></td><td class="gsib_b"><div class="gsst_b" id="gs_st50" dir="ltr"><a class="gsst_a" href="javascript:void(0)" style="display: none;" title="Clear search box" role="button"><span class="gscb_a" id="gs_cb50" aria-hidden="true">×</span></a></div></td></tr></tbody></table></div></td><td class="gsc-search-button"><button class="gsc-search-button gsc-search-button-v2"><svg width="13" height="13" viewBox="0 0 13 13"><title>search</title><path d="m4.8495 7.8226c0.82666 0 1.5262-0.29146 2.0985-0.87438 0.57232-0.58292 0.86378-1.2877 0.87438-2.1144 0.010599-0.82666-0.28086-1.5262-0.87438-2.0985-0.59352-0.57232-1.293-0.86378-2.0985-0.87438-0.8055-0.010599-1.5103 0.28086-2.1144 0.87438-0.60414 0.59352-0.8956 1.293-0.87438 2.0985 0.021197 0.8055 0.31266 1.5103 0.87438 2.1144 0.56172 0.60414 1.2665 0.8956 2.1144 0.87438zm4.4695 0.2115 3.681 3.6819-1.259 1.284-3.6817-3.7 0.0019784-0.69479-0.090043-0.098846c-0.87973 0.76087-1.92 1.1413-3.1207 1.1413-1.3553 0-2.5025-0.46363-3.4417-1.3909s-1.4088-2.0686-1.4088-3.4239c0-1.3553 0.4696-2.4966 1.4088-3.4239 0.9392-0.92727 2.0864-1.3969 3.4417-1.4088 1.3553-0.011889 2.4906 0.45771 3.406 1.4088 0.9154 0.95107 1.379 2.0924 1.3909 3.4239 0 1.2126-0.38043 2.2588-1.1413 3.1385l0.098834 0.090049z"></path></svg></button></td><td class="gsc-clear-button"><div class="gsc-clear-button" title="clear results">&nbsp;</div></td></tr></tbody></table></form><div class="gsc-results-wrapper-overlay"><div class="gsc-results-close-btn" tabindex="0"></div><div class="gsc-positioningWrapper"><div class="gsc-tabsAreaInvisible"><div aria-label="refinement" role="tab" class="gsc-tabHeader gsc-inline-block gsc-tabhActive">Custom Search</div><span class="gs-spacer"> </span></div></div><div class="gsc-positioningWrapper"><div class="gsc-tabsAreaInvisible"></div></div><div class="gsc-above-wrapper-area-invisible"><table class="gsc-above-wrapper-area-container" cellspacing="0" cellpadding="0"><tbody><tr><td class="gsc-result-info-container"><div class="gsc-result-info-invisible"></div></td><td class="gsc-orderby-container"><div class="gsc-orderby-invisible"><div class="gsc-orderby-label gsc-inline-block">Sort by:</div><div class="gsc-option-menu-container gsc-inline-block"><div class="gsc-selected-option-container gsc-inline-block"><div class="gsc-selected-option">Relevance</div><div class="gsc-option-selector"></div></div><div class="gsc-option-menu-invisible"><div class="gsc-option-menu-item gsc-option-menu-item-highlighted"><div class="gsc-option">Relevance</div></div><div class="gsc-option-menu-item"><div class="gsc-option">Date</div></div></div></div></div></td></tr></tbody></table></div><div class="gsc-adBlockInvisible"></div><div class="gsc-wrapper"><div class="gsc-adBlockInvisible"></div><div class="gsc-resultsbox-invisible"><div class="gsc-resultsRoot gsc-tabData gsc-tabdActive"><div><div class="gsc-expansionArea"></div></div></div></div></div></div><div class="gsc-modal-background-image" tabindex="0"></div></div></div></div></li>
+    </ul>
+  </div>
+</nav>
+
+
+<img src="2019_files/cs61hello.jpg" class="hellobackground">
+
+
+<div class="container">
+    <h1><a href="https://cs61.seas.harvard.edu/site/2019/Asm/">Assembly</a></h1>
+    <div class="post">
+        <h2 id="contents">Contents</h2>
+
+<ul>
+<li><a href="#Registers">Registers</a></li>
+<li><a href="#Instruction-format">Instruction format</a></li>
+<li><a href="#Directives">Aside: Directives</a></li>
+<li><a href="#Address-modes">Address modes</a></li>
+<li><a href="#Address-computations">Address computations</a></li>
+<li><a href="#rip-relative-addressing"><code>%rip</code>-relative addressing</a></li>
+<li><a href="#Calling-convention">Calling convention</a></li>
+<li><a href="#Arguments">Argument passing and stack frames</a></li>
+<li><a href="#Stack">Stack</a></li>
+<li><a href="#Return-address">Return address and entry and exit sequence</a></li>
+<li><a href="#Callee-saved">Callee-saved registers and caller-saved registers</a></li>
+<li><a href="#Base-pointer">Base pointer (frame pointer)</a></li>
+<li><a href="#Stack-size">Stack size and red zone</a></li>
+<li><a href="#Branches">Branches</a></li>
+<li><a href="#Cpp-data-structures">Aside: C++ data structures</a></li>
+<li><a href="#Compiler-optimizations">Compiler optimizations</a></li>
+<li><a href="#Buffer-overflow-attacks">Buffer overflow attacks</a></li>
+<li><a href="#Attack-defenses">Attack defenses</a></li>
+<li><a href="#Checksums">Aside: Checksums</a></li>
+</ul>
+
+<h2 id="Registers">Registers</h2>
+
+<p>Registers are the fastest kind of memory available in the machine.
+x86-64 has 14 general-purpose registers and several special-purpose
+registers. This table gives all the basic registers, with
+special-purpose registers highlighted in yellow. You’ll notice different
+naming conventions, a side effect of the long history of the x86
+architecture (the 8086 was first released in 1978).</p>
+
+<table class="padleft">
+<thead>
+<tr class="header">
+<th><p>Full register<br><span class="r">(bits 0-63)</span></p></th>
+<th class="r"><p>32-bit<br>
+(bits 0–31)</p></th>
+<th class="r"><p>16-bit<br>
+(bits 0–15)</p></th>
+<th class="r"><p>8-bit low<br>
+(bits 0–7)</p></th>
+<th class="r"><p>8-bit high<br>
+(bits 8–15)</p></th>
+<th><p>Use in <a href="#Calling-convention">calling convention</a></p></th>
+<th><p><a href="#Callee-saved">Callee-saved?</a></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="separator">
+<th colspan="7"><p>General-purpose registers:</p>
+</th></tr>
+<tr class="odd">
+<td class="padleft"><p><strong>%rax</strong></p></td>
+<td><p>%eax</p></td>
+<td><p>%ax</p></td>
+<td><p>%al</p></td>
+<td><p>%ah</p></td>
+<td><p>Return value (accumulator)</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td class="padleft"><p><strong>%rbx</strong></p></td>
+<td><p>%ebx</p></td>
+<td><p>%bx</p></td>
+<td><p>%bl</p></td>
+<td><p>%bh</p></td>
+<td><p>–</p></td>
+<td><p><strong>Yes</strong></p></td>
+</tr>
+<tr class="odd">
+<td class="padleft"><p><strong>%rcx</strong></p></td>
+<td><p>%ecx</p></td>
+<td><p>%cx</p></td>
+<td><p>%cl</p></td>
+<td><p>%ch</p></td>
+<td><p>4th function argument</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td class="padleft"><p><strong>%rdx</strong></p></td>
+<td><p>%edx</p></td>
+<td><p>%dx</p></td>
+<td><p>%dl</p></td>
+<td><p>%dh</p></td>
+<td><p>3rd function argument</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p><strong>%rsi</strong></p></td>
+<td><p>%esi</p></td>
+<td><p>%si</p></td>
+<td><p>%sil</p></td>
+<td><p>–</p></td>
+<td><p>2nd function argument</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p><strong>%rdi</strong></p></td>
+<td><p>%edi</p></td>
+<td><p>%di</p></td>
+<td><p>%dil</p></td>
+<td><p>–</p></td>
+<td><p>1st function argument</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p><strong>%r8</strong></p></td>
+<td><p>%r8d</p></td>
+<td><p>%r8w</p></td>
+<td><p>%r8b</p></td>
+<td><p>–</p></td>
+<td><p>5th function argument</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p><strong>%r9</strong></p></td>
+<td><p>%r9d</p></td>
+<td><p>%r9w</p></td>
+<td><p>%r9b</p></td>
+<td><p>–</p></td>
+<td><p>6th function argument</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p><strong>%r10</strong></p></td>
+<td><p>%r10d</p></td>
+<td><p>%r10w</p></td>
+<td><p>%r10b</p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p><strong>%r11</strong></p></td>
+<td><p>%r11d</p></td>
+<td><p>%r11w</p></td>
+<td><p>%r11b</p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p><strong>%r12</strong></p></td>
+<td><p>%r12d</p></td>
+<td><p>%r12w</p></td>
+<td><p>%r12b</p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p><strong>Yes</strong></p></td>
+</tr>
+<tr class="even">
+<td><p><strong>%r13</strong></p></td>
+<td><p>%r13d</p></td>
+<td><p>%r13w</p></td>
+<td><p>%r13b</p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p><strong>Yes</strong></p></td>
+</tr>
+<tr class="odd">
+<td><p><strong>%r14</strong></p></td>
+<td><p>%r14d</p></td>
+<td><p>%r14w</p></td>
+<td><p>%r14b</p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p><strong>Yes</strong></p></td>
+</tr>
+<tr class="even">
+<td><p><strong>%r15</strong></p></td>
+<td><p>%r15d</p></td>
+<td><p>%r15w</p></td>
+<td><p>%r15b</p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p><strong>Yes</strong></p></td>
+</tr>
+<tr class="separator">
+<th colspan="7"><p>Special-purpose registers:</p>
+</th></tr>
+<tr class="odd">
+<td><p><strong>%rsp</strong></p></td>
+<td><p>%esp</p></td>
+<td><p>%sp</p></td>
+<td><p>%spl</p></td>
+<td><p>–</p></td>
+<td><p>Stack pointer</p></td>
+<td><p><strong>Yes</strong></p></td>
+</tr>
+<tr class="even">
+<td><p><strong>%rbp</strong></p></td>
+<td><p>%ebp</p></td>
+<td><p>%bp</p></td>
+<td><p>%bpl</p></td>
+<td><p>–</p></td>
+<td><p>Base pointer<br>(general-purpose in some compiler modes)</p></td>
+<td><p><strong>Yes</strong></p></td>
+</tr>
+<tr class="odd">
+<td><p><strong>%rip</strong></p></td>
+<td><p>%eip</p></td>
+<td><p>%ip</p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p>Instruction pointer<br>
+(Program counter; called $pc in GDB)</p></td>
+<td><p>*</p></td>
+</tr>
+<tr class="even">
+<td><p><strong>%rflags</strong></p></td>
+<td><p>%eflags</p></td>
+<td><p>%flags</p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p>Flags and condition codes</p></td>
+<td><p>No</p></td>
+</tr>
+</tbody>
+</table>
+
+<p>Note that unlike <em>primary</em> memory (which is what we think of when we discuss
+memory in a C/C++ program), registers have no addresses! There is no address
+value that, if cast to a pointer and dereferenced, would return the contents
+of the <code>%rax</code> register. Registers live in a separate world from the memory
+whose contents are partially prescribed by the C abstract machine.</p>
+
+<p>The %rbp register has a special purpose: it points to the bottom of the
+current function’s stack frame, and local variables are often accessed
+relative to its value. However, when optimization is on, the compiler
+may determine that all local variables can be stored in registers. This
+frees up %rbp for use as another general-purpose register.</p>
+
+<p>The relationship between different register bit widths is a little
+weird.</p>
+
+<ol>
+<li><p>Modifying a 32-bit register name sets the <em>upper</em> 32 bits
+of the register to zero. Thus, after <code>movl $-1, %eax</code>, the
+<code>%rax</code> register has value 0x0000'0000'FFFF'FFFF. The same is true
+after <code>movq $-1, %rax; addl $0, %eax</code>! (The <code>movq</code> sets <code>%rax</code>
+to 0xFFFF'FFFF'FFFF'FFFF; the <code>addl</code> sets its upper 32 bits to zero.)</p></li>
+
+<li><p>Modifying a 16- or 8-bit register name <em>leaves all other
+bits of the register unchanged.</em></p></li>
+</ol>
+
+<p>There are special instructions for loading signed and unsigned 8-, 16-,
+and 32-bit quantities into registers, recognizable by instruction
+suffixes. For instance, <code>movzbl</code> moves an 8-bit quantity (a <strong>b</strong>yte)
+into a 32-bit register (a <strong>l</strong>ongword) with <strong>z</strong>ero extension;
+<code>movslq</code> moves a 32-bit quantity (<strong>l</strong>ongword) into a 64-bit register
+(<strong>q</strong>uadword) with <strong>s</strong>ign extension. There’s no need for <code>movzlq</code>
+(why?).</p>
+
+<h2 id="Instruction-format">Instruction format</h2>
+
+<p>The basic kinds of assembly instructions are:</p>
+
+<ol>
+<li><strong>Computation.</strong> These instructions perform computation on values,
+typically values stored in registers. Most have zero or one <em>source
+operands</em> and one <em>source/destination operand</em>, with the source operand
+coming first. For example, the instruction <code>addq %rax, %rbx</code> performs the
+computation <code>%rbx := %rbx + %rax</code>.</li>
+<li><strong>Data movement.</strong> These instructions move data between registers
+and memory. Almost all have one source operand and one destination
+operand; the source operand comes first.</li>
+<li><strong>Control flow.</strong> Normally the CPU executes instructions in
+sequence. Control flow instructions change the instruction pointer
+in other ways. There are unconditional branches (the instruction
+pointer is set to a new value), conditional branches (the
+instruction pointer is set to a new value if a condition is true),
+and function call and return instructions.</li>
+</ol>
+
+<p>(We use the “AT&amp;T syntax” for x86-64 assembly. For the “Intel syntax,”
+which you can find in online documentation from Intel, see the Aside in
+CS:APP3e §3.3, p177, or
+<a href="https://en.wikipedia.org/wiki/X86_assembly_language">Wikipedia</a>, or
+other online resources. AT&amp;T syntax is distinguished by several
+features, but especially by the use of percent signs for registers.
+Sadly, the Intel syntax puts destination registers <em>before</em> source
+registers.)</p>
+
+<p>Some instructions appear to combine computation and data movement. For
+example, given the C code <code>int* ip; ... ++(*ip);</code> the compiler might generate
+<code>incl (%rax)</code> rather than <code>movl (%rax), %ebx; incl %ebx; movl %ebx, (%rax)</code>.
+However, the processor actually divides these complex instructions into tiny,
+simpler, invisible instructions called
+<a href="https://en.wikipedia.org/wiki/Microcode">microcode</a>, because the simpler
+instructions can be made to execute faster. The complex <code>incl</code> instruction
+actually runs in three phases: data movement, then computation, then data
+movement. This matters when we introduce parallelism.</p>
+
+<h2 id="Directives">Directives</h2>
+
+<p>Assembly generated by a compiler contains instructions as well as <em>labels</em> and
+<em>directives</em>. Labels look like <code>labelname:</code> or <code>labelnumber:</code>; directives look
+like <code>.directivename arguments</code>. Labels are markers in the generated assembly,
+used to compute addresses. We usually see them used in control flow
+instructions, as in <code>jmp L3</code> (“jump to L3”). Directives are instructions to
+the assembler; for instance, the <code>.globl L</code> instruction says “label <code>L</code> is
+globally visible in the executable”, <code>.align</code> sets the alignment of the
+following data, <code>.long</code> puts a number in the output, and <code>.text</code> and <code>.data</code>
+define the current segment.</p>
+
+<p>We also frequently look at assembly that is <em>disassembled</em> from executable
+instructions by GDB, <code>objdump -d</code>, or <code>objdump -S</code>.
+ This output looks
+different from compiler-generated assembly: in disassembled 
+instructions,
+there are no intermediate labels or directives. This is because the 
+labels and directives disappear during the process of generating 
+executable instructions.</p>
+
+<p>For instance, here is some compiler-generated assembly:</p>
+
+<pre><code>    .globl  _Z1fiii
+    .type   _Z1fiii, @function
+_Z1fiii:
+.LFB0:
+    cmpl    %edx, %esi
+    je  .L3
+    movl    %esi, %eax
+    ret
+.L3:
+    movl    %edi, %eax
+    ret
+.LFE0:
+    .size   _Z1fiii, .-_Z1fiii
+</code></pre>
+
+<p>And a disassembly of the same function, from an object file:</p>
+
+<pre><code>0000000000000000 &lt;_Z1fiii&gt;:
+   0:   39 d6                   cmp    %edx,%esi
+   2:   74 03                   je     7 &lt;_Z1fiii+0x7&gt;
+   4:   89 f0                   mov    %esi,%eax
+   6:   c3                      retq   
+   7:   89 f8                   mov    %edi,%eax
+   9:   c3                      retq   
+</code></pre>
+
+<p>Everything but the instructions is removed, and the helpful <code>.L3</code> label has
+been replaced with an actual address. The function appears to be located at
+address 0. This is just a placeholder; the final address is assigned by the
+linking process, when a final executable is created.</p>
+
+<p>Finally, here is some disassembly from an executable:</p>
+
+<pre><code>0000000000400517 &lt;_Z1fiii&gt;:
+  400517:   39 d6                   cmp    %edx,%esi
+  400519:   74 03                   je     40051e &lt;_Z1fiii+0x7&gt;
+  40051b:   89 f0                   mov    %esi,%eax
+  40051d:   c3                      retq   
+  40051e:   89 f8                   mov    %edi,%eax
+  400520:   c3                      retq   
+</code></pre>
+
+<p>The instructions are the same, but the addresses are different. (Other
+compiler flags would generate different addresses.)</p>
+
+<h2 id="Address-modes">Address modes</h2>
+
+<p>Most instruction operands use the following syntax for values. (See also
+CS:APP3e Figure 3.3 in §3.4.1, p181.)</p>
+
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Example syntax</th>
+<th>Value used</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Register</td>
+<td><code>%rbp</code></td>
+<td>Contents of <code>%rbp</code></td>
+</tr>
+
+<tr>
+<td>Immediate</td>
+<td><code>$0x4</code></td>
+<td>0x4</td>
+</tr>
+
+<tr>
+<td>Memory</td>
+<td><code>0x4</code></td>
+<td>Value stored at address 0x4</td>
+</tr>
+
+<tr>
+<td></td>
+<td><code>symbol_name</code></td>
+<td>Value stored in global <code>symbol_name</code> <br> (the compiler resolves the symbol name to an address when creating the executable)</td>
+</tr>
+
+<tr>
+<td></td>
+<td><code>symbol_name(%rip)</code></td>
+<td><a href="#rip-relative-addressing"><code>%rip</code>-relative addressing</a> for global</td>
+</tr>
+
+<tr>
+<td></td>
+<td><code>symbol_name+4(%rip)</code></td>
+<td>Simple computations on symbols are allowed <br> (the compiler resolves the computation when creating the executable)</td>
+</tr>
+
+<tr>
+<td></td>
+<td><code>(%rax)</code></td>
+<td>Value stored at address in <code>%rax</code></td>
+</tr>
+
+<tr>
+<td></td>
+<td><code>0x4(%rax)</code></td>
+<td>Value stored at address <code>%rax + 4</code></td>
+</tr>
+
+<tr>
+<td></td>
+<td><code>(%rax,%rbx)</code></td>
+<td>Value stored at address <code>%rax + %rbx</code></td>
+</tr>
+
+<tr>
+<td></td>
+<td><code>(%rax,%rbx,4)</code></td>
+<td>Value stored at address <code>%rax + %rbx*4</code></td>
+</tr>
+
+<tr>
+<td></td>
+<td><code>0x18(%rax,%rbx,4)</code></td>
+<td>Value stored at address <code>%rax + 0x18 + %rbx*4</code></td>
+</tr>
+</tbody>
+</table>
+
+<p>The full form of a memory operand is <code>offset(base,index,scale)</code>, which refers
+to the address <code>offset + base + index*scale</code>. In <code>0x18(%rax,%rbx,4)</code>, <code>%rax</code>
+is the base, <code>0x18</code> the offset, <code>%rbx</code> the index, and <code>4</code> the scale. The
+offset (if used) must be a constant and the base and index (if used) must be registers;
+the scale must be either 1, 2, 4, or 8. The default offset, base, and index
+are 0, and the default scale is 1.</p>
+
+<p><code>symbol_name</code>s are found only in compiler-generated assembly; disassembly uses
+raw addresses (<code>0x601030</code>) or <code>%rip</code>-relative offsets (<code>0x200bf2(%rip)</code>).</p>
+
+<p>Jumps and function call instructions use different syntax 🤷🏽‍♀️: <code>*</code>, rather
+than <code>()</code>, represents indirection.</p>
+
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Example syntax</th>
+<th>Address used</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Register</td>
+<td><code>*%rax</code></td>
+<td>Contents of <code>%rax</code></td>
+</tr>
+
+<tr>
+<td>Immediate</td>
+<td><code>.L3</code></td>
+<td>Address of <code>.L3</code> (compiler-generated assembly)</td>
+</tr>
+
+<tr>
+<td></td>
+<td><code>400410</code> or <code>0x400410</code></td>
+<td>Given address</td>
+</tr>
+
+<tr>
+<td>Memory</td>
+<td><code>*0x200b96(%rip)</code></td>
+<td>Value stored at address <code>%rip + 0x200b96</code></td>
+</tr>
+
+<tr>
+<td></td>
+<td><code>*(%r12,%rbp,8)</code></td>
+<td>Other address modes accepted</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="Address-computations">Address computations</h2>
+
+<p>The <code>base(offset,index,scale)</code> form compactly expresses many array-style
+address computations. It’s typically used with a <code>mov</code>-type instruction to
+dereference memory. However, the compiler can use that form to compute
+addresses, thanks to the <code>lea</code> (Load Effective Address) instruction.</p>
+
+<p>For instance, in <code>movl 0x18(%rax,%rbx,4), %ecx</code>, the address <code>%rax + 0x18 +
+%rbx*4</code> is computed, then immediately dereferenced: the 4-byte value located
+there is loaded into <code>%ecx</code>. In <code>leaq 0x18(%rax,%rbx,4), %rcx</code>, the same address is computed, but it is <em>not</em> dereferenced. Instead, the <em>computed address</em> is moved into register <code>%rcx</code>.</p>
+
+<p>Thanks to <code>lea</code>, the compiler will also prefer the <code>base(offset,index,scale)</code>
+form over <code>add</code> and <code>mov</code> for certain computations on integers. For example,
+this instruction:</p>
+
+<pre><code>leaq (%rax,%rbx,2), %rcx
+</code></pre>
+
+<p>performs the function <code>%rcx := %rax + 2 * %rbx</code>, but in one instruction,
+rather than three (<code>movq %rax, %rcx; addq %rbx, %rcx; addq %rbx, %rcx</code>).</p>
+
+<h2 id="rip-relative-addressing"><code>%rip</code>-relative addressing</h2>
+
+<p>x86-64 code often refers to globals using <strong>%rip-relative</strong> addressing: a
+global variable named <code>a</code> is referenced as <code>a(%rip)</code> rather than <code>a</code>.</p>
+
+<p>This style of reference supports <a href="https://en.wikipedia.org/wiki/Position-independent_code"><em>position-independent
+code</em></a> (PIC), a
+security feature. It specifically supports <em>position-independent executables</em>
+(PIEs), which are programs that work independently of where their code is
+loaded into memory.</p>
+
+<p>To run a conventional program, the operating system loads the program’s
+instructions into memory <em>at a fixed address that’s the same every time</em>, then
+starts executing the program at its first instruction. This works great, and
+runs the program in a predictable execution environment (the addresses of
+functions and global variables are the same every time). Unfortunately, the
+very predictability of this environment makes the program easier to attack.</p>
+
+<p>In a position-independent executable, the operating system loads the program
+at <em>varying</em> locations: every time it runs, the program’s functions and global
+variables have different addresses. This makes the program harder to attack
+(though <a href="https://en.wikipedia.org/wiki/Return-oriented_programming">not impossible</a>).</p>
+
+<p>Program startup performance matters, so the operating system doesn’t recompile
+the program with different addresses each time. Instead, the compiler does
+most of the work in advance by using <em>relative addressing</em>.</p>
+
+<p>When the operating system loads a PIE, it picks a starting point and loads all
+instructions and globals relative to that starting point. The PIE’s
+instructions never refer to global variables using direct addressing: you’ll
+never see <code>movl global_int, %eax</code>. Globals are referenced <em>relatively</em>
+instead, using deltas relative to the next <code>%rip</code>: <code>movl global_int(%rip),
+%eax</code>. These relative addresses work great independent of starting point! For
+instance, consider an instruction located at (starting-point + 0x80) that
+loads a variable <code>g</code> located at (starting-point + 0x1000) into <code>%rax</code>. In a
+non-PIE, the instruction might be written <code>movq 0x400080, %rax</code> (in compiler
+output, <code>movq g, %rax</code>); but this relies on <code>g</code> having a fixed address. In a
+PIE, the instruction might be written <code>movq 0xf79(%rip), %rax</code> (in compiler
+output, <code>movq g(%rip), %rax</code>), which works out beautifully no matter the
+starting point.</p>
+
+<table>
+<thead>
+<tr>
+<th>At starting point…</th>
+<th>The <code>mov</code> instruction is at…</th>
+<th>The next instruction is at…</th>
+<th>And <code>g</code> is at…</th>
+<th>So the delta (<code>g</code> - next <code>%rip</code>) is…</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>0x400000</td>
+<td>0x400080</td>
+<td>0x400087</td>
+<td>0x401000</td>
+<td>0xF79</td>
+</tr>
+
+<tr>
+<td>0x404000</td>
+<td>0x404080</td>
+<td>0x404087</td>
+<td>0x405000</td>
+<td>0xF79</td>
+</tr>
+
+<tr>
+<td>0x4003F0</td>
+<td>0x400470</td>
+<td>0x400477</td>
+<td>0x4013F0</td>
+<td>0xF79</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="Calling-convention">Calling convention</h2>
+
+<p>A <a href="https://en.wikipedia.org/wiki/Calling_convention"><strong>calling convention</strong></a>
+governs how functions on a particular architecture and operating system
+interact. This includes rules about includes how function arguments are
+placed, where return values go, what registers functions may use, how they may
+allocate local variables, and so forth. Calling conventions ensure that
+functions compiled by different compilers can interoperate, and they ensure
+that operating systems can run code from different programming languages and
+compilers. Some aspects of a calling convention are derived from the
+instruction set itself, but some are conventional, meaning decided upon by
+people (for instance, at a convention).</p>
+
+<p>Calling conventions constrain both <em>callers</em> and <em>callees</em>. A caller is a
+function that calls another function; a callee is a function that was called.
+The currently-executing function is a callee, but not a caller.</p>
+
+<p>For concreteness, we learn the <a href="https://en.wikipedia.org/wiki/X86_calling_conventions#x86-64_calling_conventions">x86-64 calling conventions for
+Linux</a>.
+These conventions are shared by many OSes, including MacOS (but not Windows),
+and are officially called the “System V AMD64 ABI.”</p>
+
+<p>The official specification: <a href="https://software.intel.com/sites/default/files/article/402129/mpx-linux64-abi.pdf">AMD64 ABI</a></p>
+
+<h2 id="Arguments">Argument passing and stack frames</h2>
+
+<p>One set of calling convention rules governs how function arguments and return
+values are passed. On x86-64 Linux, the first six function arguments are
+passed in registers <code>%rdi</code>, <code>%rsi</code>, <code>%rdx</code>, <code>%rcx</code>, <code>%r8</code>, and <code>%r9</code>,
+respectively. The seventh and subsequent arguments are passed on the stack,
+about which more below. The return value is passed in register <code>%rax</code>.</p>
+
+<p>The full rules more complex than this. You can read them in <a href="https://software.intel.com/sites/default/files/article/402129/mpx-linux64-abi.pdf">the AMD64
+ABI</a>, section 3.2.3, but they’re quite detailed. Some highlights:</p>
+
+<ol>
+<li><p>A structure argument that fits in a single machine word (64 bits/8 bytes)
+is passed in a single register.</p>
+
+<p>Example: <code>struct small { char a1, a2; }</code></p></li>
+
+<li><p>A structure that fits in two to four machine words (16–32 bytes) is passed
+in sequential registers, as if it were multiple arguments.</p>
+
+<p>Example: <code>struct medium { long a1, a2; }</code></p></li>
+
+<li><p>A structure that’s larger than four machine words is always passed on the
+stack.</p>
+
+<p>Example: <code>struct large { long a, b, c, d, e, f, g; }</code></p></li>
+
+<li><p>Floating point arguments are generally passed in special registers, the
+“SSE registers,” that we don’t discuss further.</p></li>
+
+<li><p>If the return value takes more than eight bytes, then the <em>caller</em> reserves
+space for the return value, and passes the <em>address</em> of that space as the
+first argument of the function. The callee will fill in that space when it
+returns.</p></li>
+</ol>
+
+<p>Writing small programs to demonstrate these rules is a pleasant exercise; for
+example:</p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#007020;font-weight:bold">struct</span> <span style="color:#0e84b5;font-weight:bold">small</span> { <span style="color:#902000">char</span> a1, a2; };
+<span style="color:#902000">int</span> <span style="color:#06287e">f</span>(small s) {
+    <span style="color:#007020;font-weight:bold">return</span> s.a1 <span style="color:#666">+</span> <span style="color:#40a070">2</span> <span style="color:#666">*</span> s.a2;
+}
+</code></pre></div>
+<p>compiles to:</p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-asm" data-lang="asm"><span style="color:#06287e">movl</span> <span style="color:#bb60d5">%edi</span>, <span style="color:#bb60d5">%eax</span>           <span style="color:#60a0b0;font-style:italic"># copy argument to %eax
+</span><span style="color:#60a0b0;font-style:italic"></span><span style="color:#60add5">movsbl</span> <span style="color:#bb60d5">%dil</span>, <span style="color:#bb60d5">%edi</span>         <span style="color:#60a0b0;font-style:italic"># %edi := sign-extension of lowest byte of argument (s.a1)
+</span><span style="color:#60a0b0;font-style:italic"></span><span style="color:#60add5">movsbl</span> <span style="color:#bb60d5">%ah</span>, <span style="color:#bb60d5">%eax</span>          <span style="color:#60a0b0;font-style:italic"># %eax := sign-extension of 2nd byte of argument (s.a2)
+</span><span style="color:#60a0b0;font-style:italic"></span><span style="color:#60add5">movsbl</span> <span style="color:#bb60d5">%al</span>, <span style="color:#bb60d5">%eax</span>
+<span style="color:#06287e">leal</span> (<span style="color:#bb60d5">%rdi</span>,<span style="color:#bb60d5">%rax</span>,<span style="color:#40a070">2</span>), <span style="color:#bb60d5">%eax</span>  <span style="color:#60a0b0;font-style:italic"># %eax := %edi + 2 * %eax
+</span><span style="color:#60a0b0;font-style:italic"></span><span style="color:#60add5">ret</span></code></pre></div>
+<h2 id="Stack">Stack</h2>
+
+<p><a href="https://cs61.seas.harvard.edu/site/2019/Datarep3">Recall</a> that the stack is a segment of memory used to store
+objects with automatic lifetime. Typical stack addresses on x86-64 look like
+<code>0x7ffd'9f10'4f58</code>—that is, close to 2<sup>47</sup>.</p>
+
+<p>The stack is named after a data structure, which was sort of named after
+pancakes. Stack data structures support at least three operations: <strong>push</strong>
+adds a new element to the “top” of the stack; <strong>pop</strong> removes the top element,
+showing whatever was underneath; and <strong>top</strong> accesses the top element. Note
+what’s missing: the data structure does not allow access to elements other
+than the top. (Which is sort of how stacks of pancakes work.) This restriction
+can speed up stack implementations.</p>
+
+<p>Like a stack data structure, the stack memory segment is only accessed from
+the top. The currently running function accesses <em>its</em> local variables; the
+function’s caller, grand-caller, great-grand-caller, and so forth are dormant
+until the currently running function returns.</p>
+
+<p>x86-64 stacks look like this:</p>
+
+<p></p><figure><img src="2019_files/stack-2018-01.png" alt="Stack"></figure><p></p>
+
+<p>The x86-64 <code>%rsp</code> register is a special-purpose register that defines the
+current “stack pointer.” This holds the address of the current top of the
+stack. On x86-64, as on many architectures, stacks grow <em>down</em>: a “push”
+operation adds space for more automatic-lifetime objects by moving the stack
+pointer left, to a numerically-smaller address, and a “pop” operation recycles
+space by moving the stack pointer right, to a numerically-larger address. This
+means that, considered numerically, the “top” of the stack has a smaller
+address than the “bottom.”</p>
+
+<p>This is built in to the architecture by the operation of instructions like
+<code>pushq</code>, <code>popq</code>, <code>call</code>, and <code>ret</code>. A <code>push</code> instruction pushes a value onto
+the stack. This both modifies the stack pointer (making it smaller) and
+modifies the stack segment (by moving data there). For instance, the
+instruction <code>pushq X</code> means:</p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-asm" data-lang="asm"><span style="color:#06287e">subq</span> <span style="color:#60add5">$8</span>, <span style="color:#bb60d5">%rsp</span>
+<span style="color:#06287e">movq</span> <span style="color:#60add5">X</span>, (<span style="color:#bb60d5">%rsp</span>)</code></pre></div>
+<p>And <code>popq X</code> undoes the effect of <code>pushq X</code>. It means:</p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-asm" data-lang="asm"><span style="color:#06287e">movq</span> (<span style="color:#bb60d5">%rsp</span>), <span style="color:#60add5">X</span>
+<span style="color:#06287e">addq</span> <span style="color:#60add5">$8</span>, <span style="color:#bb60d5">%rsp</span></code></pre></div>
+<p><code>X</code> can be a register or a memory reference.</p>
+
+<p>The portion of the stack reserved for a function is called that function’s
+<strong>stack frame</strong>. Stack frames are aligned: x86-64 requires that each stack
+frame be a multiple of 16 bytes, and when a <code>callq</code> instruction begins
+execution, the <code>%rsp</code> register must be 16-byte aligned. This means that every
+function’s entry <code>%rsp</code> address will be 8 bytes off a multiple of 16.</p>
+
+<h2 id="Return-address">Return address and entry and exit sequence</h2>
+
+<p>The steps required to call a function are sometimes called the <em>entry
+sequence</em> and the steps required to return are called the <em>exit sequence</em>.
+Both caller and callee have responsibilities in each sequence.</p>
+
+<p>To prepare for a function call, the caller performs the following tasks in its
+entry sequence.</p>
+
+<ol>
+<li><p>The caller stores the first six arguments in the corresponding registers.</p></li>
+
+<li><p>If the callee takes more than six arguments, or if some of its arguments
+are large, the caller must store the surplus arguments on its stack frame.
+It stores these in increasing order, so that the 7th argument has a smaller
+address than the 8th argument, and so forth. The 7th argument must be
+stored at <code>(%rsp)</code> (that is, the top of the stack) when the caller executes
+its <code>callq</code> instruction.</p></li>
+
+<li><p>The caller saves any caller-saved registers (see below).</p></li>
+
+<li><p>The caller executes <code>callq FUNCTION</code>. This has an effect like <code>pushq
+$NEXT_INSTRUCTION; jmp FUNCTION</code> (or, equivalently, <code>subq $8, %rsp; movq
+$NEXT_INSTRUCTION, (%rsp); jmp FUNCTION</code>), where <code>NEXT_INSTRUCTION</code> is the
+address of the instruction immediately following <code>callq</code>.</p></li>
+</ol>
+
+<p>This leaves a stack like this:</p>
+
+<p></p><figure><img src="2019_files/stack-2018-02.png" alt="Initial stack at start of function"></figure><p></p>
+
+<p>To return from a function:</p>
+
+<ol>
+<li><p>The callee places its return value in <code>%rax</code>.</p></li>
+
+<li><p>The callee restores the stack pointer to its value at entry (“entry
+<code>%rsp</code>”), if necessary.</p></li>
+
+<li><p>The callee executes the <code>retq</code> instruction. This has an effect like <code>popq
+%rip</code>, which removes the return address from the stack and jumps to that
+address.</p></li>
+
+<li><p>The caller then cleans up any space it prepared for arguments and restores
+caller-saved registers if necessary.</p></li>
+</ol>
+
+<p>Particularly simple callees don’t need to do much more than return, but most
+callees will perform more tasks, such as allocating space for local variables
+and calling functions themselves.</p>
+
+<h2 id="Callee-saved">Callee-saved registers and caller-saved registers</h2>
+
+<p>The calling convention gives callers and callees certain guarantees and
+responsibilities about the values of registers across function calls. Function
+implementations may expect these guarantees to hold, and must work to fulfill
+their responsibilities.</p>
+
+<p>The most important responsibility is that certain registers’ values <em>must be
+preserved across function calls</em>. A callee may use these registers, but if it
+changes them, it must restore them to their original values before returning.
+These registers are called <strong>callee-saved registers</strong>. All other registers are
+<strong>caller-saved</strong>.</p>
+
+<p>Callers can simply use callee-saved registers across function calls; in this
+sense they behave like C++ local variables. Caller-saved registers behave
+differently: if a caller wants to preserve the value of a caller-saved
+register across a function call, the caller must explicitly save it before the
+<code>callq</code> and restore it when the function resumes.</p>
+
+<p>On x86-64 Linux, <code>%rbp</code>, <code>%rbx</code>, <code>%r12</code>, <code>%r13</code>, <code>%r14</code>, and <code>%r15</code> are
+callee-saved, as (sort of) are <code>%rsp</code> and <code>%rip</code>. The other registers are
+caller-saved.</p>
+
+<h2 id="Base-pointer">Base pointer (frame pointer)</h2>
+
+<p>The <code>%rbp</code> register is called the <em>base pointer</em> (and sometimes the <em>frame
+pointer</em>). For simple functions, an optimizing compiler generally treats this
+like any other callee-saved general-purpose register. However, for more
+complex functions, <code>%rbp</code> is used in a specific pattern that facilitates
+debugging. It works like this:</p>
+
+<p></p><figure><img src="2019_files/stack-2018-03.png" alt="Stack frame with base pointer"></figure><p></p>
+
+<ol>
+<li><p>The first instruction executed on function entry is <code>pushq %rbp</code>. This
+saves the caller’s value for <code>%rbp</code> into the callee’s stack. (Since <code>%rbp</code>
+is callee-saved, the callee must save it.)</p></li>
+
+<li><p>The second instruction is <code>movq %rsp, %rbp</code>. This saves the current stack
+pointer in <code>%rbp</code> (so <code>%rbp</code> = entry <code>%rsp</code> - 8).</p>
+
+<p>This adjusted value of <code>%rbp</code> is the callee’s “frame pointer.” The callee
+will not change this value until it returns. The frame pointer provides a
+stable reference point for local variables and caller arguments. (Complex
+functions may need a stable reference point because they reserve varying
+amounts of space for calling different functions.)</p>
+
+<p>Note, also, that the value stored at <code>(%rbp)</code> is the <em>caller’s</em> <code>%rbp</code>,
+and the value stored at <code>8(%rbp)</code> is the return address. This information
+can be used to trace backwards through callers’ stack frames by functions
+such as debuggers.</p></li>
+
+<li><p>The function ends with <code>movq %rbp, %rsp; popq %rbp; retq</code>, or,
+equivalently, <code>leave; retq</code>. This sequence restores the caller’s <code>%rbp</code> and
+entry <code>%rsp</code> before returning.</p></li>
+</ol>
+
+<h2 id="Stack-size">Stack size and red zone</h2>
+
+<p>Functions execute fast because allocating space within a function is simply a
+matter of decrementing <code>%rsp</code>. This is much cheaper than a call to <code>malloc</code> or
+<code>new</code>! But making this work takes a lot of machinery. We’ll see this in more
+detail later; but in brief: The operating system knows that <code>%rsp</code> points to
+the stack, so if a function accesses nonexistent memory near <code>%rsp</code>, the OS
+assumes it’s for the stack and transparently allocates new memory there.</p>
+
+<p>So how can a program “run out of stack”? The operating system puts a limit on
+each function’s stack, and if <code>%rsp</code> gets too low, the program segmentation
+faults.</p>
+
+<p>The diagram above also shows a nice feature of the x86-64 architecture, namely
+the <strong>red zone</strong>. This is a small area <em>above</em> the stack pointer (that is, at
+lower addresses than <code>%rsp</code>) that can be used by the currently-running
+function for local variables. The red zone is nice because it can be used
+without mucking around with the stack pointer; for small functions <code>push</code> and
+<code>pop</code> instructions end up taking time.</p>
+
+<h2 id="Branches">Branches</h2>
+
+<p>The processor typically executes instructions in sequence, incrementing <code>%rip</code>
+each time. Deviations from sequential instruction execution, such as function
+calls, are called <strong>control flow transfers</strong>.</p>
+
+<p>Function calls aren’t the only kind of control flow transfer. A <em>branch</em>
+instruction jumps to a new instruction without saving a return address on the
+stack.</p>
+
+<p>Branches come in two flavors, unconditional and conditional. The <code>jmp</code> or <code>j</code>
+instruction executes an unconditional branch (like a <code>goto</code>). All other branch
+instructions are conditional: they only branch if some condition holds. That
+condition is represented by <strong>condition flags</strong> that are set as a side effect
+of every arithmetic operation.</p>
+
+<p>Arithmetic instructions change part of the <code>%rflags</code> register as a
+side effect of their operation. The most often used flags are:</p>
+
+<ul>
+<li><strong>ZF</strong> (zero flag): set iff the result was zero.</li>
+<li><strong>SF</strong> (sign flag): set iff the most significant bit (the sign bit)
+of the result was one (i.e., the result was negative if considered
+as a signed integer).</li>
+<li><strong>CF</strong> (carry flag): set iff the result overflowed when considered
+as unsigned (i.e., the result was greater than 2<sup>W</sup>-1).</li>
+<li><strong>OF</strong> (overflow flag): set iff the result overflowed when
+considered as signed (i.e., the result was greater than
+2<sup>W-1</sup>-1 or less than –2<sup>W-1</sup>).</li>
+</ul>
+
+<p>Although some instructions let you load specific flags into registers
+(e.g., <code>setz</code>; see CS:APP3e §3.6.2, p203), code more often accesses
+them via conditional jump or conditional move
+instructions.</p>
+
+<table class="alternate padleft">
+<thead>
+<tr>
+<th>Instruction</th>
+<th>Mnemonic</th>
+<th>C example</th>
+<th>Flags</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>j (jmp)</td>
+<td>Jump</td>
+<td><code>break;</code></td>
+<td>(Unconditional)</td>
+</tr>
+
+<tr>
+<td>je (jz)</td>
+<td>Jump if equal (zero)</td>
+<td><code>if (x == y)</code></td>
+<td>ZF</td>
+</tr>
+
+<tr>
+<td>jne (jnz)</td>
+<td>Jump if not equal (nonzero)</td>
+<td><code>if (x != y)</code></td>
+<td>!ZF</td>
+</tr>
+
+<tr>
+<td>jg (jnle)</td>
+<td>Jump if greater</td>
+<td><code>if (x &gt; y)</code>, signed</td>
+<td>!ZF &amp;&amp; !(SF ^ OF)</td>
+</tr>
+
+<tr>
+<td>jge (jnl)</td>
+<td>Jump if greater or equal</td>
+<td><code>if (x &gt;= y)</code>, signed</td>
+<td>!(SF ^ OF)</td>
+</tr>
+
+<tr>
+<td>jl (jnge)</td>
+<td>Jump if less</td>
+<td><code>if (x &lt; y)</code>, signed</td>
+<td>SF ^ OF</td>
+</tr>
+
+<tr>
+<td>jle (jng)</td>
+<td>Jump if less or equal</td>
+<td><code>if (x &lt;= y)</code>, signed</td>
+<td>(SF ^ OF) || ZF</td>
+</tr>
+
+<tr>
+<td>ja (jnbe)</td>
+<td>Jump if above</td>
+<td><code>if (x &gt; y)</code>, unsigned</td>
+<td>!CF &amp;&amp; !ZF</td>
+</tr>
+
+<tr>
+<td>jae (jnb)</td>
+<td>Jump if above or equal</td>
+<td><code>if (x &gt;= y)</code>, unsigned</td>
+<td>!CF</td>
+</tr>
+
+<tr>
+<td>jb (jnae)</td>
+<td>Jump if below</td>
+<td><code>if (x &lt; y)</code>, unsigned</td>
+<td>CF</td>
+</tr>
+
+<tr>
+<td>jbe (jna)</td>
+<td>Jump if below or equal</td>
+<td><code>if (x &lt;= y)</code>, unsigned</td>
+<td>CF || ZF</td>
+</tr>
+
+<tr>
+<td>js</td>
+<td>Jump if sign bit</td>
+<td><code>if (x &lt; 0)</code>, signed</td>
+<td>SF</td>
+</tr>
+
+<tr>
+<td>jns</td>
+<td>Jump if not sign bit</td>
+<td><code>if (x &gt;= 0)</code>, signed</td>
+<td>!SF</td>
+</tr>
+
+<tr>
+<td>jc</td>
+<td>Jump if carry bit</td>
+<td>N/A</td>
+<td>CF</td>
+</tr>
+
+<tr>
+<td>jnc</td>
+<td>Jump if not carry bit</td>
+<td>N/A</td>
+<td>!CF</td>
+</tr>
+
+<tr>
+<td>jo</td>
+<td>Jump if overflow bit</td>
+<td>N/A</td>
+<td>OF</td>
+</tr>
+
+<tr>
+<td>jno</td>
+<td>Jump if not overflow bit</td>
+<td>N/A</td>
+<td>!OF</td>
+</tr>
+</tbody>
+</table>
+
+<p>The <code>test</code> and <code>cmp</code> instructions are frequently seen before a
+conditional branch. These operations perform arithmetic but throw away
+the result, except for condition codes. <code>test</code> performs binary-and,
+<code>cmp</code> performs subtraction.</p>
+
+<p><code>cmp</code> is hard to grasp: remember that <code>subq %rax, %rbx</code> performs
+<code>%rbx := %rbx - %rax</code>—the source/destination operand is on the left. So <code>cmpq %rax, %rbx</code>
+evaluates <code>%rbx - %rax</code>. The sequence <code>cmpq %rax, %rbx; jg L</code> will jump to
+label <code>L</code> if and only if <code>%rbx</code> is greater than <code>%rax</code> (signed).</p>
+
+<p>The weird-looking instruction <code>testq %rax, %rax</code>, or more generally <code>testq
+REG, SAMEREG</code>, is used to load the condition flags appropriately for a single
+register. For example, the bitwise-and of <code>%rax</code> and <code>%rax</code> is zero if and
+only if <code>%rax</code> is zero,  so <code>testq %rax, %rax; je L</code> jumps to <code>L</code> if and only
+if <code>%rax</code> is zero.</p>
+
+<h2 id="Cpp-data-structures">Sidebar: C++ data structures</h2>
+
+<p>C++ compilers and data structure implementations have been designed to avoid
+the so-called <em>abstraction penalty</em>, which is when convenient data structures
+compile to more and more-expensive instructions than simple, raw memory
+accesses. When this works, it works quite well; for example, this:</p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#902000">long</span> <span style="color:#06287e">f</span>(std<span style="color:#666">::</span>vector<span style="color:#666">&lt;</span><span style="color:#902000">int</span><span style="color:#666">&gt;&amp;</span> v) {
+    <span style="color:#902000">long</span> sum <span style="color:#666">=</span> <span style="color:#40a070">0</span>;
+    <span style="color:#007020;font-weight:bold">for</span> (<span style="color:#007020;font-weight:bold">auto</span><span style="color:#666">&amp;</span> <span style="color:#002070;font-weight:bold">i</span> : v) {
+        sum <span style="color:#666">+=</span> i;
+    }
+    <span style="color:#007020;font-weight:bold">return</span> sum;
+}
+</code></pre></div>
+<p>compiles to this, a very tight loop similar to the C version:</p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-asm" data-lang="asm">        <span style="color:#06287e">movq</span>    (<span style="color:#bb60d5">%rdi</span>), <span style="color:#bb60d5">%rax</span>
+        <span style="color:#06287e">movq</span>    <span style="color:#40a070">8</span>(<span style="color:#bb60d5">%rdi</span>), <span style="color:#bb60d5">%rcx</span>
+        <span style="color:#06287e">cmpq</span>    <span style="color:#bb60d5">%rcx</span>, <span style="color:#bb60d5">%rax</span>
+        <span style="color:#06287e">je</span>      <span style="color:#60add5">.L4</span>
+        <span style="color:#06287e">movq</span>    <span style="color:#bb60d5">%rax</span>, <span style="color:#bb60d5">%rdx</span>
+        <span style="color:#06287e">addq</span>    <span style="color:#60add5">$4</span>, <span style="color:#bb60d5">%rax</span>
+        <span style="color:#06287e">subq</span>    <span style="color:#bb60d5">%rax</span>, <span style="color:#bb60d5">%rcx</span>
+        <span style="color:#06287e">andq</span>    <span style="color:#60add5">$-4</span>, <span style="color:#bb60d5">%rcx</span>
+        <span style="color:#06287e">addq</span>    <span style="color:#bb60d5">%rax</span>, <span style="color:#bb60d5">%rcx</span>
+        <span style="color:#06287e">movl</span>    <span style="color:#60add5">$0</span>, <span style="color:#bb60d5">%eax</span>
+<span style="color:#002070;font-weight:bold">.L3:</span>
+        <span style="color:#06287e">movslq</span>  (<span style="color:#bb60d5">%rdx</span>), <span style="color:#bb60d5">%rsi</span>
+        <span style="color:#06287e">addq</span>    <span style="color:#bb60d5">%rsi</span>, <span style="color:#bb60d5">%rax</span>
+        <span style="color:#06287e">addq</span>    <span style="color:#60add5">$4</span>, <span style="color:#bb60d5">%rdx</span>
+        <span style="color:#06287e">cmpq</span>    <span style="color:#bb60d5">%rcx</span>, <span style="color:#bb60d5">%rdx</span>
+        <span style="color:#06287e">jne</span>     <span style="color:#60add5">.L3</span>
+        <span style="color:#4070a0">rep</span> <span style="color:#06287e">ret</span>
+<span style="color:#002070;font-weight:bold">.L4:</span>
+        <span style="color:#06287e">movl</span>    <span style="color:#60add5">$0</span>, <span style="color:#bb60d5">%eax</span>
+        <span style="color:#06287e">ret</span></code></pre></div>
+<p>We can also use this output to infer some aspects of <code>std::vector</code>’s
+implementation. It looks like:</p>
+
+<ul>
+<li>The first element of a <code>std::vector</code> structure is a pointer to the first
+element of the vector;</li>
+<li>The elements are stored in memory in a simple array;</li>
+<li>The second element of a <code>std::vector</code> structure is a pointer to
+<em>one-past-the-end</em> of the elements of the vector (i.e., if the vector is
+empty, the first and second elements of the structure have the same value).</li>
+</ul>
+
+<h2 id="Compiler-optimizations">Compiler optimizations</h2>
+
+<h3 id="argument-elision">Argument elision</h3>
+
+<p>A compiler may decide to elide (or remove) certain operations setting up
+function call arguments, if it can decide that the registers containing these
+arguments will hold the correct value before the function call takes place.
+Let's see an example of a function disassembled function <code>f</code> in <code>f31.s</code>:</p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-asm" data-lang="asm"><span style="color:#06287e">subq</span>    <span style="color:#60add5">$8</span>, <span style="color:#bb60d5">%rsp</span>
+<span style="color:#06287e">call</span>    <span style="color:#60add5">_Z1gi@PLT</span>
+<span style="color:#06287e">addq</span>    <span style="color:#60add5">$8</span>, <span style="color:#bb60d5">%rsp</span>
+<span style="color:#06287e">addl</span>    <span style="color:#60add5">$1</span>, <span style="color:#bb60d5">%eax</span>
+<span style="color:#06287e">ret</span></code></pre></div>
+<p>This function calls another function <code>g</code>, adds 1 to <code>g</code>'s return value, and
+returns that value.</p>
+
+<p>It is possible that the function has the following definition in C++:</p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#902000">int</span> <span style="color:#06287e">f</span>() {
+    <span style="color:#007020;font-weight:bold">return</span> <span style="color:#40a070">1</span> <span style="color:#666">+</span> g();
+}
+</code></pre></div>
+<p>However, the actual definition of <code>f</code> in <code>f31.cc</code> is:</p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#902000">int</span> <span style="color:#06287e">f</span>(x) {
+    <span style="color:#007020;font-weight:bold">return</span> <span style="color:#40a070">1</span> <span style="color:#666">+</span> g(x);
+}
+</code></pre></div>
+<p>The compiler realizes that the argument to function <code>g</code>, which is passed via
+register <code>%rdi</code>, already has the right value when <code>g</code> is called, so it doesn't
+bother doing anything about it. This is one example of numerous optimizations
+a compiler can perform to reduce the size of generated code.</p>
+
+<h3 id="inlining">Inlining</h3>
+
+<p>A compiler may also copy the body of function to its call site, instead of
+doing an explicit function call, when it decides that the overhead of
+performing a function call outweights the overhead of doing this copy. For
+example, if we have a function <code>g</code> defined as <code>g(x) = 2 + x</code>, and <code>f</code> is
+defined as <code>f(x) = 1 + g(x)</code>, then the compiler may actually generate <code>f(x)</code>
+as simply <code>3 + x</code>, without inserting any <code>call</code> instructions. In assembly
+terms, function <code>g</code> will look like</p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-asm" data-lang="asm"><span style="color:#06287e">leal</span>    <span style="color:#40a070">2</span>(<span style="color:#bb60d5">%rdi</span>), <span style="color:#bb60d5">%eax</span>
+<span style="color:#06287e">ret</span></code></pre></div>
+<p>and <code>f</code> will simply be</p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-asm" data-lang="asm"><span style="color:#06287e">leal</span>    <span style="color:#40a070">3</span>(<span style="color:#bb60d5">%rdi</span>), <span style="color:#bb60d5">%eax</span>
+<span style="color:#06287e">ret</span></code></pre></div>
+<h3 id="tail-call-elimination">Tail call elimination</h3>
+
+<p>Let's look at another example in <code>f32.s</code>:</p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-asm" data-lang="asm"><span style="color:#06287e">addl</span>    <span style="color:#60add5">$1</span>, <span style="color:#bb60d5">%edi</span>
+<span style="color:#06287e">jmp</span> <span style="color:#60add5">_Z1gi@PLT</span></code></pre></div>
+<p>This function doesn't even contain a <code>ret</code> instruction! What is going on?
+Let's take a look at the actual definition of <code>f</code>, in <code>f32.cc</code>:</p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#902000">int</span> <span style="color:#06287e">f</span>(<span style="color:#902000">int</span> x) {
+    <span style="color:#007020;font-weight:bold">return</span> g(x <span style="color:#666">+</span> <span style="color:#40a070">1</span>);
+}
+</code></pre></div>
+<p>Note that the call to function <code>g</code> is the last operation in function <code>f</code>, and
+the return value of <code>f</code> is just the return value of the invocation of <code>g</code>.
+In this case the compiler can perform a <em>tail call elimination</em>: instead of
+calling <code>g</code> explicitly, it can simply jump to <code>g</code> and have <code>g</code> return to the
+same address that <code>f</code> would have returned to.</p>
+
+<!---Let's see why it works in terms of the stack:
+
+XXX NEED A NICE STACK DIAGRAM HERE--->
+
+<blockquote class="note">
+<p>A tail call elimination may occur if a function (caller) ends
+with another function call (callee) and performs no cleanup once the callee
+returns. In this case the caller and simply jump to the callee, instead of
+doing an explicit call.</p>
+</blockquote>
+
+<h3 id="loop-unrolling">Loop unrolling</h3>
+
+<p>Before we jump into loop unrolling, let's take a small excursion into an
+aspect of calling conventions called caller/callee-saved registers. This will
+help us under the sample program in <code>f33.s</code> better.</p>
+
+<h4 id="calling-conventions-callercalleesaved-registers">Calling conventions: caller/callee-saved registers</h4>
+
+<p>Let's look at the function definition in <code>f33.s</code>:</p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-asm" data-lang="asm">    <span style="color:#06287e">pushq</span>   <span style="color:#bb60d5">%r12</span>
+    <span style="color:#06287e">pushq</span>   <span style="color:#bb60d5">%rbp</span>
+    <span style="color:#06287e">pushq</span>   <span style="color:#bb60d5">%rbx</span>
+    <span style="color:#06287e">testl</span>   <span style="color:#bb60d5">%edi</span>, <span style="color:#bb60d5">%edi</span>
+    <span style="color:#06287e">je</span>  <span style="color:#60add5">.L4</span>
+    <span style="color:#06287e">movl</span>    <span style="color:#bb60d5">%edi</span>, <span style="color:#bb60d5">%r12d</span>
+    <span style="color:#06287e">movl</span>    <span style="color:#60add5">$0</span>, <span style="color:#bb60d5">%ebx</span>
+    <span style="color:#06287e">movl</span>    <span style="color:#60add5">$0</span>, <span style="color:#bb60d5">%ebp</span>
+<span style="color:#002070;font-weight:bold">.L3:</span>
+    <span style="color:#06287e">movl</span>    <span style="color:#bb60d5">%ebx</span>, <span style="color:#bb60d5">%edi</span>
+    <span style="color:#06287e">call</span>    <span style="color:#60add5">_Z1gj@PLT</span>
+    <span style="color:#06287e">addl</span>    <span style="color:#bb60d5">%eax</span>, <span style="color:#bb60d5">%ebp</span>
+    <span style="color:#06287e">addl</span>    <span style="color:#60add5">$1</span>, <span style="color:#bb60d5">%ebx</span>
+    <span style="color:#06287e">cmpl</span>    <span style="color:#bb60d5">%ebx</span>, <span style="color:#bb60d5">%r12d</span>
+    <span style="color:#06287e">jne</span> <span style="color:#60add5">.L3</span>
+<span style="color:#002070;font-weight:bold">.L1:</span>
+    <span style="color:#06287e">movl</span>    <span style="color:#bb60d5">%ebp</span>, <span style="color:#bb60d5">%eax</span>
+    <span style="color:#06287e">popq</span>    <span style="color:#bb60d5">%rbx</span>
+    <span style="color:#06287e">popq</span>    <span style="color:#bb60d5">%rbp</span>
+    <span style="color:#06287e">popq</span>    <span style="color:#bb60d5">%r12</span>
+    <span style="color:#06287e">ret</span>
+<span style="color:#002070;font-weight:bold">.L4:</span>
+    <span style="color:#06287e">movl</span>    <span style="color:#bb60d5">%edi</span>, <span style="color:#bb60d5">%ebp</span>
+    <span style="color:#06287e">jmp</span> <span style="color:#60add5">.L1</span></code></pre></div>
+<p>From the assembly we can tell that the backwards jump to <code>.L3</code> is likely a
+loop. The loop index is in <code>%ebx</code> and the loop bound is in <code>%r12d</code>. Note that
+upon entry to the function we first moved the value <code>%rdi</code> to <code>%r12d</code>. This is
+necessary because in the loop <code>f</code> calls <code>g</code>, and <code>%rdi</code> is used to pass
+arguments to <code>g</code>, so we must move its value to a different register to used it
+as the loop bound (this case <code>%r12</code>). But there is more to this: the compiler
+also needs to ensure that this register's value is preserved across function
+calls. Calling conventions dictate that certain registers always exhibit this
+property, and they are called <strong>callee-saved registers</strong>. If a register is
+callee-saved, then the caller doesn't have to save its value before entering a
+function call.</p>
+
+<p>We note that upon entry to the function, <code>f</code> saved a bunch of registers by
+pushing them to the stack: <code>%r12</code>, <code>%rbp</code>, <code>%rbx</code>. It is because all these
+registers are callee-saved registers, and <code>f</code> uses them during the function
+call. In general, the following registers in x86_64 are callee-saved: <br>
+<code>%rbx</code>, <code>%r12-%r15</code>, <code>%rbp</code>, <code>%rsp</code> (<code>%rip</code>)</p>
+
+<p>All the other registers are <strong>caller-saved</strong>, which means the callee doesn't
+have to preserve their values. If the caller wants to reuse values in these
+registers across function calls, it will have to explicitly save and restore
+these registers. In general, the following registers in x86_64 are caller-saved: <br>
+<code>%rax</code>, <code>%rcx</code>, <code>%rdx</code>, <code>%r8-%r11</code></p>
+
+<p>Now let's get back to loop unrolling. Let us a look at the program in <code>f34.s</code>:</p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-asm" data-lang="asm">    <span style="color:#06287e">testl</span>   <span style="color:#bb60d5">%edi</span>, <span style="color:#bb60d5">%edi</span>
+    <span style="color:#06287e">je</span>  <span style="color:#60add5">.L7</span>
+    <span style="color:#06287e">leal</span>    -<span style="color:#40a070">1</span>(<span style="color:#bb60d5">%rdi</span>), <span style="color:#bb60d5">%eax</span>
+    <span style="color:#06287e">cmpl</span>    <span style="color:#60add5">$7</span>, <span style="color:#bb60d5">%eax</span>
+    <span style="color:#06287e">jbe</span> <span style="color:#60add5">.L8</span>
+    <span style="color:#06287e">pxor</span>    <span style="color:#bb60d5">%xmm0</span>, <span style="color:#bb60d5">%xmm0</span>
+    <span style="color:#06287e">movl</span>    <span style="color:#bb60d5">%edi</span>, <span style="color:#bb60d5">%edx</span>
+    <span style="color:#06287e">xorl</span>    <span style="color:#bb60d5">%eax</span>, <span style="color:#bb60d5">%eax</span>
+    <span style="color:#06287e">movdqa</span>  <span style="color:#60add5">.LC0</span>(<span style="color:#bb60d5">%rip</span>), <span style="color:#bb60d5">%xmm1</span>
+    <span style="color:#06287e">shrl</span>    <span style="color:#60add5">$2</span>, <span style="color:#bb60d5">%edx</span>
+    <span style="color:#06287e">movdqa</span>  <span style="color:#60add5">.LC1</span>(<span style="color:#bb60d5">%rip</span>), <span style="color:#bb60d5">%xmm2</span>
+<span style="color:#002070;font-weight:bold">.L5:</span>
+    <span style="color:#06287e">addl</span>    <span style="color:#60add5">$1</span>, <span style="color:#bb60d5">%eax</span>
+    <span style="color:#06287e">paddd</span>   <span style="color:#bb60d5">%xmm1</span>, <span style="color:#bb60d5">%xmm0</span>
+    <span style="color:#06287e">paddd</span>   <span style="color:#bb60d5">%xmm2</span>, <span style="color:#bb60d5">%xmm1</span>
+    <span style="color:#06287e">cmpl</span>    <span style="color:#bb60d5">%edx</span>, <span style="color:#bb60d5">%eax</span>
+    <span style="color:#06287e">jb</span>  <span style="color:#60add5">.L5</span>
+    <span style="color:#06287e">movdqa</span>  <span style="color:#bb60d5">%xmm0</span>, <span style="color:#bb60d5">%xmm1</span>
+    <span style="color:#06287e">movl</span>    <span style="color:#bb60d5">%edi</span>, <span style="color:#bb60d5">%edx</span>
+    <span style="color:#06287e">andl</span>    <span style="color:#60add5">$-4</span>, <span style="color:#bb60d5">%edx</span>
+    <span style="color:#06287e">psrldq</span>  <span style="color:#60add5">$8</span>, <span style="color:#bb60d5">%xmm1</span>
+    <span style="color:#06287e">paddd</span>   <span style="color:#bb60d5">%xmm1</span>, <span style="color:#bb60d5">%xmm0</span>
+    <span style="color:#06287e">movdqa</span>  <span style="color:#bb60d5">%xmm0</span>, <span style="color:#bb60d5">%xmm1</span>
+    <span style="color:#06287e">cmpl</span>    <span style="color:#bb60d5">%edx</span>, <span style="color:#bb60d5">%edi</span>
+    <span style="color:#06287e">psrldq</span>  <span style="color:#60add5">$4</span>, <span style="color:#bb60d5">%xmm1</span>
+    <span style="color:#06287e">paddd</span>   <span style="color:#bb60d5">%xmm1</span>, <span style="color:#bb60d5">%xmm0</span>
+    <span style="color:#06287e">movd</span>    <span style="color:#bb60d5">%xmm0</span>, <span style="color:#bb60d5">%eax</span>
+    <span style="color:#06287e">je</span>  <span style="color:#60add5">.L10</span>
+<span style="color:#002070;font-weight:bold">.L3:</span>
+    <span style="color:#06287e">leal</span>    <span style="color:#40a070">1</span>(<span style="color:#bb60d5">%rdx</span>), <span style="color:#bb60d5">%ecx</span>
+    <span style="color:#06287e">addl</span>    <span style="color:#bb60d5">%edx</span>, <span style="color:#bb60d5">%eax</span>
+    <span style="color:#06287e">cmpl</span>    <span style="color:#bb60d5">%ecx</span>, <span style="color:#bb60d5">%edi</span>
+    <span style="color:#06287e">je</span>  <span style="color:#60add5">.L1</span>
+    <span style="color:#06287e">addl</span>    <span style="color:#bb60d5">%ecx</span>, <span style="color:#bb60d5">%eax</span>
+    <span style="color:#06287e">leal</span>    <span style="color:#40a070">2</span>(<span style="color:#bb60d5">%rdx</span>), <span style="color:#bb60d5">%ecx</span>
+    <span style="color:#06287e">cmpl</span>    <span style="color:#bb60d5">%ecx</span>, <span style="color:#bb60d5">%edi</span>
+    <span style="color:#06287e">je</span>  <span style="color:#60add5">.L1</span>
+    <span style="color:#06287e">addl</span>    <span style="color:#bb60d5">%ecx</span>, <span style="color:#bb60d5">%eax</span>
+    <span style="color:#06287e">leal</span>    <span style="color:#40a070">3</span>(<span style="color:#bb60d5">%rdx</span>), <span style="color:#bb60d5">%ecx</span>
+    <span style="color:#06287e">cmpl</span>    <span style="color:#bb60d5">%ecx</span>, <span style="color:#bb60d5">%edi</span>
+    <span style="color:#06287e">je</span>  <span style="color:#60add5">.L1</span>
+    <span style="color:#06287e">addl</span>    <span style="color:#bb60d5">%ecx</span>, <span style="color:#bb60d5">%eax</span>
+    <span style="color:#06287e">leal</span>    <span style="color:#40a070">4</span>(<span style="color:#bb60d5">%rdx</span>), <span style="color:#bb60d5">%ecx</span>
+    <span style="color:#06287e">cmpl</span>    <span style="color:#bb60d5">%ecx</span>, <span style="color:#bb60d5">%edi</span>
+    <span style="color:#06287e">je</span>  <span style="color:#60add5">.L1</span>
+    <span style="color:#06287e">addl</span>    <span style="color:#bb60d5">%ecx</span>, <span style="color:#bb60d5">%eax</span>
+    <span style="color:#06287e">leal</span>    <span style="color:#40a070">5</span>(<span style="color:#bb60d5">%rdx</span>), <span style="color:#bb60d5">%ecx</span>
+    <span style="color:#06287e">cmpl</span>    <span style="color:#bb60d5">%ecx</span>, <span style="color:#bb60d5">%edi</span>
+    <span style="color:#06287e">je</span>  <span style="color:#60add5">.L1</span>
+    <span style="color:#06287e">addl</span>    <span style="color:#bb60d5">%ecx</span>, <span style="color:#bb60d5">%eax</span>
+    <span style="color:#06287e">leal</span>    <span style="color:#40a070">6</span>(<span style="color:#bb60d5">%rdx</span>), <span style="color:#bb60d5">%ecx</span>
+    <span style="color:#06287e">cmpl</span>    <span style="color:#bb60d5">%ecx</span>, <span style="color:#bb60d5">%edi</span>
+    <span style="color:#06287e">je</span>  <span style="color:#60add5">.L1</span>
+    <span style="color:#06287e">addl</span>    <span style="color:#bb60d5">%ecx</span>, <span style="color:#bb60d5">%eax</span>
+    <span style="color:#06287e">addl</span>    <span style="color:#60add5">$7</span>, <span style="color:#bb60d5">%edx</span>
+    <span style="color:#06287e">leal</span>    (<span style="color:#bb60d5">%rax</span>,<span style="color:#bb60d5">%rdx</span>), <span style="color:#bb60d5">%ecx</span>
+    <span style="color:#06287e">cmpl</span>    <span style="color:#bb60d5">%edx</span>, <span style="color:#bb60d5">%edi</span>
+    <span style="color:#06287e">cmovne</span>  <span style="color:#bb60d5">%ecx</span>, <span style="color:#bb60d5">%eax</span>
+    <span style="color:#06287e">ret</span>
+<span style="color:#002070;font-weight:bold">.L7:</span>
+    <span style="color:#06287e">xorl</span>    <span style="color:#bb60d5">%eax</span>, <span style="color:#bb60d5">%eax</span>
+<span style="color:#002070;font-weight:bold">.L1:</span>
+    <span style="color:#4070a0">rep</span> <span style="color:#06287e">ret</span>
+<span style="color:#002070;font-weight:bold">.L10:</span>
+    <span style="color:#4070a0">rep</span> <span style="color:#06287e">ret</span>
+<span style="color:#002070;font-weight:bold">.L8:</span>
+    <span style="color:#06287e">xorl</span>    <span style="color:#bb60d5">%edx</span>, <span style="color:#bb60d5">%edx</span>
+    <span style="color:#06287e">xorl</span>    <span style="color:#bb60d5">%eax</span>, <span style="color:#bb60d5">%eax</span>
+    <span style="color:#06287e">jmp</span> <span style="color:#60add5">.L3</span></code></pre></div>
+<p>Wow this looks long and repetitive! Especially the section under label <code>.L3</code>!
+If we take a look at the original function definition in <code>f34.cc</code>, we will
+find that it's almost the same as <code>f33.cc</code>, except that in <code>f34.cc</code> we know
+the definition of <code>g</code> as well. With knowledge of what <code>g</code> does the compiler's
+optimizer decides that unrolling the loop into 7-increment batches results in
+faster code.</p>
+
+<p>Code like this can become difficult to understand, especially when the compiler
+begins to use more advanced registers reserved for vector operations. We can
+fine-tune the optimizer to disable certain optimizations. For example, we can
+use the <code>-mno-sse -fno-unroll-loops</code> compiler options to disable the use of SSE
+registers and loop unrolling. The resulting code, in <code>f35.s</code>, for the same function
+definitions in <code>f34.cc</code>, becomes much easier to understand:</p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-asm" data-lang="asm">    <span style="color:#06287e">testl</span>   <span style="color:#bb60d5">%edi</span>, <span style="color:#bb60d5">%edi</span>
+    <span style="color:#06287e">je</span>  <span style="color:#60add5">.L4</span>
+    <span style="color:#06287e">xorl</span>    <span style="color:#bb60d5">%edx</span>, <span style="color:#bb60d5">%edx</span>
+    <span style="color:#06287e">xorl</span>    <span style="color:#bb60d5">%eax</span>, <span style="color:#bb60d5">%eax</span>
+<span style="color:#002070;font-weight:bold">.L3:</span>
+    <span style="color:#06287e">addl</span>    <span style="color:#bb60d5">%edx</span>, <span style="color:#bb60d5">%eax</span>
+    <span style="color:#06287e">addl</span>    <span style="color:#60add5">$1</span>, <span style="color:#bb60d5">%edx</span>
+    <span style="color:#06287e">cmpl</span>    <span style="color:#bb60d5">%edx</span>, <span style="color:#bb60d5">%edi</span>
+    <span style="color:#06287e">jne</span> <span style="color:#60add5">.L3</span>
+    <span style="color:#4070a0">rep</span> <span style="color:#06287e">ret</span>
+<span style="color:#002070;font-weight:bold">.L4:</span>
+    <span style="color:#06287e">xorl</span>    <span style="color:#bb60d5">%eax</span>, <span style="color:#bb60d5">%eax</span>
+    <span style="color:#06287e">ret</span></code></pre></div>
+<p>Note that the compiler still performed inlining to eliminate function <code>g</code>.</p>
+
+<h3 id="optimizing-recursive-functions">Optimizing recursive functions</h3>
+
+<p>Let's look at the following recursive function in <code>f36.cc</code>:</p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#902000">int</span> <span style="color:#06287e">f</span>(<span style="color:#902000">int</span> x) {
+    <span style="color:#007020;font-weight:bold">if</span> (x <span style="color:#666">&gt;</span> <span style="color:#40a070">0</span>) {
+        <span style="color:#007020;font-weight:bold">return</span> x <span style="color:#666">*</span> f(x <span style="color:#666">-</span> <span style="color:#40a070">1</span>);
+    } <span style="color:#007020;font-weight:bold">else</span> {
+        <span style="color:#007020;font-weight:bold">return</span> <span style="color:#40a070">0</span>;
+    }
+}
+</code></pre></div>
+<p>At the first glance it may seem that the function returns factorial of <code>x</code>.
+But it actually returns 0. Despite it doing a series of multiplications, in the end
+it always multiplies the whole result with 0, which produces 0.</p>
+
+<p>When we compile this function to assembly without much optimization, we see
+the expensive computation occurring:</p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-asm" data-lang="asm">    <span style="color:#06287e">movl</span>    <span style="color:#60add5">$0</span>, <span style="color:#bb60d5">%eax</span>
+    <span style="color:#06287e">testl</span>   <span style="color:#bb60d5">%edi</span>, <span style="color:#bb60d5">%edi</span>
+    <span style="color:#06287e">jg</span>  <span style="color:#60add5">.L8</span>
+    <span style="color:#4070a0">rep</span> <span style="color:#06287e">ret</span>
+<span style="color:#002070;font-weight:bold">.L8:</span>
+    <span style="color:#06287e">pushq</span>   <span style="color:#bb60d5">%rbx</span>
+    <span style="color:#06287e">movl</span>    <span style="color:#bb60d5">%edi</span>, <span style="color:#bb60d5">%ebx</span>
+    <span style="color:#06287e">leal</span>    -<span style="color:#40a070">1</span>(<span style="color:#bb60d5">%rdi</span>), <span style="color:#bb60d5">%edi</span>
+    <span style="color:#06287e">call</span>    <span style="color:#60add5">_Z1fi</span>
+    <span style="color:#06287e">imull</span>   <span style="color:#bb60d5">%ebx</span>, <span style="color:#bb60d5">%eax</span>
+    <span style="color:#06287e">popq</span>    <span style="color:#bb60d5">%rbx</span>
+    <span style="color:#06287e">ret</span></code></pre></div>
+<p>In <code>f37.cc</code> there is an actual factorial function:</p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#902000">int</span> <span style="color:#06287e">f</span>(<span style="color:#902000">int</span> x) {
+    <span style="color:#007020;font-weight:bold">if</span> (x <span style="color:#666">&gt;</span> <span style="color:#40a070">0</span>) {
+        <span style="color:#007020;font-weight:bold">return</span> x <span style="color:#666">*</span> f(x <span style="color:#666">-</span> <span style="color:#40a070">1</span>);
+    } <span style="color:#007020;font-weight:bold">else</span> {
+        <span style="color:#007020;font-weight:bold">return</span> <span style="color:#40a070">1</span>;
+    }
+}
+</code></pre></div>
+<p>If we compile this function using level-2 optimization (<code>-O2</code>), we get the
+following assembly:</p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-asm" data-lang="asm">    <span style="color:#06287e">testl</span>   <span style="color:#bb60d5">%edi</span>, <span style="color:#bb60d5">%edi</span>
+    <span style="color:#06287e">movl</span>    <span style="color:#60add5">$1</span>, <span style="color:#bb60d5">%eax</span>
+    <span style="color:#06287e">jle</span> <span style="color:#60add5">.L4</span>
+<span style="color:#002070;font-weight:bold">.L3:</span>
+    <span style="color:#06287e">imull</span>   <span style="color:#bb60d5">%edi</span>, <span style="color:#bb60d5">%eax</span>
+    <span style="color:#06287e">subl</span>    <span style="color:#60add5">$1</span>, <span style="color:#bb60d5">%edi</span>
+    <span style="color:#06287e">jne</span> <span style="color:#60add5">.L3</span>
+    <span style="color:#4070a0">rep</span> <span style="color:#06287e">ret</span>
+<span style="color:#002070;font-weight:bold">.L4:</span>
+    <span style="color:#4070a0">rep</span> <span style="color:#06287e">ret</span></code></pre></div>
+<p>There is no <code>call</code> instructions again! The compiler has transformed the
+recursive function into a loop.</p>
+
+<p>If we revisit our "fake" factorial function that always returns 0, and compile
+it with <code>-O2</code>, we see yet more evidence of compiler's deep understanding of
+our program:</p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-asm" data-lang="asm"><span style="color:#06287e">xorl</span>    <span style="color:#bb60d5">%eax</span>, <span style="color:#bb60d5">%eax</span>
+<span style="color:#06287e">ret</span></code></pre></div>
+<h3 id="optimizing-arithmetic-operations">Optimizing arithmetic operations</h3>
+
+<p>The assembly code in <code>f39.s</code> looks like this:</p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-asm" data-lang="asm"><span style="color:#06287e">leal</span>    (<span style="color:#bb60d5">%rdi</span>,<span style="color:#bb60d5">%rdi</span>,<span style="color:#40a070">2</span>), <span style="color:#bb60d5">%eax</span>
+<span style="color:#06287e">leal</span>    (<span style="color:#bb60d5">%rdi</span>,<span style="color:#bb60d5">%rax</span>,<span style="color:#40a070">4</span>), <span style="color:#bb60d5">%eax</span>
+<span style="color:#06287e">ret</span></code></pre></div>
+<p>It looks like some rather complex address computations! The first <code>leal</code>
+instruction basically loads <code>%eax</code> with value <code>3*%rdi</code> (or <code>%rdi + 2*%rdi</code>).
+The second <code>leal</code> multiplies the previous result by another 4, and adds
+another <code>%rdi</code> to it. So what it actually does is <code>3*%rdi*4 + %rdi</code>, or
+simply <code>13*%rdi</code>. This is also revealed in the function name in <code>f39.s</code>.</p>
+
+<p>The compiler choose to use <code>leal</code> instructions instead of an explicit
+multiply because the two <code>leal</code> instructions actually take less space.</p>
+
+<h2 id="Buffer-overflow-attacks">Buffer overflow attacks</h2>
+
+<p>The <code>storage1/attackme.cc</code> file contains a particularly dangerous kind of
+undefined behavior, a <a href="https://en.wikipedia.org/wiki/Buffer_overflow"><strong>buffer
+overflow</strong></a>. In a buffer
+overflow, an untrusted input is transferred into a <em>buffer</em>, such as an array
+of characters on the stack, without checking to see whether the buffer is big
+enough for the untrusted input.</p>
+
+<p>Historically buffer overflows have caused some of the worst, and most
+consequential, C and C++ security holes known. They are particularly bad when
+the untrusted input derives from the network: then breaking into a network can
+be as simple as sending a packet.</p>
+
+<p>The buffer overflow in <code>attackme.cc</code> derives from a <a href="#Checksums"><strong>checksum function</strong></a>.
+Our simple
+<code>checksum</code> takes in a pointer to the buffer, then copies that buffer to a
+local variable, <code>buf</code>, and processes the copy. Unfortunately, <code>checksum</code>
+doesn’t verify that the input fits its buffer, and if the user supplies too
+big an argument, <code>checksum</code>’s buffer will overflow!</p>
+
+<p>Buffer overflows cause undefined behavior—it’s illegal to access memory
+outside any object. Undefined behavior is always bad, but some is worse than
+others; and this particular buffer overflow allows the attacker to completely
+own the victim program, causing it to execute <em>any shell command</em>!</p>
+
+<p>The attack works as follows.</p>
+
+<ul>
+<li><p>The function’s entry sequence allocates local variable space with <code>subq
+$112, %rsp</code>. Examining the assembly we can infer that <code>buf</code> is stored at
+this <code>%rsp</code>.</p></li>
+
+<li><p>The function’s return address is stored at <code>112(%rsp)</code>, which is <code>buf.c +
+112</code>.</p></li>
+
+<li><p>Any input <code>arg</code> with <code>strlen(arg) &gt; 99</code> will overflow the buffer. (The 100th
+character is the null character that ends the string). But <code>arg</code>s with 100
+to 111 characters won’t cause problems, because the remaining 12 bytes of
+local variable space are unused (they’re present to ensure stack frame
+alignment).</p></li>
+
+<li><p><code>arg</code>s of 112 or more characters, however, will run into the stack slot
+reserved for <code>checksum</code>’s return address! An attacker can put any value they
+want in that location, as long as the value contains no null characters
+(since <code>checksum</code>’s buffer copy stops when it encounters the end of the
+input string).</p></li>
+
+<li><p>Overflowing the return address slot causes harm when <code>checksum</code> returns.
+Examining the state during the exit sequence, we see that the immediately
+previous instructions load <code>%rdi</code> with <code>buf</code> and call <code>finish_checksum</code>. But
+what a coincidence—<code>finish_checksum</code> does not modify <code>%rdi</code>! Thus, when
+<code>checksum</code> returns, <code>%rdi</code> will be loaded with the address of <code>buf</code>.</p></li>
+
+<li><p>Our attacker therefore supplies a carefully-chosen string that overwrites
+<code>checksum</code>’s return address with <em>the address of the <code>run_shell</code> function</em>.
+This will cause <code>run_shell</code> to run the programs defined in the initial
+portion of the string!</p></li>
+</ul>
+
+<p>Thus, the attacker has taken control of the victim by <strong>returning</strong> to an
+unexpected library function, with carefully-chosen arguments. This attack is
+called a <strong>return-to-libc attack</strong>.</p>
+
+<blockquote class="note">
+<p>A version of <code>checksum</code>’s copy-to-aligned-buffer technique is actually
+useful in practice, but real code would use a smaller buffer, processed one
+slice at a time.</p>
+</blockquote>
+
+<h2 id="Attack-defenses">Attack defenses</h2>
+
+<p>Return-to-libc attacks used to be pretty trivial to find and execute, but
+recent years have seen large improvements in the robustness of typical C and
+C++ programs to attack. Here are just a few of the defenses we had to disable
+for the simple <code>attackme</code> attack to work.</p>
+
+<p><strong>Register arguments</strong>: In older architectures, function arguments were <em>all</em>
+passed on the stack. In those architectures attackers could easily determine
+not only the <em>function</em> returned to, but also <em>its arguments</em> (a longer buffer
+overflow would overwrite the stack region interpreted by the “return-callee”
+as arguments). <code>attackme</code> only works because <code>finish_checksum</code> happens not to
+modify its argument.</p>
+
+<p>Modern operating systems and architectures support <strong>position-independent
+code</strong> and <strong>position-independent executables</strong>. These features make programs
+work independent of specific addresses for functions, and the operating system
+can put a program’s functions at different addresses each time the program
+runs. When a program is position-independent, the address of the attacker’s
+desired target function can’t be predicted, so the attacker has to get lucky.
+(The x86-64 designers were smart to add <code>%rip</code>-relative addressing, since
+that’s what enables efficient position-independent executables!)</p>
+
+<p>Finally, modern compilers use a technique called <strong>stack protection</strong> or
+<a href="https://en.wikipedia.org/wiki/Stack_buffer_overflow"><strong>stack canaries</strong></a> to
+detect buffer overflows and stop <code>retq</code> from returning to a corrupted address.
+This is a super useful technique.</p>
+
+<blockquote class="note">
+<p>It’s called a “canary” in reference to the phrase <a href="https://en.wiktionary.org/wiki/canary_in_a_coal_mine">“canary in a coal mine”</a>.</p>
+</blockquote>
+
+<ol>
+<li><p>The operating system reserves a special tiny memory segment when the
+program starts running. This tiny memory segment is used for special
+purposes, such as <a href="https://en.wikipedia.org/wiki/Thread-local_storage"><strong>thread-local
+storage</strong></a>. Although
+this segment can be addressed normally—it exists in memory—the operating
+system also ensures it can be accessed through special instruction formats
+like this:</p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-asm" data-lang="asm"><span style="color:#06287e">movq</span> <span style="color:#bb60d5">%fs</span>:<span style="color:#40a070">0x28</span>, <span style="color:#bb60d5">%rax</span></code></pre></div>
+<p>The <code>%fs:</code> prefix tells the processor that <code>0x28</code> (a memory offset) is to
+be measured relative to the start of the thread-local storage segment.</p></li>
+
+<li><p>A specific memory word in thread-local storage is reserved for a canary
+value. The operating system sets this value to a random word when starting
+the program.</p></li>
+
+<li><p>The compiler adds code to function entry and exit sequences that use this
+value. Specifically, something like this is added to entry:</p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-asm" data-lang="asm"><span style="color:#06287e">movq</span> <span style="color:#bb60d5">%fs</span>:<span style="color:#40a070">0x28</span>, <span style="color:#60add5">REG</span>    <span style="color:#60a0b0;font-style:italic"># load true canary to register
+</span><span style="color:#60a0b0;font-style:italic"></span><span style="color:#60add5">pushq</span> <span style="color:#60add5">REG</span>             <span style="">#</span> <span style="color:#60add5">push</span> <span style="color:#60add5">canary</span> <span style="color:#60add5">to</span> <span style="color:#60add5">stack</span></code></pre></div>
+<p>And something like this is added to exit:</p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-asm" data-lang="asm"><span style="color:#06287e">popq</span> <span style="color:#60add5">REG</span>              <span style="color:#60a0b0;font-style:italic"># pop canary from stack
+</span><span style="color:#60a0b0;font-style:italic"></span><span style="color:#60add5">xorq</span> <span style="color:#bb60d5">%fs</span>:<span style="color:#40a070">0x28</span>, <span style="color:#60add5">REG</span>    <span style="color:#60a0b0;font-style:italic"># xor with true canary
+</span><span style="color:#60a0b0;font-style:italic"></span><span style="color:#60add5">jne</span> <span style="color:#60add5">fail</span>              <span style="">#</span> <span style="color:#60add5">fail</span> <span style="color:#60add5">if</span> <span style="color:#60add5">they</span> <span style="color:#60add5">differ</span></code></pre></div>
+<p>where the <code>fail</code> branch calls a library-provided function such as
+ <code>__stack_chk_fail</code>.</p></li>
+</ol>
+
+<p>The pushed canary is located between the function’s buffers (its local
+variables) and the function’s return address. Given that position, any buffer
+overflow that reaches the return address will also overwrite the canary! And
+the attacker can’t easily guess the canary or overwrite the true canary’s
+memory location, since both are random.</p>
+
+<p>If the stack canary and the true canary don’t match, the function can infer
+that it executed some undefined behavior. Maybe the return address was
+corrupted and maybe it wasn’t; either way, executing undefined behavior means
+the program is broken, and it is safe to exit immediately.</p>
+
+<p>These techniques, and others like them, are incredibly useful, important, fun,
+and good to understand. But they don’t make C programming safe: attackers are
+persistent and creative. (Check out <a href="https://en.wikipedia.org/wiki/Return-oriented_programming">return-oriented
+programming</a>.)
+Memory-unsafe languages like C and C++ make programming inherently risky; only
+programs with no undefined behavior are safe. (And they’re only safe if the
+underlying libraries and operating system have no undefined behavior either!)
+Good C and C++ programmers need a healthy respect for—one might say fear
+of—their tools. Code cleanly, use standard libraries where possible, and test
+extensively under sanitizers to catch bugs like buffer overflows.</p>
+
+<p>Or listen to cranky people like Trevor Jim, who says that <a href="http://trevorjim.com/c-is-bad-and-you-should-feel-bad-if-you-dont-say-it-is-bad/">“C is bad and you
+should feel bad if you don’t say it is
+bad”</a>
+and also <a href="http://trevorjim.com/legacy-c-c++-code-is-a-nuclear-waste-nightmare-that-will-make-you-wannacry/">“Legacy C/C++ code is a nuclear waste nightmare that will make you
+WannaCry”</a>.</p>
+
+<h2 id="Checksums">Aside: Checksums</h2>
+
+<p>A <strong>checksum</strong> is a
+short, usually fixed-length summary of a data buffer. Checksums have two
+important properties:</p>
+
+<ol>
+<li>If two buffers contain the same data (the same bytes in the same order),
+then their checksums <strong>must</strong> equal. (This property is mandatory.)</li>
+<li>If two buffers contain <em>different</em> data, then their checksums <strong>should
+not</strong> be equal. (This property is optional: it is OK for distinct data to
+have equal checksums, though in a good checksum function, this should be
+rare.)</li>
+</ol>
+
+<p>Checksums have many uses, but they are often used to detect errors in data
+transcription. For example, most network technologies use checksums to detect
+link errors (like bursts of noise). To send data over a network, the sender
+first computes a checksum of the data. Then it transmits both data and
+checksum over the possibly-noisy network channel. The receiver computes its
+own checksum of the received data, and compares that with the sender’s
+checksum. If the checksums match, that’s a good sign that the data was
+transmitted correctly. If the checksums don’t match, then the data can’t be
+trusted and the receiver throws it away.</p>
+
+<p>Most checksum functions map from a large domain to a smaller range—for
+instance, from the set of all variable-length buffers to the set of 64-bit
+numbers. Such functions <em>must</em> sometimes map unequal data to equal checksums,
+so some errors must go undetected; but a good checksum function detects common
+corruption errors all, or almost all, the time. For example, some checksum
+functions can <em>always</em> detect a single flipped bit in the buffer.</p>
+
+<p>The requirements on checksums are the same as the requirements for <a href="https://en.wikipedia.org/wiki/Hash_function">hash
+codes</a>: equal buffers have equal
+checksums (hash codes), and distinct buffers should have distinct checksums
+(hash codes). A good hash code can be a good checksum and vice versa.</p>
+
+<p>The most important characteristics of a checksum function are speed and
+strength. Fast checksums are inexpensive to compute, but easy to break,
+meaning that many errors in the data aren’t detected by the checksum function.
+Widely-used fast checksum functions include <a href="https://en.wikipedia.org/wiki/IPv4_header_checksum">the IPv4/TCP/UDP
+checksum</a> and <a href="https://en.wikipedia.org/wiki/Cyclic_redundancy_check">cyclic
+redundancy checks</a>; our
+<code>checksum</code> function is a lot like the IPv4 checksum. Strong checksums, also
+known as <a href="https://en.wikipedia.org/wiki/Cryptographic_hash_function">cryptographic hash
+functions</a>, are
+hard to break. Ideally they are <em>infeasible</em> to break, meaning that no one
+knows a procedure for finding two buffers that have the same checksum.
+Widely-used strong checksum functions include <a href="https://en.wikipedia.org/wiki/SHA-2">SHA-256,
+SHA-512</a>, and
+<a href="https://en.wikipedia.org/wiki/SHA-3">SHA-3</a>. There are also many
+formerly-strong checksum functions, such as
+<a href="https://en.wikipedia.org/wiki/SHA-1">SHA-1</a>, that have been broken—meaning
+that procedures are known for finding two buffers with the same checksum—but
+are still stronger in practice than fast checksums.</p>
+
+<p>References: <a href="https://en.wikipedia.org/wiki/Checksum">Checksums on Wikipedia</a>;
+<a href="https://people.seas.harvard.edu/~salil/cs225/">CS&nbsp;225</a> explores some related
+theory.</p>
+
+    </div>
+</div>
+
+        <script src="2019_files/jquery-3.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+        <script src="2019_files/popper.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="2019_files/bootstrap.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="2019_files/katex.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+        <script>(function () {
+        jQuery.fn.extend({
+            geometry: function (outer) {
+                var x;
+                if (this[0] == window)
+                    x = {left: this.scrollLeft(), top: this.scrollTop()};
+                else
+                    x = this.offset();
+                if (x) {
+                    x.width = outer ? this.outerWidth() : this.width();
+                    x.height = outer ? this.outerHeight() : this.height();
+                    x.right = x.left + x.width;
+                    x.bottom = x.top + x.height;
+                }
+                return x;
+            }
+        });
+        $(".math").each(function () {
+            var t = this.innerText,
+                opt = {throwOnError: false, displayMode: t.substr(0, 2) === "\\["};
+            katex.render(t.replace(/(?:^\\\(|^\\\[|\\\)$|\\\]$)/g, ""), this, opt);
+        });
+        function sol_toggle(hide, storage) {
+            this.childNodes[0].classList.toggle("hidden", !hide);
+            this.childNodes[0].classList.toggle("shown", hide);
+            this.childNodes[1].classList.toggle("hidden", hide);
+            this.childNodes[1].classList.toggle("shown", !hide);
+            if (storage) {
+                var key = location.href + " " + $(".has-solution").index(this);
+                if (hide)
+                    sessionStorage.removeItem(key);
+                else
+                    sessionStorage.setItem(key, true);
+            }
+        }
+        $(".solution").each(function () {
+            $(this).wrap('<div class="has-solution"></div>');
+            var sol = this.parentElement;
+            $(sol).prepend('<blockquote class="solution-collapsed js-solution show"><a href="" class="js-solution show"></a></blockquote>');
+            $(this).append('<p><a href="" class="js-solution hide"></a></p>');
+            $(sol).find("a.js-solution.show").text(this.getAttribute("data-show-text") || "Show solution");
+            $(sol).find("a.js-solution.hide").text(this.getAttribute("data-hide-text") || "Hide solution");
+            var key = location.href + " " + $(".has-solution").index(sol);
+            if (sessionStorage.getItem(key))
+                sol_toggle.call(sol, false, false);
+        });
+        $(document).on("click", ".js-solution", function (event) {
+            if (this.classList.contains("all")) {
+                var hide = this.classList.contains("hide");
+                $(".has-solution").each(function () {
+                    sol_toggle.call(this, hide, false);
+                });
+                var bq = this.tagName === "BLOCKQUOTE" ? this : this.parentElement;
+                $(bq).find(".show").toggleClass("hidden", !hide);
+                $(bq).find(".hide").toggleClass("hidden", hide);
+            } else {
+                var sol = $(this).closest(".has-solution")[0];
+                sol_toggle.call(sol, this.classList.contains("hide"), true);
+            }
+            event.preventDefault();
+            event.stopPropagation();
+        });
+        var container = $(".container")[0];
+        function slideview_toggle(hide, storage) {
+            if (hide === null)
+                hide = container.classList.contains("container-slides");
+            container.classList.toggle("container-slides", !hide);
+            if (storage) {
+                var key = location.href + " slides";
+                if (hide)
+                    sessionStorage.removeItem(key);
+                else
+                    sessionStorage.setItem(key, true);
+            }
+        }
+        function slideview_setpos(pos) {
+            var slidecount = +this.getAttribute("data-reveal-steps");
+            var es = [this], n = this.nextSibling;
+            while (n && n.tagName !== "H2") {
+                es.push(n);
+                n = n.nextSibling;
+            }
+            $(es).find("[data-reveal]").add($(es).filter("[data-reveal]")).each(function () {
+                $(this).toggleClass("hidden", +this.getAttribute("data-reveal") > pos);
+            });
+            this.setAttribute("data-reveal-pos", pos);
+        }
+        function slideview_keypress(event) {
+            if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey
+                || (event.keyCode != 37 && event.keyCode != 39)
+                || !container.classList.contains("container-slides"))
+                return;
+            var isleft = event.keyCode == 37, space = 20, slop = space + 5;
+            var w = $(window).geometry(), divs = $("h2"), i;
+            for (i = isleft ? divs.length - 1 : 0;
+                 i >= 0 && i < divs.length;
+                 i += (isleft ? -1 : 1)) {
+                var d = divs[i], g = $(d).geometry();
+                if (g.top - slop < w.top
+                    && g.top + slop > w.top
+                    && d.hasAttribute("data-reveal-steps")) {
+                    var slidecount = +d.getAttribute("data-reveal-steps");
+                    var slidepos = +d.getAttribute("data-reveal-pos") + (isleft ? -1 : 1);
+                    if (isleft ? slidepos >= 0 : slidepos < slidecount) {
+                        slideview_setpos.call(d, slidepos);
+                        break;
+                    }
+                }
+                if (isleft ? g.top + slop < w.top : g.top > w.top + slop) {
+                    $(window).scrollTop(g.top - space);
+                    if (d.hasAttribute("data-reveal-steps")) {
+                        slideview_setpos.call(d, isleft ? +d.getAttribute("data-reveal-steps") - 1 : 0);
+                    }
+                    break;
+                }
+            }
+            if (i < 0)
+                $(window).scrollTop(0);
+            event.preventDefault();
+        }
+        $(document).on("click", ".js-toggle-slideview", function (event) {
+            slideview_toggle(null, true);
+            event.preventDefault();
+            event.stopPropagation();
+        });
+        $(".need-container-slides").each(function () {
+            $(this).prepend('<blockquote class="slideview-toggle"><a href="" class="js-toggle-slideview">Toggle slide view</a></blockquote>').removeClass("need-container-slides");
+            var key = location.href + " slides";
+            if (sessionStorage.getItem(key))
+                slideview_toggle(false, false);
+            $("body").on("keyup", slideview_keypress);
+        });
+        })()</script>
+    
+
+
+<table style="width: 184px; display: none; top: 45px; left: 552px; position: absolute;" class="gstl_50 gssb_c" cellspacing="0" cellpadding="0"><tbody><tr><td class="gssb_f"></td><td class="gssb_e" style="width: 100%;"></td></tr></tbody></table></body></html>

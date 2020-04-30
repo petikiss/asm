@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="Assembly%201%20%20Basics%20%E2%80%93%20CS%2061_files/bootstrap.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="Assembly%201%20%20Basics%20%E2%80%93%20CS%2061_files/katex.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+    <link rel="stylesheet" href="Assembly%201%20%20Basics%20%E2%80%93%20CS%2061_files/cs161.css">
+    <title>Assembly 1: Basics – CS 61</title>
+  <script async="" src="Assembly%201%20%20Basics%20%E2%80%93%20CS%2061_files/async-ads.js"></script><script src="Assembly%201%20%20Basics%20%E2%80%93%20CS%2061_files/cse_element__en.js" type="text/javascript"></script><link type="text/css" rel="stylesheet" href="Assembly%201%20%20Basics%20%E2%80%93%20CS%2061_files/defaulten.css"><link type="text/css" rel="stylesheet" href="Assembly%201%20%20Basics%20%E2%80%93%20CS%2061_files/default.css"><style type="text/css">.gsc-control-cse{font-family:arial, sans-serif}.gsc-control-cse .gsc-table-result{font-family:arial, sans-serif}.gsc-refinementsGradient{background:linear-gradient(to left,rgba(255,255,255,1),rgba(255,255,255,0))}.gsc-control-cse{border-color:#FFFFFF;background-color:#FFFFFF}input.gsc-input,.gsc-input-box,.gsc-input-box-hover,.gsc-input-box-focus{border-color:#D9D9D9}.gsc-search-button-v2,.gsc-search-button-v2:hover,.gsc-search-button-v2:focus{border-color:#666666;background-color:#CECECE;background-image:none;filter:none}.gsc-search-button-v2 svg{fill:#FFFFFF}.gsc-tabHeader.gsc-tabhActive,.gsc-refinementHeader.gsc-refinementhActive{color:#CCCCCC;border-color:#CCCCCC;background-color:#FFFFFF}.gsc-tabHeader.gsc-tabhInactive,.gsc-refinementHeader.gsc-refinementhInactive{color:#CCCCCC;border-color:#CCCCCC;background-color:#FFFFFF}.gsc-webResult.gsc-result,.gsc-results .gsc-imageResult{border-color:#FFFFFF;background-color:#FFFFFF}.gsc-webResult.gsc-result:hover,.gsc-imageResult:hover{border-color:#FFFFFF;background-color:#FFFFFF}.gs-webResult.gs-result a.gs-title:link,.gs-webResult.gs-result a.gs-title:link b,.gs-imageResult a.gs-title:link,.gs-imageResult a.gs-title:link b{color:#0000CC}.gs-webResult.gs-result a.gs-title:visited,.gs-webResult.gs-result a.gs-title:visited b,.gs-imageResult a.gs-title:visited,.gs-imageResult a.gs-title:visited b{color:#0000CC}.gs-webResult.gs-result a.gs-title:hover,.gs-webResult.gs-result a.gs-title:hover b,.gs-imageResult a.gs-title:hover,.gs-imageResult a.gs-title:hover b{color:#0000CC}.gs-webResult.gs-result a.gs-title:active,.gs-webResult.gs-result a.gs-title:active b,.gs-imageResult a.gs-title:active,.gs-imageResult a.gs-title:active b{color:#0000CC}.gsc-cursor-page{color:#0000CC}a.gsc-trailing-more-results:link{color:#0000CC}.gs-webResult .gs-snippet,.gs-imageResult .gs-snippet,.gs-fileFormatType{color:#000000}.gs-webResult div.gs-visibleUrl,.gs-imageResult div.gs-visibleUrl{color:#008000}.gs-webResult div.gs-visibleUrl-short{color:#008000}.gs-webResult div.gs-visibleUrl-short{display:none}.gs-webResult div.gs-visibleUrl-long{display:block}.gs-promotion div.gs-visibleUrl-short{display:none}.gs-promotion div.gs-visibleUrl-long{display:block}.gsc-cursor-box{border-color:#FFFFFF}.gsc-results .gsc-cursor-box .gsc-cursor-page{border-color:#CCCCCC;background-color:#FFFFFF;color:#CCCCCC}.gsc-results .gsc-cursor-box .gsc-cursor-current-page{border-color:#CCCCCC;background-color:#FFFFFF;color:#CCCCCC}.gsc-webResult.gsc-result.gsc-promotion{border-color:#336699;background-color:#FFFFFF}.gsc-completion-title{color:#0000CC}.gsc-completion-snippet{color:#000000}.gs-promotion a.gs-title:link,.gs-promotion a.gs-title:link *,.gs-promotion .gs-snippet a:link{color:#0000CC}.gs-promotion a.gs-title:visited,.gs-promotion a.gs-title:visited *,.gs-promotion .gs-snippet a:visited{color:#0000CC}.gs-promotion a.gs-title:hover,.gs-promotion a.gs-title:hover *,.gs-promotion .gs-snippet a:hover{color:#0000CC}.gs-promotion a.gs-title:active,.gs-promotion a.gs-title:active *,.gs-promotion .gs-snippet a:active{color:#0000CC}.gs-promotion .gs-snippet,.gs-promotion .gs-title .gs-promotion-title-right,.gs-promotion .gs-title .gs-promotion-title-right *{color:#000000}.gs-promotion .gs-visibleUrl,.gs-promotion .gs-visibleUrl-short{color:#008000}.gcsc-find-more-on-google{color:#0000CC}.gcsc-find-more-on-google-magnifier{fill:#0000CC}</style><style type="text/css">.gscb_a{display:inline-block;font:27px/13px arial,sans-serif}.gsst_a .gscb_a{color:#a1b9ed;cursor:pointer}.gsst_a:hover .gscb_a,.gsst_a:focus .gscb_a{color:#36c}.gsst_a{display:inline-block}.gsst_a{cursor:pointer;padding:0 4px}.gsst_a:hover{text-decoration:none!important}.gsst_b{font-size:16px;padding:0 2px;position:relative;user-select:none;-moz-user-select:none;white-space:nowrap}.gsst_e{vertical-align:middle;opacity:0.55;}.gsst_a:hover .gsst_e,.gsst_a:focus .gsst_e{opacity:0.72;}.gsst_a:active .gsst_e{opacity:1;}.gsst_f{background:white;text-align:left}.gsst_g{background-color:white;border:1px solid #ccc;border-top-color:#d9d9d9;box-shadow:0 2px 4px rgba(0,0,0,0.2);-moz-box-shadow:0 2px 4px rgba(0,0,0,0.2);margin:-1px -3px;padding:0 6px}.gsst_h{background-color:white;height:1px;margin-bottom:-1px;position:relative;top:-1px}.gsib_a{width:100%;padding:4px 6px 0}.gsib_a,.gsib_b{vertical-align:top}.gssb_c{border:0;position:absolute;z-index:989}.gssb_e{border:1px solid #ccc;border-top-color:#d9d9d9;box-shadow:0 2px 4px rgba(0,0,0,0.2);-moz-box-shadow:0 2px 4px rgba(0,0,0,0.2);cursor:default}.gssb_f{visibility:hidden;white-space:nowrap}.gssb_k{border:0;display:block;position:absolute;top:0;z-index:988}.gsdd_a{border:none!important}.gsq_a{padding:0}.gssb_a{padding:0 7px}.gssb_a,.gssb_a td{white-space:nowrap;overflow:hidden;line-height:22px}#gssb_b{font-size:11px;color:#36c;text-decoration:none}#gssb_b:hover{font-size:11px;color:#36c;text-decoration:underline}.gssb_g{text-align:center;padding:8px 0 7px;position:relative}.gssb_h{font-size:15px;height:28px;margin:0.2em}.gssb_i{background:#eee}.gss_ifl{visibility:hidden;padding-left:5px}.gssb_i .gss_ifl{visibility:visible}a.gssb_j{font-size:13px;color:#36c;text-decoration:none;line-height:100%}a.gssb_j:hover{text-decoration:underline}.gssb_l{height:1px;background-color:#e5e5e5}.gssb_m{color:#000;background:#fff}.gssb_a{padding:0 9px}.gsib_a{padding:5px 9px 4px 9px}.gscb_a{line-height:27px}.gssb_e{border:0}.gssb_l{margin:5px 0}input.gsc-input::-webkit-input-placeholder{font-size:14px}input.gsc-input:-moz-placeholder{font-size:14px}input.gsc-input::-moz-placeholder{font-size:14px}input.gsc-input:-ms-input-placeholder{font-size:14px}input.gsc-input:focus::-webkit-input-placeholder{color:transparent}input.gsc-input:focus:-moz-placeholder{color:transparent}input.gsc-input:focus::-moz-placeholder{color:transparent}input.gsc-input:focus:-ms-input-placeholder{color:transparent}.gssb_c .gsc-completion-container{position:static}.gssb_c{z-index:5000}.gsc-completion-container table{background:transparent;font-size:inherit;font-family:inherit}.gssb_c > tbody > tr,.gssb_c > tbody > tr > td,.gssb_d,.gssb_d > tbody > tr,.gssb_d > tbody > tr > td,.gssb_e,.gssb_e > tbody > tr,.gssb_e > tbody > tr > td{padding:0;margin:0;border:0}.gssb_a table,.gssb_a table tr,.gssb_a table tr td{padding:0;margin:0;border:0}</style></head>
+  <body>
+
+<nav class="navbar navbar-expand-lg navbar-light">
+  <a class="navbar-brand" href="https://cs61.seas.harvard.edu/site/2018/">CS 61 2018</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-dropdown-info" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Info
+    </a>
+    <div class="dropdown-menu" aria-labelledby="nav-dropdown-info">
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Concepts/">Concepts</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/CourseDescription/">Course Description</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Staff/">Course Staff</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Extension/">Extension</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/ZoomOH/">Extension School Zoom Office Hours</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Prerequisites/">Prerequisites</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Resources/">Resources</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Schedule/">Schedule</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Style/">Style</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Textbook/">Textbook</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Infrastructure/">Infrastructure</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/DatarepEx/">Exercises: Data representation</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/AsmEx/">Exercises: Assembly</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/KernelEx/">Exercises: Kernel</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/StorageEx/">Exercises: Storage</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/ShellEx/">Exercises: Process control</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/SynchEx/">Exercises: Synchronization</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/MiscEx/">Exercises: Miscellaneous</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Patterns/">C and C++ Patterns</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/ref/diff/">Diff</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/ref/file-descriptors/">File Descriptors</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/ref/gdb-commands/">GDB Commands</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/ref/gdb/">GDB Introduction</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/ref/git/">Git</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/ref/http/">HTTP</a>
+    
+    </div>
+  </li>
+      <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-dropdown-psets" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Problem sets
+    </a>
+    <div class="dropdown-menu" aria-labelledby="nav-dropdown-psets">
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Dmalloc/">Problem set 1</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/BinaryBomb/">Problem set 2</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Stdio/">Problem set 3</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/WeensyOS/">Problem set 4</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Shell/">Problem set 5</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Pong/">Problem set 6</a>
+    
+    </div>
+  </li>
+      <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-dropdown-lectures" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Lectures
+    </a>
+    <div class="dropdown-menu" aria-labelledby="nav-dropdown-lectures">
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Datarep2/">Data representation 2: Object representation</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Datarep3/">Data representation 3: Layout</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Datarep4/">Data representation 4: Pointers and undefined behavior</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Datarep5/">Data representation 5: Undefined behavior, bitwise operations, arena allocation</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Datarep6/">Data representation 6: Arena allocation</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Asm1/">Assembly 1: Basics</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Asm2/">Assembly 2: Calling convention</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Asm3/">Assembly 3: Optimizations and assembly</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Asm4/">Assembly 4: Buffer overflows</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Storage1/">Storage 1: Caches</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Storage2/">Storage 2: Cache model</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Storage3/">Storage 3: Stdio cache</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Storage4/">Storage 4: Consistency</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Kernel1/">Kernel 1: Robustness and safety</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Kernel2/">Kernel 2: Process isolation and virtual memory</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Kernel3/">Kernel 3: x86-64 page tables and WeensyOS</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Kernel4/">Kernel 4: Protection and isolation</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Kernel5/">Kernel 5: Confused deputy attack, scheduling, and process management</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Shell1/">Shell 1: Process control</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Shell2/">Shell 2: Process creation and interprocess communication</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Shell3/">Shell 3: Sieve of Eratosthenes, polling vs. blocking</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Synch1/">Synchronization 1: Signals, race condition, threads</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Synch2/">Synchronization 2: Mutex, bounded buffers</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Synch3/">Synchronization 3: Mutexes, condition variables, and compare-exchange</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Synch4/">Synchronization 4: Networking and Synchronization</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Synch5/">Synchronization 5: Deadlock and Server Programming</a>
+    
+    </div>
+  </li>
+      <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-dropdown-sections" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Sections
+    </a>
+    <div class="dropdown-menu" aria-labelledby="nav-dropdown-sections">
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Section1/">Section 1</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Section2/">Section 2</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Section3/">Section 3</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Section4/">Section 4</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Section5/">Section 5</a>
+    
+      <a class="dropdown-item" href="https://cs61.seas.harvard.edu/site/2018/Section6/">Section 6</a>
+    
+    </div>
+  </li>
+      
+  <li class="nav-item">
+    
+      <a class="nav-link" href="https://cs61.seas.harvard.edu/site/2018/Schedule/">Schedule</a>
+    
+  </li>
+      <li class="nav-item"><script type="text/javascript" async="" src="Assembly%201%20%20Basics%20%E2%80%93%20CS%2061_files/cse.js"></script><script>
+  (function() {
+    var cx ='001870065194094800801:cru2ukzhywq';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script><div id="___gcse_0"><div class="gsc-control-cse gsc-control-cse-en"><div class="gsc-control-wrapper-cse" dir="ltr"><form class="gsc-search-box gsc-search-box-tools" accept-charset="utf-8"><table class="gsc-search-box" cellspacing="0" cellpadding="0"><tbody><tr><td class="gsc-input"><div class="gsc-input-box" id="gsc-iw-id1"><table style="width: 100%; padding: 0px;" id="gs_id50" class="gstl_50 gsc-input" cellspacing="0" cellpadding="0"><tbody><tr><td id="gs_tti50" class="gsib_a"><input autocomplete="off" type="text" size="10" class="gsc-input" name="search" title="search" style="width: 100%; padding: 0px; border: medium none; margin: 0px; height: auto; outline: currentcolor none medium;" id="gsc-i-id1" dir="ltr" spellcheck="false"></td><td class="gsib_b"><div class="gsst_b" id="gs_st50" dir="ltr"><a class="gsst_a" href="javascript:void(0)" style="display: none;" title="Clear search box" role="button"><span class="gscb_a" id="gs_cb50" aria-hidden="true">×</span></a></div></td></tr></tbody></table></div></td><td class="gsc-search-button"><button class="gsc-search-button gsc-search-button-v2"><svg width="13" height="13" viewBox="0 0 13 13"><title>search</title><path d="m4.8495 7.8226c0.82666 0 1.5262-0.29146 2.0985-0.87438 0.57232-0.58292 0.86378-1.2877 0.87438-2.1144 0.010599-0.82666-0.28086-1.5262-0.87438-2.0985-0.59352-0.57232-1.293-0.86378-2.0985-0.87438-0.8055-0.010599-1.5103 0.28086-2.1144 0.87438-0.60414 0.59352-0.8956 1.293-0.87438 2.0985 0.021197 0.8055 0.31266 1.5103 0.87438 2.1144 0.56172 0.60414 1.2665 0.8956 2.1144 0.87438zm4.4695 0.2115 3.681 3.6819-1.259 1.284-3.6817-3.7 0.0019784-0.69479-0.090043-0.098846c-0.87973 0.76087-1.92 1.1413-3.1207 1.1413-1.3553 0-2.5025-0.46363-3.4417-1.3909s-1.4088-2.0686-1.4088-3.4239c0-1.3553 0.4696-2.4966 1.4088-3.4239 0.9392-0.92727 2.0864-1.3969 3.4417-1.4088 1.3553-0.011889 2.4906 0.45771 3.406 1.4088 0.9154 0.95107 1.379 2.0924 1.3909 3.4239 0 1.2126-0.38043 2.2588-1.1413 3.1385l0.098834 0.090049z"></path></svg></button></td><td class="gsc-clear-button"><div class="gsc-clear-button" title="clear results">&nbsp;</div></td></tr></tbody></table></form><div class="gsc-results-wrapper-overlay"><div class="gsc-results-close-btn" tabindex="0"></div><div class="gsc-positioningWrapper"><div class="gsc-tabsAreaInvisible"><div aria-label="refinement" role="tab" class="gsc-tabHeader gsc-inline-block gsc-tabhActive">Custom Search</div><span class="gs-spacer"> </span></div></div><div class="gsc-positioningWrapper"><div class="gsc-tabsAreaInvisible"></div></div><div class="gsc-above-wrapper-area-invisible"><table class="gsc-above-wrapper-area-container" cellspacing="0" cellpadding="0"><tbody><tr><td class="gsc-result-info-container"><div class="gsc-result-info-invisible"></div></td><td class="gsc-orderby-container"><div class="gsc-orderby-invisible"><div class="gsc-orderby-label gsc-inline-block">Sort by:</div><div class="gsc-option-menu-container gsc-inline-block"><div class="gsc-selected-option-container gsc-inline-block"><div class="gsc-selected-option">Relevance</div><div class="gsc-option-selector"></div></div><div class="gsc-option-menu-invisible"><div class="gsc-option-menu-item gsc-option-menu-item-highlighted"><div class="gsc-option">Relevance</div></div><div class="gsc-option-menu-item"><div class="gsc-option">Date</div></div></div></div></div></td></tr></tbody></table></div><div class="gsc-adBlockInvisible"></div><div class="gsc-wrapper"><div class="gsc-adBlockInvisible"></div><div class="gsc-resultsbox-invisible"><div class="gsc-resultsRoot gsc-tabData gsc-tabdActive"><div><div class="gsc-expansionArea"></div></div></div></div></div></div><div class="gsc-modal-background-image" tabindex="0"></div></div></div></div></li>
+    </ul>
+  </div>
+</nav>
+
+
+<img src="Assembly%201%20%20Basics%20%E2%80%93%20CS%2061_files/cs61hello.jpg" class="hellobackground">
+
+
+<div class="container">
+    <h1><a href="https://cs61.seas.harvard.edu/site/2018/Asm1/">Assembly 1: Basics</a></h1>
+    <div class="post">
+        <h2 id="registers">Registers</h2>
+
+<p>Registers are the fastest kind of memory available in the machine.
+x86-64 has 14 general-purpose registers and several special-purpose
+registers. This table gives all the basic registers, with
+special-purpose registers highlighted in yellow. You’ll notice different
+naming conventions, a side effect of the long history of the x86
+architecture (the 8086 was first released in 1978).</p>
+
+<table class="padleft">
+<thead>
+<tr class="header">
+<th><p>Full register name</p></th>
+<th class="r"><p>32-bit<br>
+(bits 0–31)</p></th>
+<th class="r"><p>16-bit<br>
+(bits 0–15)</p></th>
+<th class="r"><p>8-bit low<br>
+(bits 0–7)</p></th>
+<th class="r"><p>8-bit high<br>
+(bits 8–15)</p></th>
+<th><p>Use in calling convention</p></th>
+<th><p>Callee-saved?</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="separator">
+<th colspan="7"><p>General-purpose registers:</p>
+</th></tr>
+<tr class="odd">
+<td class="padleft"><p><strong>%rax</strong></p></td>
+<td><p>%eax</p></td>
+<td><p>%ax</p></td>
+<td><p>%al</p></td>
+<td><p>%ah</p></td>
+<td><p>Return value (accumulator)</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td class="padleft"><p><strong>%rbx</strong></p></td>
+<td><p>%ebx</p></td>
+<td><p>%bx</p></td>
+<td><p>%bl</p></td>
+<td><p>%bh</p></td>
+<td><p>–</p></td>
+<td><p><strong>Yes</strong></p></td>
+</tr>
+<tr class="odd">
+<td class="padleft"><p><strong>%rcx</strong></p></td>
+<td><p>%ecx</p></td>
+<td><p>%cx</p></td>
+<td><p>%cl</p></td>
+<td><p>%ch</p></td>
+<td><p>4th function argument</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td class="padleft"><p><strong>%rdx</strong></p></td>
+<td><p>%edx</p></td>
+<td><p>%dx</p></td>
+<td><p>%dl</p></td>
+<td><p>%dh</p></td>
+<td><p>3rd function argument</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p><strong>%rsi</strong></p></td>
+<td><p>%esi</p></td>
+<td><p>%si</p></td>
+<td><p>%sil</p></td>
+<td><p>–</p></td>
+<td><p>2nd function argument</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p><strong>%rdi</strong></p></td>
+<td><p>%edi</p></td>
+<td><p>%di</p></td>
+<td><p>%dil</p></td>
+<td><p>–</p></td>
+<td><p>1st function argument</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p><strong>%r8</strong></p></td>
+<td><p>%r8d</p></td>
+<td><p>%r8w</p></td>
+<td><p>%r8b</p></td>
+<td><p>–</p></td>
+<td><p>5th function argument</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p><strong>%r9</strong></p></td>
+<td><p>%r9d</p></td>
+<td><p>%r9w</p></td>
+<td><p>%r9b</p></td>
+<td><p>–</p></td>
+<td><p>6th function argument</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p><strong>%r10</strong></p></td>
+<td><p>%r10d</p></td>
+<td><p>%r10w</p></td>
+<td><p>%r10b</p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p><strong>%r11</strong></p></td>
+<td><p>%r11d</p></td>
+<td><p>%r11w</p></td>
+<td><p>%r11b</p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p><strong>%r12</strong></p></td>
+<td><p>%r12d</p></td>
+<td><p>%r12w</p></td>
+<td><p>%r12b</p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p><strong>Yes</strong></p></td>
+</tr>
+<tr class="even">
+<td><p><strong>%r13</strong></p></td>
+<td><p>%r13d</p></td>
+<td><p>%r13w</p></td>
+<td><p>%r13b</p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p><strong>Yes</strong></p></td>
+</tr>
+<tr class="odd">
+<td><p><strong>%r14</strong></p></td>
+<td><p>%r14d</p></td>
+<td><p>%r14w</p></td>
+<td><p>%r14b</p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p><strong>Yes</strong></p></td>
+</tr>
+<tr class="even">
+<td><p><strong>%r15</strong></p></td>
+<td><p>%r15d</p></td>
+<td><p>%r15w</p></td>
+<td><p>%r15b</p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p><strong>Yes</strong></p></td>
+</tr>
+<tr class="separator">
+<th colspan="7"><p>Special-purpose registers:</p>
+</th></tr>
+<tr class="odd">
+<td><p><strong>%rsp</strong></p></td>
+<td><p>%esp</p></td>
+<td><p>%sp</p></td>
+<td><p>%spl</p></td>
+<td><p>–</p></td>
+<td><p>Stack pointer</p></td>
+<td><p><strong>Yes</strong></p></td>
+</tr>
+<tr class="even">
+<td><p><strong>%rbp</strong></p></td>
+<td><p>%ebp</p></td>
+<td><p>%bp</p></td>
+<td><p>%bpl</p></td>
+<td><p>–</p></td>
+<td><p>Base pointer<br>(general-purpose in some compiler modes)</p></td>
+<td><p><strong>Yes</strong></p></td>
+</tr>
+<tr class="odd">
+<td><p><strong>%rip</strong></p></td>
+<td><p>%eip</p></td>
+<td><p>%ip</p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p>Instruction pointer<br>
+(Program counter; called $pc in GDB)</p></td>
+<td><p>*</p></td>
+</tr>
+<tr class="even">
+<td><p><strong>%rflags</strong></p></td>
+<td><p>%eflags</p></td>
+<td><p>%flags</p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p>Flags and condition codes</p></td>
+<td><p>No</p></td>
+</tr>
+</tbody>
+</table>
+
+<p>Note that unlike <em>primary</em> memory (which is what we think of when we discuss
+memory in a C/C++ program), registers have no addresses! There is no address
+value that, if cast to a pointer and dereferenced, would return the contents
+of the <code>%rax</code> register. Registers live in a separate world from the memory
+whose contents are partially prescribed by the C abstract machine.</p>
+
+<p>The %rbp register has a special purpose: it points to the bottom of the
+current function’s stack frame, and local variables are often accessed
+relative to its value. However, when optimization is on, the compiler
+may determine that all local variables can be stored in registers. This
+frees up %rbp for use as another general-purpose register.</p>
+
+<p>The relationship between different register bit widths is a little
+weird.</p>
+
+<ol>
+<li>Loading a value into a 32-bit register name sets the <em>upper</em> 32 bits
+of the register to zero. Thus, after <code>movl $-1, %eax</code>, the
+<code>%rax</code> register has value 0x00000000FFFFFFFF.</li>
+<li>Loading a value into a 16- or 8-bit register name <em>leaves all other
+bits unchanged.</em></li>
+</ol>
+
+<p>There are special instructions for loading signed and unsigned 8-, 16-,
+and 32-bit quantities into registers, recognizable by instruction
+suffixes. For instance, <code>movzbl</code> moves an 8-bit quantity (a <strong>b</strong>yte)
+into a 32-bit register (a <strong>l</strong>ongword) with <strong>z</strong>ero extension;
+<code>movslq</code> moves a 32-bit quantity (<strong>l</strong>ongword) into a 64-bit register
+(<strong>q</strong>uadword) with <strong>s</strong>ign extension. There’s no need for <code>movzlq</code>
+(why?).</p>
+
+<h2 id="instruction-format">Instruction format</h2>
+
+<p>The basic kinds of assembly instructions are:</p>
+
+<ol>
+<li><strong>Computation.</strong> These instructions perform computation on values,
+typically values stored in registers. Most have zero or one <em>source
+operands</em> and one <em>source/destination operand</em>, with the source operand
+coming first. For example, the instruction <code>addq %rax, %rbx</code> performs the
+computation <code>%rbx := %rbx + %rax</code>.</li>
+<li><strong>Data movement.</strong> These instructions move data between registers
+and memory. Almost all have one source operand and one destination
+operand; the source operand comes first.</li>
+<li><strong>Control flow.</strong> Normally the CPU executes instructions in
+sequence. Control flow instructions change the instruction pointer
+in other ways. There are unconditional branches (the instruction
+pointer is set to a new value), conditional branches (the
+instruction pointer is set to a new value if a condition is true),
+and function call and return instructions.</li>
+</ol>
+
+<p>(We use the “AT&amp;T syntax” for x86-64 assembly. For the “Intel syntax,”
+which you can find in online documentation from Intel, see the Aside in
+CS:APP3e §3.3, p177, or
+<a href="https://en.wikipedia.org/wiki/X86_assembly_language">Wikipedia</a>, or
+other online resources. AT&amp;T syntax is distinguished by several
+features, but especially by the use of percent signs for registers.
+Sadly, the Intel syntax puts destination registers <em>before</em> source
+registers.)</p>
+
+<p>Some instructions appear to combine computation and data movement. For
+example, given the C code <code>int* ip; ... ++(*ip);</code> the compiler might generate
+<code>incl (%rax)</code> rather than <code>movl (%rax), %ebx; incl %ebx; movl %ebx, (%rax)</code>.
+However, the processor actually divides these complex instructions into tiny,
+simpler, invisible instructions called
+<a href="https://en.wikipedia.org/wiki/Microcode">microcode</a>, because the simpler
+instructions can be made to execute faster. The complex <code>incl</code> instruction
+actually runs in three phases: data movement, then computation, then data
+movement. This matters when we introduce parallelism.</p>
+
+<h2 id="directives">Directives</h2>
+
+<p>Assembly generated by a compiler contains instructions as well as <em>labels</em> and
+<em>directives</em>. Labels look like <code>labelname:</code> or <code>labelnumber:</code>; directives look
+like <code>.directivename arguments</code>. Labels are markers in the generated assembly,
+used to compute addresses. We usually see them used in control flow
+instructions, as in <code>jmp L3</code> (“jump to L3”). Directives are instructions to
+the assembler; for instance, the <code>.globl L</code> instruction says “label <code>L</code> is
+globally visible in the executable”, <code>.align</code> sets the alignment of the
+following data, <code>.long</code> puts a number in the output, and <code>.text</code> and <code>.data</code>
+define the current segment.</p>
+
+<p>We also frequently look at assembly that is <em>disassembled</em> from executable
+instructions by GDB, <code>objdump -d</code>, or <code>objdump -S</code>.
+ This output looks
+different from compiler-generated assembly: in disassembled 
+instructions,
+there are no intermediate labels or directives. This is because the 
+labels and directives disappear during the process of generating 
+executable instructions.</p>
+
+<p>For instance, here is some compiler-generated assembly:</p>
+
+<pre><code>    .globl  _Z1fiii
+    .type   _Z1fiii, @function
+_Z1fiii:
+.LFB0:
+    cmpl    %edx, %esi
+    je  .L3
+    movl    %esi, %eax
+    ret
+.L3:
+    movl    %edi, %eax
+    ret
+.LFE0:
+    .size   _Z1fiii, .-_Z1fiii
+</code></pre>
+
+<p>And a disassembly of the same function, from an object file:</p>
+
+<pre><code>0000000000000000 &lt;_Z1fiii&gt;:
+   0:   39 d6                   cmp    %edx,%esi
+   2:   74 03                   je     7 &lt;_Z1fiii+0x7&gt;
+   4:   89 f0                   mov    %esi,%eax
+   6:   c3                      retq   
+   7:   89 f8                   mov    %edi,%eax
+   9:   c3                      retq   
+</code></pre>
+
+<p>Everything but the instructions is removed, and the helpful <code>.L3</code> label has
+been replaced with an actual address. The function appears to be located at
+address 0. This is just a placeholder; the final address is assigned by the
+linking process, when a final executable is created.</p>
+
+<p>Finally, here is some disassembly from an executable:</p>
+
+<pre><code>0000000000400517 &lt;_Z1fiii&gt;:
+  400517:   39 d6                   cmp    %edx,%esi
+  400519:   74 03                   je     40051e &lt;_Z1fiii+0x7&gt;
+  40051b:   89 f0                   mov    %esi,%eax
+  40051d:   c3                      retq   
+  40051e:   89 f8                   mov    %edi,%eax
+  400520:   c3                      retq   
+</code></pre>
+
+<p>The instructions are the same, but the addresses are different. (Other
+compiler flags would generate different addresses.)</p>
+
+<h2 id="address-modes">Address modes</h2>
+
+<p>Most instruction operands use the following syntax for values. (See also
+CS:APP3e Figure 3.3 in §3.4.1, p181.)</p>
+
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Example syntax</th>
+<th>Value used</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Register</td>
+<td><code>%rbp</code></td>
+<td>Contents of <code>%rbp</code></td>
+</tr>
+
+<tr>
+<td>Immediate</td>
+<td><code>$0x4</code></td>
+<td>0x4</td>
+</tr>
+
+<tr>
+<td>Memory</td>
+<td><code>0x4</code></td>
+<td>Value stored at address</td>
+</tr>
+
+<tr>
+<td></td>
+<td><code>symbol_name</code></td>
+<td>Value stored in global <code>symbol_name</code></td>
+</tr>
+
+<tr>
+<td></td>
+<td><code>symbol_name(%rip)</code></td>
+<td><code>%rip</code>-relative addressing for global (see below)</td>
+</tr>
+
+<tr>
+<td></td>
+<td><code>(%rax)</code></td>
+<td>Value stored at address in <code>%rax</code></td>
+</tr>
+
+<tr>
+<td></td>
+<td><code>0x4(%rax)</code></td>
+<td>Value stored at address <code>%rax + 4</code></td>
+</tr>
+
+<tr>
+<td></td>
+<td><code>(%rax,%rbx)</code></td>
+<td>Value stored at address <code>%rax + %rbx</code></td>
+</tr>
+
+<tr>
+<td></td>
+<td><code>(%rax,%rbx,4)</code></td>
+<td>Value stored at address <code>%rax + %rbx*4</code></td>
+</tr>
+
+<tr>
+<td></td>
+<td><code>0x18(%rax,%rbx,4)</code></td>
+<td>Value stored at address <code>%rax + 0x18 + %rbx*4</code></td>
+</tr>
+</tbody>
+</table>
+
+<p>The full form of a memory operand is <code>offset(base,index,scale)</code>, which refers
+to the address <code>offset + base + index*scale</code>. In <code>0x18(%rax,%rbx,4)</code>, <code>%rax</code>
+is the base, <code>0x18</code> the offset, <code>%rbx</code> the index, and <code>4</code> the scale. The
+offset (if used) must be a constant and the base (if used) must be a register;
+the scale must be either 1, 2, 4, or 8. The default offset, base, and index
+are 0, and the default scale is 1.</p>
+
+<p><code>symbol_name</code>s are found only in compiler-generated assembly; disassembly uses
+raw addresses (<code>0x601030</code>) or <code>%rip</code>-relative offsets (<code>0x200bf2(%rip)</code>).</p>
+
+<p>Jumps and function call instructions use different syntax 🤷🏽‍♀️: <code>*</code>, rather
+than <code>()</code>, represents indirection.</p>
+
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Example syntax</th>
+<th>Address used</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Register</td>
+<td><code>*%rax</code></td>
+<td>Contents of <code>%rax</code></td>
+</tr>
+
+<tr>
+<td>Immediate</td>
+<td><code>.L3</code></td>
+<td>Address of <code>.L3</code> (compiler-generated assembly)</td>
+</tr>
+
+<tr>
+<td></td>
+<td><code>400410</code> or <code>0x400410</code></td>
+<td>Given address</td>
+</tr>
+
+<tr>
+<td>Memory</td>
+<td><code>*0x200b96(%rip)</code></td>
+<td>Value stored at address <code>%rip + 0x200b96</code></td>
+</tr>
+
+<tr>
+<td></td>
+<td><code>*(%r12,%rbp,8)</code></td>
+<td>Other address modes accepted</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="address-computations">Address computations</h2>
+
+<p>The <code>base(offset,index,scale)</code> form compactly expresses many array-style
+address computations. It’s typically used with a <code>mov</code>-type instruction to
+dereference memory. However, the compiler can use that form to compute
+addresses, thanks to the <code>lea</code> (Load Effective Address) instruction.</p>
+
+<p>For instance, in <code>movl 0x18(%rax,%rbx,4), %ecx</code>, the address <code>%rax + 0x18 +
+%rbx*4</code> is computed, then immediately dereferenced: the 4-byte value located
+there is loaded into <code>%ecx</code>. In <code>leaq 0x18(%rax,%rbx,4), %rcx</code>, the same address is computed, but it is <em>not</em> dereferenced. Instead, the <em>computed address</em> is moved into register <code>%rcx</code>.</p>
+
+<p>Thanks to <code>lea</code>, the compiler will also prefer the <code>base(offset,index,scale)</code>
+form over <code>add</code> and <code>mov</code> for certain computations on integers. For example,
+this instruction:</p>
+
+<pre><code>leaq (%rax,%rbx,2), %rcx
+</code></pre>
+
+<p>performs the function <code>%rcx := %rax + 2 * %rbx</code>, but in one instruction,
+rather than three (<code>movq %rax, %rcx; addq %rbx, %rcx; addq %rbx, %rcx</code>).</p>
+
+<h2 id="riprelative-addressing"><code>%rip</code>-relative addressing</h2>
+
+<p>x86-64 code often refers to globals using <strong>%rip-relative</strong> addressing: a
+global variable named <code>a</code> is referenced as <code>a(%rip)</code> rather than <code>a</code>.</p>
+
+<p>This style of reference supports <a href="https://en.wikipedia.org/wiki/Position-independent_code"><em>position-independent
+code</em></a> (PIC), a
+security feature. It specifically supports <em>position-independent executables</em>
+(PIEs), which are programs that work independently of where their code is
+loaded into memory.</p>
+
+<p>To run a conventional program, the operating system loads the program’s
+instructions into memory <em>at a fixed address that’s the same every time</em>, then
+starts executing the program at its first instruction. This works great, and
+runs the program in a predictable execution environment (the addresses of
+functions and global variables are the same every time). Unfortunately, the
+very predictability of this environment makes the program easier to attack.</p>
+
+<p>In a position-independent executable, the operating system loads the program
+at <em>varying</em> locations: every time it runs, the program’s functions and global
+variables have different addresses. This makes the program harder to attack
+(though <a href="https://en.wikipedia.org/wiki/Return-oriented_programming">not impossible</a>).</p>
+
+<p>Program startup performance matters, so the operating system doesn’t recompile
+the program with different addresses each time. Instead, the compiler does
+most of the work in advance by using <em>relative addressing</em>.</p>
+
+<p>When the operating system loads a PIE, it picks a starting point and loads all
+instructions and globals relative to that starting point. The PIE’s
+instructions never refer to global variables using direct addressing: you’ll
+never see <code>movl global_int, %eax</code>. Globals are referenced <em>relatively</em>
+instead, using deltas relative to the next <code>%rip</code>: <code>movl global_int(%rip),
+%eax</code>. These relative addresses work great independent of starting point! For
+instance, consider an instruction located at (starting-point + 0x80) that
+loads a variable <code>g</code> located at (starting-point + 0x1000) into <code>%rax</code>. In a
+non-PIE, the instruction might be written <code>movq 0x400080, %rax</code> (in compiler
+output, <code>movq g, %rax</code>); but this relies on <code>g</code> having a fixed address. In a
+PIE, the instruction might be written <code>movq 0xf80(%rip), %rax</code> (in compiler
+output, <code>movq g(%rip), %rax</code>), which works out beautifully no matter the
+starting point.</p>
+
+<table>
+<thead>
+<tr>
+<th>If the starting point is…</th>
+<th>The instruction is at…</th>
+<th><code>g</code> is at…</th>
+<th>With delta…</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>0x400000</td>
+<td>0x400080</td>
+<td>0x401000</td>
+<td>0xF80</td>
+</tr>
+
+<tr>
+<td>0x404000</td>
+<td>0x404080</td>
+<td>0x405000</td>
+<td>0xF80</td>
+</tr>
+
+<tr>
+<td>0x4003F0</td>
+<td>0x400470</td>
+<td>0x4013F0</td>
+<td>0xF80</td>
+</tr>
+</tbody>
+</table>
+
+    </div>
+</div>
+
+        <script src="Assembly%201%20%20Basics%20%E2%80%93%20CS%2061_files/jquery-3.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+        <script src="Assembly%201%20%20Basics%20%E2%80%93%20CS%2061_files/popper.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="Assembly%201%20%20Basics%20%E2%80%93%20CS%2061_files/bootstrap.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="Assembly%201%20%20Basics%20%E2%80%93%20CS%2061_files/katex.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+        <script>(function () {
+        jQuery.fn.extend({
+            geometry: function (outer) {
+                var x;
+                if (this[0] == window)
+                    x = {left: this.scrollLeft(), top: this.scrollTop()};
+                else
+                    x = this.offset();
+                if (x) {
+                    x.width = outer ? this.outerWidth() : this.width();
+                    x.height = outer ? this.outerHeight() : this.height();
+                    x.right = x.left + x.width;
+                    x.bottom = x.top + x.height;
+                }
+                return x;
+            }
+        });
+        $(".math").each(function () {
+            var t = this.innerText,
+                opt = {throwOnError: false, displayMode: t.substr(0, 2) === "\\["};
+            katex.render(t.replace(/(?:^\\\(|^\\\[|\\\)$|\\\]$)/g, ""), this, opt);
+        });
+        function sol_toggle(hide, storage) {
+            this.childNodes[0].classList.toggle("hidden", !hide);
+            this.childNodes[0].classList.toggle("shown", hide);
+            this.childNodes[1].classList.toggle("hidden", hide);
+            this.childNodes[1].classList.toggle("shown", !hide);
+            if (storage) {
+                var key = location.href + " " + $(".has-solution").index(this);
+                if (hide)
+                    sessionStorage.removeItem(key);
+                else
+                    sessionStorage.setItem(key, true);
+            }
+        }
+        $(".solution").each(function () {
+            $(this).wrap('<div class="has-solution"></div>');
+            var sol = this.parentElement;
+            $(sol).prepend('<blockquote class="solution-collapsed js-solution show"><a href="" class="js-solution show"></a></blockquote>');
+            $(this).append('<p><a href="" class="js-solution hide"></a></p>');
+            $(sol).find("a.js-solution.show").text(this.getAttribute("data-show-text") || "Show solution");
+            $(sol).find("a.js-solution.hide").text(this.getAttribute("data-hide-text") || "Hide solution");
+            var key = location.href + " " + $(".has-solution").index(sol);
+            if (sessionStorage.getItem(key))
+                sol_toggle.call(sol, false, false);
+        });
+        $(document).on("click", ".js-solution", function (event) {
+            if (this.classList.contains("all")) {
+                var hide = this.classList.contains("hide");
+                $(".has-solution").each(function () {
+                    sol_toggle.call(this, hide, false);
+                });
+                var bq = this.tagName === "BLOCKQUOTE" ? this : this.parentElement;
+                $(bq).find(".show").toggleClass("hidden", !hide);
+                $(bq).find(".hide").toggleClass("hidden", hide);
+            } else {
+                var sol = $(this).closest(".has-solution")[0];
+                sol_toggle.call(sol, this.classList.contains("hide"), true);
+            }
+            event.preventDefault();
+            event.stopPropagation();
+        });
+        var container = $(".container")[0];
+        function slideview_toggle(hide, storage) {
+            if (hide === null)
+                hide = container.classList.contains("container-slides");
+            container.classList.toggle("container-slides", !hide);
+            if (storage) {
+                var key = location.href + " slides";
+                if (hide)
+                    sessionStorage.removeItem(key);
+                else
+                    sessionStorage.setItem(key, true);
+            }
+        }
+        function slideview_setpos(pos) {
+            var slidecount = +this.getAttribute("data-reveal-steps");
+            var es = [this], n = this.nextSibling;
+            while (n && n.tagName !== "H2") {
+                es.push(n);
+                n = n.nextSibling;
+            }
+            $(es).find("[data-reveal]").add($(es).filter("[data-reveal]")).each(function () {
+                $(this).toggleClass("hidden", +this.getAttribute("data-reveal") > pos);
+            });
+            this.setAttribute("data-reveal-pos", pos);
+        }
+        function slideview_keypress(event) {
+            if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey
+                || (event.keyCode != 37 && event.keyCode != 39)
+                || !container.classList.contains("container-slides"))
+                return;
+            var isleft = event.keyCode == 37, space = 20, slop = space + 5;
+            var w = $(window).geometry(), divs = $("h2"), i;
+            for (i = isleft ? divs.length - 1 : 0;
+                 i >= 0 && i < divs.length;
+                 i += (isleft ? -1 : 1)) {
+                var d = divs[i], g = $(d).geometry();
+                if (g.top - slop < w.top
+                    && g.top + slop > w.top
+                    && d.hasAttribute("data-reveal-steps")) {
+                    var slidecount = +d.getAttribute("data-reveal-steps");
+                    var slidepos = +d.getAttribute("data-reveal-pos") + (isleft ? -1 : 1);
+                    if (isleft ? slidepos >= 0 : slidepos < slidecount) {
+                        slideview_setpos.call(d, slidepos);
+                        break;
+                    }
+                }
+                if (isleft ? g.top + slop < w.top : g.top > w.top + slop) {
+                    $(window).scrollTop(g.top - space);
+                    if (d.hasAttribute("data-reveal-steps")) {
+                        slideview_setpos.call(d, isleft ? +d.getAttribute("data-reveal-steps") - 1 : 0);
+                    }
+                    break;
+                }
+            }
+            if (i < 0)
+                $(window).scrollTop(0);
+            event.preventDefault();
+        }
+        $(document).on("click", ".js-toggle-slideview", function (event) {
+            slideview_toggle(null, true);
+            event.preventDefault();
+            event.stopPropagation();
+        });
+        $(".need-container-slides").each(function () {
+            $(this).prepend('<blockquote class="slideview-toggle"><a href="" class="js-toggle-slideview">Toggle slide view</a></blockquote>').removeClass("need-container-slides");
+            var key = location.href + " slides";
+            if (sessionStorage.getItem(key))
+                slideview_toggle(false, false);
+            $("body").on("keyup", slideview_keypress);
+        });
+        })()</script>
+    
+
+
+<table style="width: 234px; display: none; top: 40px; left: 602px; position: absolute;" class="gstl_50 gssb_c" cellspacing="0" cellpadding="0"><tbody><tr><td class="gssb_f"></td><td class="gssb_e" style="width: 100%;"></td></tr></tbody></table></body></html>
